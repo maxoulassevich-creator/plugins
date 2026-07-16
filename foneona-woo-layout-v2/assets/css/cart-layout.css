@@ -1,0 +1,1157 @@
+/* ==========================================================================
+   FONEONA CART LAYOUT — Complete override of WooCommerce default styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Reset WooCommerce table styles (they bleed even without the stylesheet
+   because WC adds inline critical CSS via wp_add_inline_style)
+   -------------------------------------------------------------------------- */
+
+.foneona-cart-page *,
+.foneona-cart-page *::before,
+.foneona-cart-page *::after {
+	box-sizing: border-box;
+}
+
+/* Kill WC default table borders/padding */
+.foneona-cart-page table.shop_table,
+.foneona-cart-page table.shop_table th,
+.foneona-cart-page table.shop_table td,
+.foneona-cart-page .woocommerce-cart-form table,
+.foneona-cart-page .woocommerce-cart-form th,
+.foneona-cart-page .woocommerce-cart-form td {
+	border: none !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+}
+
+/* Kill WC notices / breadcrumbs inside our wrapper */
+.foneona-cart-page .woocommerce-message,
+.foneona-cart-page .woocommerce-info,
+.foneona-cart-page .woocommerce-error {
+	background: #fff !important;
+	border-top: none !important;
+	border-left: none !important;
+	border-right: none !important;
+	border-bottom: 1px solid #e9ecef !important;
+	padding: 12px 0 !important;
+	margin: 0 0 18px !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	color: #111 !important;
+}
+
+/* Kill WC button styles inside our wrapper */
+.foneona-cart-page .button,
+.foneona-cart-page button.button,
+.foneona-cart-page input[type="submit"].button,
+.foneona-cart-page a.button {
+	background: transparent !important;
+	border: none !important;
+	color: inherit !important;
+	border-radius: 0 !important;
+	padding: 0 !important;
+	font-size: inherit !important;
+	line-height: inherit !important;
+	display: inline !important;
+	text-decoration: none !important;
+	box-shadow: none !important;
+}
+
+/* Kill WC input styles */
+.foneona-cart-page input.input-text,
+.foneona-cart-page input[type="text"],
+.foneona-cart-page input[type="number"],
+.foneona-cart-page select,
+.foneona-cart-page textarea {
+	background: #fff !important;
+	border: 1px solid #d7dde3 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	outline: none !important;
+	padding: 0 12px !important;
+	height: 44px !important;
+	font-size: 14px !important;
+	color: #111 !important;
+	width: 100% !important;
+}
+
+/* Kill WC quantity spinner styles */
+.foneona-cart-page .quantity .qty {
+	-moz-appearance: textfield !important;
+}
+.foneona-cart-page .quantity .qty::-webkit-outer-spin-button,
+.foneona-cart-page .quantity .qty::-webkit-inner-spin-button {
+	-webkit-appearance: none !important;
+	margin: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Page layout
+   -------------------------------------------------------------------------- */
+
+.foneona-cart-page {
+	width: 100%;
+	font-family: inherit;
+	color: #111;
+}
+
+.foneona-cart-grid {
+	display: grid;
+	grid-template-columns: 1fr 550px;
+	gap: 70px;
+	align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   Cart table
+   -------------------------------------------------------------------------- */
+
+.foneona-cart-table {
+	width: 100% !important;
+	border-collapse: collapse !important;
+	border-spacing: 0 !important;
+}
+
+.foneona-cart-page .foneona-cart-table thead tr {
+	background: #fff !important;
+}
+
+.foneona-cart-page .foneona-cart-table thead th {
+	text-transform: uppercase !important;
+	font-weight: 700 !important;
+	letter-spacing: .06em !important;
+	font-size: 13px !important;
+	padding: 18px 12px !important;
+	border-bottom: 1px solid #e9ecef !important;
+	border-top: none !important;
+	color: #111 !important;
+	background: #fff !important;
+}
+
+/* Align columns as in screenshot */
+.foneona-cart-page .foneona-cart-table thead th.product-name {
+	text-align: left !important;
+	padding-left: 15px !important;
+}
+.foneona-cart-page .foneona-cart-table thead th.product-price,
+.foneona-cart-page .foneona-cart-table thead th.product-quantity,
+.foneona-cart-page .foneona-cart-table thead th.product-subtotal {
+	text-align: center !important;
+}
+
+/* tbody rows — high-specificity override of WC reset */
+.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td {
+	padding: 24px 12px !important;
+	border-top: none !important;
+	border-bottom: 1px solid #eef0f2 !important;
+	vertical-align: middle !important;
+	background: transparent !important;
+}
+
+/* Remove left/right padding from first and last visible cells */
+.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-thumbnail {
+	padding-left: 0 !important;
+}
+.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-subtotal {
+	padding-right: 0 !important;
+}
+
+/* Thumbnail cell */
+.foneona-cart-page .foneona-cart-table td.product-thumbnail {
+	width: 110px !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.foneona-cart-page .foneona-cart-table td.product-thumbnail a {
+	display: block !important;
+}
+.foneona-cart-page .foneona-cart-table td.product-thumbnail img {
+	width: 80px !important;
+	height: 100px !important;
+	object-fit: cover !important;
+	display: block !important;
+	margin: 0 !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+
+/* Product name */
+.foneona-cart-page .foneona-cart-table td.product-name {
+	padding-left: 4px !important;
+	padding-right: 20px !important;
+}
+.foneona-cart-page .foneona-cart-table td.product-name a {
+	color: #111 !important;
+	text-decoration: none !important;
+	font-size: 16px !important;
+	line-height: 1.45 !important;
+	font-weight: 500 !important;
+    text-transform: uppercase;
+    font-family: 'Myriad Pro';
+}
+.foneona-cart-page .foneona-cart-table td.product-name a:hover {
+	color: #111 !important;
+	text-decoration: underline !important;
+}
+
+/* Variation data (size etc.) */
+.foneona-cart-table .variation {
+	font-size: 13px !important;
+	color: #6f6f6f !important;
+	margin: 4px 0 0 !important;
+}
+.foneona-cart-table .variation dt,
+.foneona-cart-table .variation dd {
+	display: inline !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	font-weight: normal !important;
+}
+
+/* Remove link */
+.foneona-cart-page .foneona-remove-wrap {
+	margin-top: 8px !important;
+}
+.foneona-cart-page .foneona-remove-wrap a.remove {
+	text-decoration: none !important;
+	color: #999 !important;
+	text-transform: uppercase !important;
+	letter-spacing: .06em !important;
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	display: inline-block !important;
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	line-height: normal !important;
+}
+.foneona-cart-page .foneona-remove-wrap a.remove:hover {
+	color: #111 !important;
+	background: transparent !important;
+}
+
+/* Price & subtotal */
+.foneona-cart-page .foneona-cart-table td.product-price,
+.foneona-cart-page .foneona-cart-table td.product-subtotal {
+	text-align: center !important;
+	white-space: nowrap !important;
+	font-weight: 600 !important;
+}
+.foneona-cart-page .foneona-cart-table td.product-price .amount,
+.foneona-cart-page .foneona-cart-table td.product-subtotal .amount {
+	font-weight: 600 !important;
+}
+/* Kill WC ins/del sale styling */
+.foneona-cart-page .foneona-cart-table .amount ins,
+.foneona-cart-page .foneona-cart-table .amount del {
+	text-decoration: none !important;
+	background: transparent !important;
+}
+
+/* Quantity cell */
+.foneona-cart-page .foneona-cart-table td.product-quantity {
+	text-align: center !important;
+	white-space: nowrap !important;
+}
+
+/* Mobile label (hidden on desktop) */
+.foneona-mobile-label {
+	display: none !important;
+	color: #8a8a8a !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+}
+.foneona-mobile-value {
+	display: inline-block !important;
+}
+
+/* --------------------------------------------------------------------------
+   Quantity stepper
+   -------------------------------------------------------------------------- */
+
+.foneona-cart-page .foneona-cart-table .quantity {
+	display: inline-flex !important;
+	align-items: center !important;
+	border: 1px solid #ccc !important;
+	height: 34px !important;
+	border-radius: 0 !important;
+	overflow: hidden !important;
+	background: transparent !important;
+}
+
+.foneona-cart-page .foneona-cart-table .quantity .qty {
+	width: 36px !important;
+	border: none !important;
+	border-left: 1px solid #ddd !important;
+	border-right: 1px solid #ddd !important;
+	text-align: center !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	box-shadow: none !important;
+	height: 34px !important;
+	font-weight: 600 !important;
+	background: transparent !important;
+	font-size: 14px !important;
+	color: #111 !important;
+}
+
+.foneona-qty-btn {
+	width: 32px !important;
+	height: 34px !important;
+	border: none !important;
+	background: transparent !important;
+	cursor: pointer !important;
+	font-size: 18px !important;
+	line-height: 1 !important;
+	color: #111 !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border-radius: 0 !important;
+}
+.foneona-qty-btn:focus {
+	outline: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Hidden actions row (kept for WC AJAX nonce)
+   -------------------------------------------------------------------------- */
+
+.foneona-actions-row {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px !important;
+	height: 1px !important;
+	overflow: hidden !important;
+	pointer-events: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Totals panel (right column)
+   -------------------------------------------------------------------------- */
+
+.foneona-cart-totals {
+	width: 100% !important;
+	border: none !important;
+	padding: 0 !important;
+	background: transparent !important;
+}
+
+.foneona-cart-totals__title {
+	text-transform: uppercase !important;
+	font-weight: 800 !important;
+	font-size: 18px !important;
+	letter-spacing: .04em !important;
+	margin: 0 0 18px !important;
+	color: #111 !important;
+}
+
+/* Kill WC h2 inside totals */
+.foneona-cart-totals h2 {
+	font-size: 18px !important;
+	font-weight: 800 !important;
+}
+
+.foneona-totals-row {
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: center !important;
+	padding: 12px 0 !important;
+}
+
+.foneona-totals-label {
+	text-transform: uppercase !important;
+	font-weight: 700 !important;
+	font-size: 13px !important;
+	color: #1a1a1a !important;
+}
+
+.foneona-totals-value {
+	font-weight: 700 !important;
+	white-space: nowrap !important;
+}
+.foneona-totals-value .amount {
+	font-weight: 700 !important;
+}
+
+.foneona-divider {
+	border: none !important;
+	border-top: 1px solid #e9ecef !important;
+	margin: 16px 0 !important;
+	background: transparent !important;
+}
+
+/* --------------------------------------------------------------------------
+   Shipping block
+   -------------------------------------------------------------------------- */
+
+.foneona-section-title {
+	text-transform: uppercase !important;
+	font-weight: 800 !important;
+	font-size: 14px !important;
+	letter-spacing: .04em !important;
+	margin: 0 0 10px !important;
+	color: #111 !important;
+}
+
+.foneona-shipping-hint {
+	color: #6f6f6f !important;
+	font-size: 13px !important;
+	margin: 0 0 10px !important;
+}
+
+/* WC outputs its own shipping HTML - kill its native styles */
+.foneona-cart-totals .shipping {
+	padding: 0 !important;
+	border: none !important;
+	background: transparent !important;
+}
+.foneona-cart-totals .shipping th,
+.foneona-cart-totals .shipping td {
+	padding: 0 !important;
+	border: none !important;
+	background: transparent !important;
+	vertical-align: top !important;
+}
+
+/* Shipping calculator link */
+.foneona-cart-totals a.shipping-calculator-button,
+.foneona-shipping-toggle {
+	display: inline-block !important;
+	text-transform: uppercase !important;
+	font-weight: 700 !important;
+	font-size: 12px !important;
+	letter-spacing: .04em !important;
+	text-decoration: underline !important;
+	color: #2b2b2b !important;
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+	margin-top: 6px !important;
+}
+
+.foneona-shipping-form {
+	margin-top: 14px !important;
+}
+
+.foneona-shipping-form .form-row {
+	margin: 0 0 12px !important;
+	padding: 0 !important;
+}
+
+.foneona-shipping-form .form-row label {
+	display: block !important;
+	margin: 0 0 6px !important;
+	text-transform: uppercase !important;
+	font-size: 11px !important;
+	letter-spacing: .04em !important;
+	color: #7a7a7a !important;
+	font-weight: 700 !important;
+}
+
+.foneona-shipping-form .input-text,
+.foneona-shipping-form select {
+	width: 100% !important;
+	height: 40px !important;
+	border: 1px solid #d7dde3 !important;
+	padding: 0 12px !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	background: #fff !important;
+	font-size: 13px !important;
+}
+
+.foneona-shipping-update-wrap {
+	margin-top: 10px !important;
+}
+.foneona-shipping-update {
+	text-transform: uppercase !important;
+	font-weight: 700 !important;
+	font-size: 12px !important;
+	letter-spacing: .04em !important;
+	background: #f0f0f0 !important;
+	border: 1px solid #e0e0e0 !important;
+	color: #2b2b2b !important;
+	padding: 10px 18px !important;
+	border-radius: 0 !important;
+	cursor: pointer !important;
+	display: inline-block !important;
+}
+
+/* --------------------------------------------------------------------------
+   Coupon form
+   -------------------------------------------------------------------------- */
+
+.foneona-coupon-form {
+	display: flex !important;
+	gap: 0 !important;
+	margin: 20px 0 !important;
+	align-items: stretch !important;
+}
+
+.foneona-coupon-input {
+	flex: 1 1 auto !important;
+	height: 44px !important;
+	border: 1px solid #d7dde3 !important;
+	border-right: none !important;
+	padding: 0 12px !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	font-size: 14px !important;
+	background: #fff !important;
+	color: #111 !important;
+	width: auto !important;
+}
+.foneona-coupon-input::placeholder {
+	color: #b0b0b0 !important;
+}
+
+.foneona-coupon-button {
+	height: 44px !important;
+	min-width: 140px !important;
+	text-transform: uppercase !important;
+	font-weight: 800 !important;
+	font-size: 12px !important;
+	letter-spacing: .05em !important;
+	background: #f0f0f0 !important;
+	border: 1px solid #d7dde3 !important;
+	color: #111 !important;
+	border-radius: 0 !important;
+	cursor: pointer !important;
+	padding: 0 16px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+.foneona-coupon-button:hover {
+	background: #e0e0e0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Checkout / proceed button
+   -------------------------------------------------------------------------- */
+
+.foneona-proceed {
+	margin-top: 8px !important;
+}
+
+.foneona-proceed .checkout-button,
+.foneona-proceed a.button.checkout-button {
+	display: block !important;
+	width: 100% !important;
+	text-align: center !important;
+	text-transform: uppercase !important;
+	letter-spacing: .07em !important;
+	font-weight: 800 !important;
+	font-size: 14px !important;
+	padding: 22px 0 !important;
+	margin-top: 16px !important;
+	border-radius: 0 !important;
+	background: #662132 !important;
+	color: #fff !important;
+	border: none !important;
+	text-decoration: none !important;
+	transition: opacity .15s ease !important;
+	line-height: 1 !important;
+	height: auto !important;
+}
+.foneona-proceed .checkout-button:hover,
+.foneona-proceed a.button.checkout-button:hover {
+	background: #222 !important;
+	color: #fff !important;
+	opacity: 1 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Applied coupons row in totals
+   -------------------------------------------------------------------------- */
+
+.foneona-cart-totals .cart-discount th,
+.foneona-cart-totals .cart-discount td {
+	padding: 8px 0 !important;
+	border: none !important;
+	background: transparent !important;
+	font-size: 13px !important;
+}
+.foneona-cart-totals .cart-discount .coupon-remove {
+	color: #b3b3b3 !important;
+	font-size: 12px !important;
+	margin-left: 8px !important;
+	text-decoration: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+	.foneona-cart-grid {
+		grid-template-columns: 1fr 360px;
+		gap: 40px;
+	}
+}
+
+@media (max-width: 991px) {
+	.foneona-cart-grid {
+		grid-template-columns: 1fr;
+		gap: 32px;
+	}
+
+	.foneona-cart-table thead {
+		display: none !important;
+	}
+
+	.foneona-cart-table,
+	.foneona-cart-table tbody,
+	.foneona-cart-table tr,
+	.foneona-cart-table td {
+		display: block !important;
+		width: 100% !important;
+	}
+
+	.foneona-cart-table tbody td {
+		border-bottom: none !important;
+		padding: 0 !important;
+	}
+
+	.foneona-cart-table tr.cart_item {
+		padding: 24px 0 !important;
+		border-bottom: 1px solid #eef0f2 !important;
+		position: relative !important;
+		overflow: hidden !important;
+	}
+
+	.foneona-cart-table td.product-thumbnail {
+		float: left !important;
+		width: 90px !important;
+		margin-right: 16px !important;
+		padding: 0 !important;
+	}
+
+	.foneona-cart-table td.product-thumbnail img {
+		width: 76px !important;
+	}
+
+	.foneona-cart-table td.product-name {
+		overflow: hidden !important;
+		padding: 0 !important;
+	}
+
+	.foneona-cart-table td.product-price,
+	.foneona-cart-table td.product-quantity,
+	.foneona-cart-table td.product-subtotal {
+		clear: both !important;
+		display: flex !important;
+		justify-content: space-between !important;
+		align-items: center !important;
+		padding: 8px 0 !important;
+		text-align: left !important;
+	}
+
+	.foneona-mobile-label {
+		display: inline-block !important;
+	}
+
+	.foneona-mobile-value {
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: flex-end !important;
+		gap: 8px !important;
+	}
+
+	.foneona-coupon-form {
+		flex-direction: row !important;
+	}
+}
+
+/* Foneona 1.4.0 additions */
+.foneona-cart-page .foneona-order-formula {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	justify-content: flex-end;
+	align-items: center;
+	padding-top: 10px;
+	font-size: 12px;
+	color: #6b7280;
+}
+
+.foneona-cart-page .foneona-order-formula__part.is-total {
+	font-weight: 700;
+	color: #111;
+}
+
+.foneona-cart-page .foneona-fixed-country-row {
+	margin: 0 0 14px !important;
+}
+
+.foneona-cart-page .foneona-fixed-country-row label {
+	display: block !important;
+	margin: 0 0 5px !important;
+	font-size: 11px !important;
+	letter-spacing: .08em !important;
+	text-transform: uppercase !important;
+	font-weight: 700 !important;
+	color: #555 !important;
+	line-height: 1.4 !important;
+}
+
+.foneona-cart-page .foneona-fixed-country-value {
+	display: block;
+	height: 44px;
+	line-height: 44px;
+	border: 1px solid #d7dde3;
+	padding: 0 12px;
+	background: #fff;
+	font-size: 14px;
+	color: #111;
+}
+
+/* --------------------------------------------------------------------------
+   v1.8.1 — Compact mobile cart layout
+   --------------------------------------------------------------------------
+   The desktop cart is left untouched. On phones the cart item is rebuilt as
+   a compact two-column card: image on the left, product title/remove link on
+   the right, then price/quantity/subtotal rows below it.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+	.foneona-cart-page,
+	.foneona-cart-page .cart-collaterals,
+	.foneona-cart-page .woocommerce,
+	.foneona-cart-page .woocommerce-cart-form {
+		background: #fff !important;
+	}
+
+	.foneona-cart-page {
+		width: 100% !important;
+		max-width: 100% !important;
+		padding: 0 0 20px !important;
+		margin: 0 !important;
+		color: #111 !important;
+	}
+
+	.foneona-cart-page .foneona-cart-grid {
+		display: grid !important;
+		grid-template-columns: 1fr !important;
+		gap: 26px !important;
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 !important;
+	}
+
+	.foneona-cart-page .foneona-cart-left,
+	.foneona-cart-page .foneona-cart-right,
+	.foneona-cart-page .woocommerce-cart-form,
+	.foneona-cart-page .foneona-cart-totals {
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table,
+	.foneona-cart-page .foneona-cart-table thead,
+	.foneona-cart-page .foneona-cart-table tbody,
+	.foneona-cart-page .foneona-cart-table tfoot,
+	.foneona-cart-page .foneona-cart-table tr,
+	.foneona-cart-page .foneona-cart-table th,
+	.foneona-cart-page .foneona-cart-table td {
+		display: block !important;
+		width: 100% !important;
+		max-width: 100% !important;
+		border: 0 !important;
+		background: transparent !important;
+		box-shadow: none !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table thead,
+	.foneona-cart-page .foneona-cart-table td::before,
+	.foneona-cart-page .foneona-actions-row {
+		display: none !important;
+		content: none !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item {
+		display: grid !important;
+		grid-template-columns: 86px minmax(0, 1fr) !important;
+		column-gap: 16px !important;
+		row-gap: 0 !important;
+		align-items: start !important;
+		width: 100% !important;
+		padding: 0 0 18px !important;
+		margin: 0 !important;
+		border-bottom: 1px solid #eef0f2 !important;
+		background: #fff !important;
+		position: relative !important;
+		overflow: visible !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td {
+		clear: none !important;
+		float: none !important;
+		width: auto !important;
+		max-width: 100% !important;
+		min-width: 0 !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		border: 0 !important;
+		background: transparent !important;
+		text-align: left !important;
+		vertical-align: top !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-thumbnail {
+		grid-column: 1 !important;
+		grid-row: 1 !important;
+		width: 86px !important;
+		max-width: 86px !important;
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table td.product-thumbnail a {
+		display: block !important;
+		width: 86px !important;
+		max-width: 86px !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table td.product-thumbnail img {
+		display: block !important;
+		width: 76px !important;
+		height: 100px !important;
+		max-width: 76px !important;
+		object-fit: cover !important;
+		object-position: center top !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		border: 0 !important;
+		box-shadow: none !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-name {
+		grid-column: 2 !important;
+		grid-row: 1 !important;
+		padding: 2px 0 0 !important;
+		margin: 0 !important;
+		overflow: visible !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table td.product-name a {
+		display: inline !important;
+		font-family: inherit !important;
+		font-size: 13px !important;
+		line-height: 1.4 !important;
+		font-weight: 400 !important;
+		letter-spacing: 0 !important;
+		text-transform: none !important;
+		color: #1f2933 !important;
+		text-decoration: none !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table .variation {
+		display: block !important;
+		margin: 2px 0 0 !important;
+		font-size: 12px !important;
+		line-height: 1.35 !important;
+		color: #1f2933 !important;
+		text-transform: none !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table .variation dt,
+	.foneona-cart-page .foneona-cart-table .variation dd,
+	.foneona-cart-page .foneona-cart-table .variation p {
+		font-size: inherit !important;
+		line-height: inherit !important;
+		color: inherit !important;
+	}
+
+	.foneona-cart-page .foneona-remove-wrap {
+		margin-top: 7px !important;
+	}
+
+	.foneona-cart-page .foneona-remove-wrap a.remove {
+		font-size: 10px !important;
+		line-height: 1.2 !important;
+		font-weight: 400 !important;
+		letter-spacing: .02em !important;
+		text-transform: uppercase !important;
+		color: #8b8f95 !important;
+		text-decoration: none !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-price,
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-quantity,
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-subtotal {
+		grid-column: 1 / -1 !important;
+		display: flex !important;
+		flex-direction: row !important;
+		justify-content: space-between !important;
+		align-items: center !important;
+		width: 100% !important;
+		padding: 7px 0 !important;
+		margin: 0 !important;
+		text-align: left !important;
+		white-space: normal !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-price {
+		margin-top: 16px !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table tbody tr.cart_item > td.product-subtotal {
+		padding-bottom: 0 !important;
+		font-weight: 700 !important;
+	}
+
+	.foneona-cart-page .foneona-mobile-label {
+		display: inline-block !important;
+		font-size: 12px !important;
+		line-height: 1.35 !important;
+		font-weight: 400 !important;
+		letter-spacing: 0 !important;
+		color: #5f6670 !important;
+		text-transform: none !important;
+	}
+
+	.foneona-cart-page .foneona-mobile-value {
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: flex-end !important;
+		gap: 8px !important;
+		font-size: 12px !important;
+		line-height: 1.35 !important;
+		font-weight: 500 !important;
+		color: #111 !important;
+		text-align: right !important;
+		white-space: nowrap !important;
+	}
+
+	.foneona-cart-page .product-subtotal .foneona-mobile-label,
+	.foneona-cart-page .product-subtotal .foneona-mobile-value,
+	.foneona-cart-page .product-subtotal .amount {
+		font-weight: 700 !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table .quantity {
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		height: 30px !important;
+		min-width: 70px !important;
+		border: 1px solid #dfe4e8 !important;
+		background: #fff !important;
+		overflow: hidden !important;
+	}
+
+	.foneona-cart-page .foneona-cart-table .quantity .qty {
+		width: 28px !important;
+		min-width: 28px !important;
+		height: 30px !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		border-top: 0 !important;
+		border-bottom: 0 !important;
+		border-left: 1px solid #dfe4e8 !important;
+		border-right: 1px solid #dfe4e8 !important;
+		font-size: 12px !important;
+		line-height: 30px !important;
+		font-weight: 600 !important;
+		text-align: center !important;
+		background: #fff !important;
+		color: #111 !important;
+	}
+
+	.foneona-cart-page .foneona-qty-btn {
+		width: 24px !important;
+		min-width: 24px !important;
+		height: 30px !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		font-size: 15px !important;
+		line-height: 1 !important;
+		font-weight: 400 !important;
+		color: #4b5563 !important;
+		background: #fff !important;
+	}
+
+	.foneona-cart-page .foneona-cart-totals__title,
+	.foneona-cart-page .foneona-cart-totals h2 {
+		font-size: 15px !important;
+		line-height: 1.25 !important;
+		font-weight: 800 !important;
+		letter-spacing: .03em !important;
+		text-transform: uppercase !important;
+		margin: 0 0 14px !important;
+		padding: 0 !important;
+		color: #111 !important;
+	}
+
+	.foneona-cart-page .foneona-totals-row {
+		display: flex !important;
+		justify-content: space-between !important;
+		align-items: center !important;
+		padding: 9px 0 !important;
+		margin: 0 !important;
+	}
+
+	.foneona-cart-page .foneona-totals-label {
+		font-size: 12px !important;
+		line-height: 1.35 !important;
+		font-weight: 400 !important;
+		letter-spacing: 0 !important;
+		text-transform: none !important;
+		color: #4b5563 !important;
+	}
+
+	.foneona-cart-page .foneona-totals-row--subtotal .foneona-totals-label::after,
+	.foneona-cart-page .foneona-totals-row--total .foneona-totals-label::after {
+		content: ':';
+	}
+
+	.foneona-cart-page .foneona-totals-value,
+	.foneona-cart-page .foneona-totals-value .amount {
+		font-size: 12px !important;
+		line-height: 1.35 !important;
+		font-weight: 500 !important;
+		color: #111 !important;
+		white-space: nowrap !important;
+	}
+
+	.foneona-cart-page .foneona-totals-row--total .foneona-totals-label,
+	.foneona-cart-page .foneona-totals-row--total .foneona-totals-value,
+	.foneona-cart-page .foneona-totals-row--total .amount {
+		font-weight: 700 !important;
+		color: #111 !important;
+	}
+
+	.foneona-cart-page .foneona-divider {
+		margin: 13px 0 !important;
+		border: 0 !important;
+		border-top: 1px solid #eef0f2 !important;
+		background: transparent !important;
+	}
+
+	.foneona-cart-page .foneona-section-title {
+		font-size: 12px !important;
+		line-height: 1.3 !important;
+		font-weight: 800 !important;
+		letter-spacing: .03em !important;
+		text-transform: uppercase !important;
+		margin: 0 0 5px !important;
+		color: #111 !important;
+	}
+
+	.foneona-cart-page .foneona-shipping-hint,
+	.foneona-cart-page .woocommerce-shipping-destination,
+	.foneona-cart-page .shipping-calculator-form p {
+		font-size: 11px !important;
+		line-height: 1.35 !important;
+		font-weight: 400 !important;
+		color: #6b7280 !important;
+		margin: 0 0 6px !important;
+	}
+
+	.foneona-cart-page .foneona-cart-totals a.shipping-calculator-button,
+	.foneona-cart-page .foneona-shipping-toggle {
+		font-size: 11px !important;
+		line-height: 1.35 !important;
+		font-weight: 700 !important;
+		letter-spacing: .03em !important;
+		text-transform: uppercase !important;
+		text-decoration: underline !important;
+		color: #111 !important;
+		margin-top: 2px !important;
+	}
+
+	.foneona-cart-page .foneona-order-formula {
+		display: none !important;
+	}
+
+	.foneona-cart-page .foneona-coupon-form {
+		display: grid !important;
+		grid-template-columns: minmax(0, 1fr) auto !important;
+		gap: 8px !important;
+		align-items: stretch !important;
+		width: 100% !important;
+		margin: 18px 0 !important;
+		padding: 0 !important;
+	}
+
+	.foneona-cart-page .foneona-coupon-form .foneona-coupon-input,
+	.foneona-cart-page input.foneona-coupon-input {
+		width: 100% !important;
+		min-width: 0 !important;
+		height: 32px !important;
+		min-height: 32px !important;
+		padding: 0 9px !important;
+		border: 1px solid #dfe4e8 !important;
+		border-radius: 0 !important;
+		font-size: 11px !important;
+		line-height: 32px !important;
+		font-weight: 400 !important;
+		color: #111 !important;
+		background: #fff !important;
+		box-shadow: none !important;
+	}
+
+	.foneona-cart-page .foneona-coupon-form .foneona-coupon-button,
+	.foneona-cart-page button.foneona-coupon-button {
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		width: auto !important;
+		min-width: 100px !important;
+		height: 32px !important;
+		min-height: 32px !important;
+		padding: 0 12px !important;
+		border: 1px solid #dfe4e8 !important;
+		border-radius: 0 !important;
+		font-size: 11px !important;
+		line-height: 32px !important;
+		font-weight: 800 !important;
+		letter-spacing: .03em !important;
+		text-transform: uppercase !important;
+		color: #111 !important;
+		background: #f2f3f4 !important;
+		box-shadow: none !important;
+	}
+
+	.foneona-cart-page .foneona-proceed {
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.foneona-cart-page .foneona-proceed .checkout-button,
+	.foneona-cart-page .foneona-proceed a.button.checkout-button {
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		width: 100% !important;
+		height: 42px !important;
+		min-height: 42px !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		border: 0 !important;
+		border-radius: 0 !important;
+		font-size: 11px !important;
+		line-height: 42px !important;
+		font-weight: 800 !important;
+		letter-spacing: .06em !important;
+		text-transform: uppercase !important;
+		text-align: center !important;
+		text-decoration: none !important;
+		color: #fff !important;
+		background: #20252a !important;
+		box-shadow: none !important;
+	}
+}

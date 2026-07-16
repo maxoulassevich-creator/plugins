@@ -1,0 +1,1979 @@
+.ama-shell,
+.ama-shell * {
+  box-sizing: border-box;
+}
+
+.ama-shell {
+  --ama-bg: #f6f2f4;
+  --ama-card: #ffffff;
+  --ama-text: #191622;
+  --ama-muted: #7e7488;
+  --ama-border: rgba(37, 24, 43, 0.08);
+  --ama-shadow: 0 22px 60px rgba(25, 17, 33, 0.10);
+  --ama-shadow-soft: 0 14px 34px rgba(25, 17, 33, 0.08);
+  --ama-radius-xl: 28px;
+  --ama-radius-lg: 22px;
+  --ama-radius-md: 16px;
+  --ama-radius-sm: 12px;
+  --ama-accent-start: #241329;
+  --ama-accent-mid: #5c3359;
+  --ama-accent-end: #de6f96;
+  --ama-accent: linear-gradient(135deg, var(--ama-accent-start) 0%, var(--ama-accent-mid) 48%, var(--ama-accent-end) 100%);
+  color: var(--ama-text);
+  width: 100%;
+  margin: 0 auto;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.ama-shell--narrow {
+  max-width: 760px;
+}
+
+.ama-dashboard-shell {
+  max-width: 1360px;
+}
+
+.ama-auth-card,
+.ama-dashboard {
+  background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(250,247,249,0.96));
+  border: 1px solid rgba(255,255,255,0.85);
+  box-shadow: var(--ama-shadow);
+  border-radius: 34px;
+  backdrop-filter: blur(12px);
+}
+
+.ama-auth-card {
+  padding: 34px;
+}
+
+.ama-auth-card--compact {
+  max-width: 720px;
+}
+
+.ama-headline-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.ama-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--ama-border);
+  background: rgba(255,255,255,0.64);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #4c3b50;
+  font-weight: 700;
+}
+
+.ama-title {
+  margin: 12px 0 0;
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: .98;
+  letter-spacing: -0.04em;
+  color: #191622;
+  font-weight: 800;
+}
+
+.ama-dashboard .ama-title {
+  font-size: clamp(28px, 3vw, 46px);
+}
+
+.ama-subtitle {
+  margin: 14px 0 0;
+  max-width: 620px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ama-muted);
+}
+
+.ama-tab-switcher,
+.ama-dashboard-nav {
+  display: inline-flex;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(31, 17, 37, 0.04);
+  border: 1px solid var(--ama-border);
+  border-radius: 999px;
+}
+
+.ama-dashboard-nav {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 0 26px;
+}
+
+.ama-tab-button,
+.ama-dash-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #4e4456;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+  padding: 14px 22px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .25s ease;
+}
+
+.ama-tab-button:hover,
+.ama-dash-tab:hover {
+  color: #231725;
+}
+
+.ama-tab-button.is-active,
+.ama-dash-tab.is-active {
+  color: #fff;
+  background: var(--ama-accent);
+  box-shadow: 0 10px 24px rgba(97, 45, 86, 0.24);
+}
+
+.ama-tab-panel,
+.ama-dashboard-panel {
+  display: none;
+}
+
+.ama-tab-panel.is-active,
+.ama-dashboard-panel.is-active {
+  display: block;
+}
+
+.ama-form {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.ama-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.ama-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ama-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ama-field {
+  display: grid;
+  gap: 8px;
+}
+
+.ama-field > span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #54485c;
+}
+
+.ama-field input,
+.ama-field select,
+.ama-field textarea {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 18px;
+  border: 1px solid rgba(33, 19, 42, 0.10);
+  background: rgba(255,255,255,0.9);
+  padding: 0 18px;
+  color: #1d1722;
+  font-size: 15px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.ama-field input:focus,
+.ama-field select:focus,
+.ama-field textarea:focus {
+  outline: none;
+  border-color: rgba(116, 55, 98, 0.32);
+  box-shadow: 0 0 0 4px rgba(222,111,150,.14);
+  background: #fff;
+}
+
+.ama-field--password {
+  position: relative;
+}
+
+.ama-field--password input {
+  padding-right: 58px;
+}
+
+.ama-password-toggle {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(33, 19, 42, 0.10);
+  background: rgba(243,239,242,0.9);
+  cursor: pointer;
+}
+
+.ama-password-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 999px;
+  border: 2px solid rgba(78, 67, 84, 0.65);
+}
+
+.ama-form-meta,
+.ama-inline-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ama-inline-actions--top {
+  justify-content: flex-end;
+}
+
+.ama-check {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #574d5e;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ama-check input {
+  margin-top: 4px;
+}
+
+.ama-check--block {
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(33, 19, 42, 0.08);
+  background: rgba(255,255,255,0.75);
+}
+
+.ama-policy-links {
+  display: inline-flex;
+  gap: 8px;
+  margin-left: 6px;
+  flex-wrap: wrap;
+}
+
+.ama-consents {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ama-consents .ama-check--block {
+  display: flex;
+}
+
+.ama-link,
+.ama-link-button {
+  color: #5f3e66;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ama-link:hover,
+.ama-link-button:hover {
+  color: #251629;
+}
+
+.ama-link-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.ama-btn {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  min-height: 56px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+
+.ama-btn:hover {
+  transform: translateY(-1px);
+}
+
+.ama-btn--full {
+  width: 100%;
+}
+
+.ama-btn--primary {
+  color: #fff;
+  background: var(--ama-accent);
+  box-shadow: 0 18px 34px rgba(79, 33, 70, 0.22);
+}
+
+.ama-btn--ghost {
+  color: #1e1621;
+  background: rgba(255,255,255,0.86);
+  border: 1px solid rgba(33, 19, 42, 0.08);
+}
+
+.ama-btn--danger {
+  color: #842d42;
+  background: rgba(233, 191, 201, 0.3);
+  border: 1px solid rgba(192, 102, 129, 0.22);
+}
+
+.ama-btn--small {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+.ama-notices,
+.ama-ajax-response {
+  display: grid;
+  gap: 10px;
+}
+
+.ama-notices {
+  margin-bottom: 18px;
+}
+
+.ama-notice,
+.ama-ajax-response.is-visible {
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid rgba(33, 19, 42, 0.08);
+  background: rgba(255,255,255,.8);
+}
+
+.ama-notice--error,
+.ama-ajax-response.is-error {
+  color: #8a2447;
+  background: rgba(243, 213, 221, 0.5);
+  border-color: rgba(192, 89, 121, 0.2);
+}
+
+.ama-notice--success,
+.ama-ajax-response.is-success {
+  color: #234a3e;
+  background: rgba(211, 236, 223, 0.7);
+  border-color: rgba(89, 171, 127, 0.2);
+}
+
+.ama-dashboard {
+  padding: 28px;
+}
+
+.ama-dashboard-topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.ama-profile-block {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.ama-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 22px;
+  color: #fff;
+  background: var(--ama-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 800;
+  box-shadow: 0 18px 36px rgba(85, 33, 74, 0.22);
+}
+
+.ama-profile-name {
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.ama-profile-email {
+  margin-top: 4px;
+  color: var(--ama-muted);
+  font-size: 14px;
+}
+
+.ama-stats-grid,
+.ama-overview-grid,
+.ama-addresses-grid,
+.ama-downloads-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.ama-stats-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 20px;
+}
+
+.ama-stat-card,
+.ama-panel,
+.ama-download-card,
+.ama-address-box {
+  border-radius: 24px;
+  background: rgba(255,255,255,0.84);
+  border: 1px solid rgba(33, 19, 42, 0.08);
+  box-shadow: var(--ama-shadow-soft);
+}
+
+.ama-stat-card {
+  padding: 20px;
+}
+
+.ama-stat-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: #73697d;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.ama-stat-value {
+  display: block;
+  font-size: clamp(24px, 2vw, 34px);
+  line-height: 1.05;
+  color: #191622;
+}
+
+.ama-overview-grid {
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, .8fr);
+}
+
+.ama-panel {
+  padding: 24px;
+}
+
+.ama-panel--wide {
+  grid-column: 1 / -1;
+}
+
+.ama-panel-head,
+.ama-address-box-head,
+.ama-order-detail__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.ama-panel-head h3,
+.ama-address-box-head h4,
+.ama-order-detail__head h3 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.ama-panel-head p,
+.ama-address-box-head p,
+.ama-mini-stat {
+  margin: 8px 0 0;
+  color: var(--ama-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.ama-orders-table {
+  display: grid;
+  gap: 12px;
+}
+
+.ama-orders-head,
+.ama-order-row {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.ama-orders-head.has-actions,
+.ama-order-row.has-actions {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1.3fr;
+}
+
+.ama-orders-head {
+  padding: 0 16px;
+  color: #73697d;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.ama-order-row {
+  padding: 18px 16px;
+  border-radius: 18px;
+  background: rgba(248,245,247,0.95);
+  border: 1px solid rgba(33, 19, 42, 0.06);
+}
+
+.ama-order-actions-cell {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ama-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 0;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.ama-status--processing,
+.ama-status--completed {
+  color: #1f5c46;
+  background: rgba(197, 235, 215, 0.8);
+}
+
+.ama-status--pending,
+.ama-status--on-hold {
+  color: #7d5a13;
+  background: rgba(245, 227, 183, 0.78);
+}
+
+.ama-status--failed,
+.ama-status--cancelled,
+.ama-status--refunded {
+  color: #8b2849;
+  background: rgba(246, 208, 219, 0.84);
+}
+
+.ama-address-preview {
+  min-height: 132px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(248,245,247,0.95);
+  border: 1px solid rgba(33, 19, 42, 0.06);
+  color: #3e3445;
+  line-height: 1.7;
+}
+
+.ama-addresses-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ama-address-box {
+  padding: 18px;
+}
+
+.ama-downloads-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ama-download-card {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.ama-download-card strong {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.ama-download-card span {
+  color: var(--ama-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.ama-empty-box {
+  min-height: 160px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px dashed rgba(71, 45, 76, 0.14);
+  background: rgba(255,255,255,0.52);
+  color: var(--ama-muted);
+}
+
+.ama-section-sep {
+  height: 1px;
+  background: rgba(33, 19, 42, 0.08);
+  margin: 4px 0;
+}
+
+.ama-order-modal[hidden] {
+  display: none;
+}
+
+.ama-order-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+}
+
+.ama-order-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 12, 20, 0.52);
+  backdrop-filter: blur(8px);
+}
+
+.ama-order-modal__dialog {
+  position: relative;
+  z-index: 2;
+  width: min(920px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  margin: 24px auto;
+  overflow: auto;
+  border-radius: 28px;
+  background: #fff;
+  padding: 28px;
+  box-shadow: 0 30px 80px rgba(15, 10, 17, 0.22);
+}
+
+.ama-order-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(33, 19, 42, 0.08);
+  background: rgba(245,242,245,0.95);
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.ama-order-detail {
+  display: grid;
+  gap: 18px;
+}
+
+.ama-order-detail__items,
+.ama-order-detail__meta-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.ama-order-detail__meta-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ama-order-item,
+.ama-order-meta-box,
+.ama-order-note {
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(248,245,247,0.95);
+  border: 1px solid rgba(33, 19, 42, 0.06);
+}
+
+.ama-order-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.ama-order-item strong,
+.ama-order-meta-box strong,
+.ama-order-note strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.ama-order-item span,
+.ama-order-meta-box span,
+.ama-order-note p {
+  color: var(--ama-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 1180px) {
+  .ama-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ama-overview-grid,
+  .ama-downloads-grid,
+  .ama-addresses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ama-grid--3,
+  .ama-order-detail__meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 880px) {
+  .ama-auth-card,
+  .ama-dashboard {
+    padding: 22px;
+    border-radius: 26px;
+  }
+
+  .ama-grid--2,
+  .ama-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ama-dashboard-topbar,
+  .ama-profile-block,
+  .ama-panel-head,
+  .ama-address-box-head,
+  .ama-headline-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ama-inline-actions--top {
+    justify-content: flex-start;
+  }
+
+  .ama-orders-head {
+    display: none;
+  }
+
+  .ama-order-row,
+  .ama-order-row.has-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ama-order-row > span {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .ama-order-row > span::before {
+    content: attr(data-label);
+    color: #73697d;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+
+  .ama-order-actions-cell {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .ama-shell {
+    border-radius: 0;
+  }
+
+  .ama-auth-card,
+  .ama-dashboard {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .ama-title {
+    font-size: 34px;
+  }
+
+  .ama-tab-switcher,
+  .ama-dashboard-nav {
+    width: 100%;
+  }
+
+  .ama-tab-switcher {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ama-dashboard-nav {
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .ama-dash-tab,
+  .ama-tab-button,
+  .ama-btn {
+    width: 100%;
+  }
+
+  .ama-inline-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ===== Amaressence dashboard redesign v2.1.0 ===== */
+.ama-dashboard-shell {
+  padding: 24px 0 0;
+}
+
+.ama-dashboard-shell .ama-dashboard.ama-dashboard--editorial {
+  width: min(1320px, 100%);
+  min-height: clamp(720px, 82vh, 920px);
+  height: clamp(720px, 82vh, 920px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(270px, 320px) minmax(0, 1fr);
+  gap: 0;
+  background: #ece7dc;
+  border: 1px solid rgba(101, 76, 79, 0.12);
+  border-radius: 34px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(52, 31, 39, 0.08);
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 28px;
+  background: linear-gradient(180deg, #6c1832 0%, #5e1229 100%);
+  color: #f7f1e8;
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar__line {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar .ama-eyebrow,
+.ama-dashboard-shell .ama-dashboard-sidebar .ama-profile-email {
+  color: rgba(247, 241, 232, 0.78);
+}
+
+.ama-dashboard-shell .ama-profile-block {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0;
+}
+
+.ama-dashboard-shell .ama-profile-block__content {
+  min-width: 0;
+}
+
+.ama-dashboard-shell .ama-avatar {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff8f0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.ama-dashboard-shell .ama-profile-block .ama-title {
+  margin: 0 0 4px;
+  color: #fff8f0;
+  font-size: 28px;
+}
+
+.ama-dashboard-shell .ama-profile-name {
+  color: #fff8f0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ama-dashboard-shell .ama-profile-email {
+  margin-top: 6px;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.ama-dashboard-shell .ama-dashboard-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.ama-dashboard-shell .ama-dash-tab {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 248, 240, 0.86);
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.ama-dashboard-shell .ama-dash-tab:hover,
+.ama-dashboard-shell .ama-dash-tab:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff8f0;
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateX(2px);
+}
+
+.ama-dashboard-shell .ama-dash-tab.is-active {
+  background: #efe7d9;
+  color: #5d1730;
+  border-color: #efe7d9;
+  box-shadow: 0 10px 24px rgba(22, 8, 13, 0.14);
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar__footer {
+  margin-top: auto;
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar .ama-btn--ghost {
+  width: 100%;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff8f0;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar .ama-btn--ghost:hover,
+.ama-dashboard-shell .ama-dashboard-sidebar .ama-btn--ghost:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.26);
+}
+
+.ama-dashboard-shell .ama-dashboard-main {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: #efece3;
+}
+
+.ama-dashboard-shell .ama-dashboard-main__head {
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid rgba(101, 76, 79, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.ama-dashboard-shell .ama-dashboard-main__title {
+  margin: 8px 0 0;
+  color: #251f28;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.ama-dashboard-shell .ama-subtitle {
+  max-width: 760px;
+  margin-top: 10px;
+  color: #71616a;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.ama-dashboard-shell .ama-dashboard-stage {
+  min-height: 0;
+  overflow: hidden;
+  padding: 28px 20px 28px 32px;
+}
+
+.ama-dashboard-shell .ama-dashboard-panel {
+  display: none;
+  height: 100%;
+  overflow: auto;
+  padding-right: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(108, 24, 50, 0.35) transparent;
+}
+
+.ama-dashboard-shell .ama-dashboard-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ama-dashboard-shell .ama-dashboard-panel::-webkit-scrollbar-thumb {
+  background: rgba(108, 24, 50, 0.25);
+  border-radius: 999px;
+}
+
+.ama-dashboard-shell .ama-dashboard-panel.is-active {
+  display: block;
+}
+
+.ama-dashboard-shell .ama-content-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.ama-dashboard-shell .ama-page-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.ama-dashboard-shell .ama-page-heading h3 {
+  margin: 8px 0 0;
+  color: #251f28;
+  font-size: clamp(26px, 2.3vw, 38px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.ama-dashboard-shell .ama-page-heading p {
+  margin: 10px 0 0;
+  color: #71616a;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.ama-dashboard-shell .ama-stats-grid.ama-stats-grid--compact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.ama-dashboard-shell .ama-stat-card {
+  min-height: 136px;
+  padding: 24px 26px;
+  border-radius: 24px;
+  border: 1px solid rgba(101, 76, 79, 0.08);
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: 0 10px 24px rgba(68, 52, 53, 0.05);
+}
+
+.ama-dashboard-shell .ama-stat-card--accent {
+  background: linear-gradient(135deg, #6c1832 0%, #7a1e3a 100%);
+  border-color: rgba(108, 24, 50, 0.25);
+}
+
+.ama-dashboard-shell .ama-stat-label {
+  color: #8b7c83;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ama-dashboard-shell .ama-stat-card--accent .ama-stat-label {
+  color: rgba(255, 248, 240, 0.75);
+}
+
+.ama-dashboard-shell .ama-stat-value {
+  display: block;
+  margin-top: 18px;
+  color: #241e27;
+  font-size: clamp(36px, 4vw, 54px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.ama-dashboard-shell .ama-stat-card--accent .ama-stat-value {
+  color: #fff8f0;
+}
+
+.ama-dashboard-shell .ama-overview-grid.ama-overview-grid--refined {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.95fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.ama-dashboard-shell .ama-panel {
+  padding: 24px;
+  border-radius: 26px;
+  border: 1px solid rgba(101, 76, 79, 0.08);
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: 0 10px 24px rgba(68, 52, 53, 0.05);
+}
+
+.ama-dashboard-shell .ama-panel.ama-panel--wide {
+  grid-column: 1 / 2;
+  grid-row: 1 / span 2;
+}
+
+.ama-dashboard-shell .ama-panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.ama-dashboard-shell .ama-panel-head h3,
+.ama-dashboard-shell .ama-address-box-head h4 {
+  margin: 0;
+  color: #251f28;
+  font-size: 28px;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.ama-dashboard-shell .ama-panel-head p {
+  margin: 8px 0 0;
+  color: #71616a;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.ama-dashboard-shell .ama-link-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #6c1832;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ama-dashboard-shell .ama-link-button:hover,
+.ama-dashboard-shell .ama-link-button:focus-visible {
+  color: #4f1025;
+}
+
+.ama-dashboard-shell .ama-address-preview {
+  min-height: 160px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(238, 233, 225, 0.92);
+  border: 1px solid rgba(101, 76, 79, 0.08);
+  color: #463b45;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.ama-dashboard-shell .ama-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ama-dashboard-shell .ama-summary-list__item {
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(101, 76, 79, 0.08);
+}
+
+.ama-dashboard-shell .ama-summary-list__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.ama-dashboard-shell .ama-summary-list__label {
+  display: block;
+  margin-bottom: 6px;
+  color: #8b7c83;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ama-dashboard-shell .ama-summary-list__value {
+  color: #241e27;
+  font-size: 16px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.ama-dashboard-shell .ama-addresses-grid.ama-addresses-grid--single {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
+  gap: 20px;
+}
+
+.ama-dashboard-shell .ama-address-box {
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(101, 76, 79, 0.08);
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.ama-dashboard-shell .ama-address-box-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.ama-dashboard-shell .ama-address-box--preview {
+  display: flex;
+  flex-direction: column;
+}
+
+.ama-dashboard-shell .ama-address-box--preview .ama-address-preview {
+  height: 100%;
+}
+
+.ama-dashboard-shell .ama-form {
+  gap: 18px;
+}
+
+.ama-dashboard-shell .ama-field span {
+  margin-bottom: 8px;
+  color: #574d5e;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ama-dashboard-shell .ama-field input,
+.ama-dashboard-shell .ama-field select,
+.ama-dashboard-shell .ama-field textarea {
+  min-height: 54px;
+  border-radius: 16px;
+  border: 1px solid rgba(101, 76, 79, 0.12);
+  background: rgba(255, 255, 255, 0.78);
+  color: #2d2730;
+  padding: 14px 16px;
+}
+
+.ama-dashboard-shell .ama-field input:focus,
+.ama-dashboard-shell .ama-field select:focus,
+.ama-dashboard-shell .ama-field textarea:focus {
+  border-color: rgba(108, 24, 50, 0.5);
+  box-shadow: 0 0 0 3px rgba(108, 24, 50, 0.08);
+}
+
+.ama-dashboard-shell .ama-btn {
+  min-height: 52px;
+  border-radius: 16px;
+}
+
+.ama-dashboard-shell .ama-btn--primary {
+  background: #6c1832;
+  border-color: #6c1832;
+  color: #fff8f0;
+}
+
+.ama-dashboard-shell .ama-btn--primary:hover,
+.ama-dashboard-shell .ama-btn--primary:focus-visible {
+  background: #541126;
+  border-color: #541126;
+}
+
+.ama-dashboard-shell .ama-btn--danger {
+  background: #fff3f2;
+  border-color: rgba(183, 55, 44, 0.18);
+  color: #b7372c;
+}
+
+.ama-dashboard-shell .ama-btn--small {
+  min-height: 42px;
+  border-radius: 14px;
+  padding: 10px 14px;
+}
+
+.ama-dashboard-shell .ama-orders-table {
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(101, 76, 79, 0.08);
+}
+
+.ama-dashboard-shell .ama-orders-head,
+.ama-dashboard-shell .ama-order-row {
+  grid-template-columns: minmax(110px, 0.9fr) minmax(120px, 1fr) minmax(140px, 1fr) minmax(110px, 0.9fr);
+}
+
+.ama-dashboard-shell .ama-orders-head.has-actions,
+.ama-dashboard-shell .ama-order-row.has-actions {
+  grid-template-columns: minmax(110px, 0.8fr) minmax(120px, 1fr) minmax(140px, 1fr) minmax(110px, 0.8fr) minmax(220px, 1.25fr);
+}
+
+.ama-dashboard-shell .ama-orders-head {
+  background: rgba(108, 24, 50, 0.06);
+  color: #6a5d65;
+}
+
+.ama-dashboard-shell .ama-order-row {
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.ama-dashboard-shell .ama-order-row:nth-child(odd) {
+  background: rgba(244, 239, 230, 0.82);
+}
+
+.ama-dashboard-shell .ama-order-actions-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ama-dashboard-shell .ama-status {
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.ama-dashboard-shell .ama-empty-box {
+  padding: 26px;
+  border-radius: 20px;
+  background: rgba(244, 239, 230, 0.82);
+  border: 1px dashed rgba(101, 76, 79, 0.16);
+}
+
+.ama-dashboard-shell .ama-empty-box p {
+  margin: 0;
+  color: #60555c;
+}
+
+.ama-dashboard-shell .ama-order-modal__dialog {
+  border-radius: 28px;
+}
+
+@media (max-width: 1180px) {
+  .ama-dashboard-shell .ama-dashboard.ama-dashboard--editorial {
+    grid-template-columns: 100%;
+    height: auto;
+    min-height: 0;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-sidebar {
+    gap: 22px;
+    padding: 24px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-nav {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .ama-dashboard-shell .ama-dash-tab {
+    width: auto;
+    min-width: max-content;
+    white-space: nowrap;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-main {
+    min-height: 0;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-stage {
+    padding: 24px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-panel {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .ama-dashboard-shell .ama-overview-grid.ama-overview-grid--refined,
+  .ama-dashboard-shell .ama-addresses-grid.ama-addresses-grid--single {
+    grid-template-columns: 100%;
+  }
+
+  .ama-dashboard-shell .ama-panel.ama-panel--wide {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .ama-dashboard-shell {
+    padding-top: 16px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard.ama-dashboard--editorial {
+    border-radius: 24px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-sidebar,
+  .ama-dashboard-shell .ama-dashboard-main__head,
+  .ama-dashboard-shell .ama-dashboard-stage {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-sidebar {
+    padding-top: 18px;
+    padding-bottom: 18px;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .ama-dashboard-shell .ama-profile-block {
+    align-items: flex-start;
+  }
+
+  .ama-dashboard-shell .ama-avatar {
+    width: 56px;
+    height: 56px;
+    flex-basis: 56px;
+    font-size: 22px;
+  }
+
+  .ama-dashboard-shell .ama-profile-block .ama-title,
+  .ama-dashboard-shell .ama-dashboard-main__title,
+  .ama-dashboard-shell .ama-page-heading h3,
+  .ama-dashboard-shell .ama-panel-head h3,
+  .ama-dashboard-shell .ama-address-box-head h4 {
+    font-size: 24px;
+  }
+
+  .ama-dashboard-shell .ama-stats-grid.ama-stats-grid--compact,
+  .ama-dashboard-shell .ama-grid.ama-grid--2,
+  .ama-dashboard-shell .ama-grid.ama-grid--3,
+  .ama-dashboard-shell .ama-orders-head,
+  .ama-dashboard-shell .ama-order-row,
+  .ama-dashboard-shell .ama-orders-head.has-actions,
+  .ama-dashboard-shell .ama-order-row.has-actions {
+    grid-template-columns: 100%;
+  }
+
+  .ama-dashboard-shell .ama-stat-card,
+  .ama-dashboard-shell .ama-panel,
+  .ama-dashboard-shell .ama-address-box {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .ama-dashboard-shell .ama-panel-head,
+  .ama-dashboard-shell .ama-address-box-head,
+  .ama-dashboard-shell .ama-page-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ama-dashboard-shell .ama-orders-head {
+    display: none;
+  }
+
+  .ama-dashboard-shell .ama-order-row,
+  .ama-dashboard-shell .ama-order-row.has-actions {
+    display: grid;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .ama-dashboard-shell .ama-order-row > span {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .ama-dashboard-shell .ama-order-row > span::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8b7c83;
+  }
+
+  .ama-dashboard-shell .ama-order-actions-cell {
+    width: 100%;
+  }
+
+  .ama-dashboard-shell .ama-order-actions-cell .ama-btn {
+    width: 100%;
+  }
+
+  .ama-dashboard-shell .ama-address-preview {
+    min-height: 0;
+  }
+}
+
+
+/* v2.1.1 refinement: fixed dashboard geometry, calmer typography, stable tab widths */
+.ama-dashboard-shell {
+  max-width: 1280px;
+  padding: 28px 0 0;
+}
+
+.ama-dashboard-shell .ama-dashboard.ama-dashboard--editorial {
+  width: min(1280px, 100%);
+  height: clamp(760px, 80vh, 860px);
+  min-height: clamp(760px, 80vh, 860px);
+  grid-template-columns: 280px minmax(0, 1fr);
+  border-radius: 30px;
+  border: 1px solid rgba(101, 76, 79, 0.14);
+  box-shadow: 0 16px 38px rgba(52, 31, 39, 0.07);
+  background: #ece7dc;
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar {
+  gap: 22px;
+  padding: 22px 18px;
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar__brand {
+  gap: 10px;
+}
+
+.ama-dashboard-shell .ama-dashboard-sidebar .ama-eyebrow,
+.ama-dashboard-shell .ama-dashboard-main .ama-eyebrow,
+.ama-dashboard-shell .ama-page-heading .ama-eyebrow {
+  min-height: 24px;
+  padding: 0 10px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.ama-dashboard-shell .ama-profile-block {
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.ama-dashboard-shell .ama-avatar {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  font-size: 20px;
+}
+
+.ama-dashboard-shell .ama-profile-block .ama-title {
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.ama-dashboard-shell .ama-profile-name {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ama-dashboard-shell .ama-profile-email {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ama-dashboard-shell .ama-dashboard-nav {
+  gap: 8px;
+}
+
+.ama-dashboard-shell .ama-dash-tab {
+  min-height: 44px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.ama-dashboard-shell .ama-dashboard-main {
+  width: 100%;
+}
+
+.ama-dashboard-shell .ama-dashboard-main__head {
+  padding: 24px 28px 18px;
+}
+
+.ama-dashboard-shell .ama-dashboard-main__title {
+  margin: 10px 0 0;
+  font-size: clamp(24px, 2.3vw, 34px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.ama-dashboard-shell .ama-subtitle {
+  margin-top: 8px;
+  max-width: 680px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.ama-dashboard-shell .ama-dashboard-stage {
+  min-height: 0;
+  overflow: hidden;
+  padding: 18px 18px 18px 28px;
+  scrollbar-gutter: stable both-edges;
+}
+
+.ama-dashboard-shell .ama-dashboard-panel {
+  width: 100%;
+  min-width: 0;
+  padding-right: 8px;
+  scrollbar-gutter: stable both-edges;
+}
+
+.ama-dashboard-shell .ama-dashboard-panel.is-active,
+.ama-dashboard-shell .ama-content-stack,
+.ama-dashboard-shell .ama-panel,
+.ama-dashboard-shell .ama-form {
+  width: 100%;
+  min-width: 0;
+}
+
+.ama-dashboard-shell .ama-content-stack {
+  gap: 16px;
+}
+
+.ama-dashboard-shell .ama-page-heading {
+  gap: 14px;
+}
+
+.ama-dashboard-shell .ama-page-heading h3 {
+  margin: 6px 0 0;
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.1;
+}
+
+.ama-dashboard-shell .ama-page-heading p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.ama-dashboard-shell .ama-stats-grid.ama-stats-grid--compact {
+  gap: 14px;
+}
+
+.ama-dashboard-shell .ama-stat-card {
+  min-height: 108px;
+  padding: 18px 20px;
+  border-radius: 20px;
+}
+
+.ama-dashboard-shell .ama-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.ama-dashboard-shell .ama-stat-value {
+  margin-top: 12px;
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.ama-dashboard-shell .ama-overview-grid.ama-overview-grid--refined {
+  grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.92fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.ama-dashboard-shell .ama-panel {
+  padding: 18px;
+  border-radius: 20px;
+}
+
+.ama-dashboard-shell .ama-panel.ama-panel--wide {
+  min-width: 0;
+}
+
+.ama-dashboard-shell .ama-panel-head {
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ama-dashboard-shell .ama-panel-head h3,
+.ama-dashboard-shell .ama-address-box-head h4 {
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.ama-dashboard-shell .ama-panel-head p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ama-dashboard-shell .ama-link-button {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.ama-dashboard-shell .ama-address-preview {
+  min-height: 0;
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ama-dashboard-shell .ama-summary-list {
+  gap: 12px;
+}
+
+.ama-dashboard-shell .ama-summary-list__item {
+  padding-bottom: 12px;
+}
+
+.ama-dashboard-shell .ama-summary-list__label {
+  margin-bottom: 4px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.ama-dashboard-shell .ama-summary-list__value {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ama-dashboard-shell .ama-addresses-grid.ama-addresses-grid--single {
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.ama-dashboard-shell .ama-address-box {
+  padding: 18px;
+  border-radius: 18px;
+}
+
+.ama-dashboard-shell .ama-address-box-head {
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ama-dashboard-shell .ama-form {
+  gap: 16px;
+}
+
+.ama-dashboard-shell .ama-field span {
+  margin-bottom: 6px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.ama-dashboard-shell .ama-field input,
+.ama-dashboard-shell .ama-field select,
+.ama-dashboard-shell .ama-field textarea {
+  min-height: 46px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+}
+
+.ama-dashboard-shell .ama-btn {
+  min-height: 46px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+}
+
+.ama-dashboard-shell .ama-btn--small {
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.ama-dashboard-shell .ama-orders-table {
+  border-radius: 16px;
+}
+
+.ama-dashboard-shell .ama-orders-head,
+.ama-dashboard-shell .ama-order-row,
+.ama-dashboard-shell .ama-orders-head.has-actions,
+.ama-dashboard-shell .ama-order-row.has-actions {
+  font-size: 12px;
+}
+
+.ama-dashboard-shell .ama-orders-head,
+.ama-dashboard-shell .ama-order-row {
+  grid-template-columns: minmax(90px, 0.8fr) minmax(110px, 1fr) minmax(120px, 0.95fr) minmax(95px, 0.8fr);
+}
+
+.ama-dashboard-shell .ama-orders-head.has-actions,
+.ama-dashboard-shell .ama-order-row.has-actions {
+  grid-template-columns: minmax(90px, 0.72fr) minmax(110px, 0.9fr) minmax(120px, 0.95fr) minmax(95px, 0.72fr) minmax(190px, 1.15fr);
+}
+
+.ama-dashboard-shell .ama-orders-head {
+  padding: 12px 16px;
+}
+
+.ama-dashboard-shell .ama-order-row {
+  padding: 14px 16px;
+}
+
+.ama-dashboard-shell .ama-order-actions-cell {
+  gap: 8px;
+}
+
+.ama-dashboard-shell .ama-status {
+  padding: 6px 10px;
+  font-size: 11px;
+}
+
+.ama-dashboard-shell [data-dashboard-panel="profile"] .ama-grid.ama-grid--3 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ama-dashboard-shell [data-dashboard-panel="profile"] .ama-grid.ama-grid--3 > :last-child {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1180px) {
+  .ama-dashboard-shell .ama-dashboard.ama-dashboard--editorial {
+    height: min(960px, calc(100dvh - 24px));
+    min-height: min(960px, calc(100dvh - 24px));
+    grid-template-columns: 100%;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-sidebar {
+    padding: 18px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-stage {
+    padding: 18px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-panel {
+    height: 100%;
+    overflow: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .ama-dashboard-shell {
+    padding-top: 12px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard.ama-dashboard--editorial {
+    width: 100%;
+    height: min(100dvh - 12px, 980px);
+    min-height: min(100dvh - 12px, 980px);
+    border-radius: 22px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-sidebar,
+  .ama-dashboard-shell .ama-dashboard-main__head,
+  .ama-dashboard-shell .ama-dashboard-stage {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .ama-dashboard-shell .ama-dashboard-main__title {
+    font-size: 24px;
+  }
+
+  .ama-dashboard-shell .ama-page-heading h3 {
+    font-size: 22px;
+  }
+
+  .ama-dashboard-shell .ama-panel-head h3,
+  .ama-dashboard-shell .ama-address-box-head h4 {
+    font-size: 15px;
+  }
+
+  .ama-dashboard-shell [data-dashboard-panel="profile"] .ama-grid.ama-grid--3 > :last-child {
+    grid-column: auto;
+  }
+}
+
+/* v2.1.3: referral link card on the dashboard overview */
+.ama-dashboard-shell .ama-referral-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.ama-dashboard-shell .ama-referral-link-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.ama-dashboard-shell .ama-referral-link-field input {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid rgba(101, 76, 79, 0.16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #3e252c;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.ama-dashboard-shell .ama-referral-code {
+  margin: 12px 0 0;
+  color: #7c6d67;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ama-dashboard-shell .ama-referral-code code {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(101, 76, 79, 0.08);
+  color: #4b2f36;
+  font-size: 12px;
+}
+
+.ama-dashboard-shell .ama-referral-copy-feedback {
+  min-height: 18px;
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ama-dashboard-shell .ama-referral-copy-feedback.is-success {
+  color: #287348;
+}
+
+.ama-dashboard-shell .ama-referral-copy-feedback.is-error {
+  color: #9a2c2c;
+}
+
+.ama-dashboard-shell .ama-empty-box--soft {
+  border: 1px dashed rgba(101, 76, 79, 0.22);
+  background: rgba(255, 255, 255, 0.48);
+}
+
+@media (max-width: 767px) {
+  .ama-dashboard-shell .ama-referral-link-field {
+    grid-template-columns: 1fr;
+  }
+}

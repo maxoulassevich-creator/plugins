@@ -1,0 +1,2604 @@
+/* ==========================================================================
+   FONEONA CHECKOUT LAYOUT — Complete override of WooCommerce default styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Global reset for WC elements inside checkout form
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout,
+.woocommerce-checkout form.checkout.woocommerce-checkout * {
+	box-sizing: border-box;
+}
+
+/* Kill WC table styles in review order */
+.woocommerce-checkout .woocommerce-checkout-review-order-table,
+.woocommerce-checkout .woocommerce-checkout-review-order-table th,
+.woocommerce-checkout .woocommerce-checkout-review-order-table td {
+	border: none !important;
+	padding: 0 !important;
+	background: transparent !important;
+}
+
+/* Kill WC default form field styles */
+.woocommerce-checkout form.checkout .form-row {
+	padding: 0 !important;
+	margin: 0 0 14px !important;
+}
+
+.woocommerce-checkout form.checkout .form-row label {
+	display: block !important;
+	margin: 0 0 5px !important;
+	font-size: 11px !important;
+	letter-spacing: .08em !important;
+	text-transform: uppercase !important;
+	font-weight: 700 !important;
+	color: #555 !important;
+	line-height: 1.4 !important;
+}
+
+.woocommerce-checkout form.checkout .form-row .required {
+	color: #111 !important;
+}
+
+.woocommerce-checkout form.checkout input.input-text,
+.woocommerce-checkout form.checkout input[type="text"],
+.woocommerce-checkout form.checkout input[type="email"],
+.woocommerce-checkout form.checkout input[type="tel"],
+.woocommerce-checkout form.checkout input[type="password"],
+.woocommerce-checkout form.checkout input[type="number"],
+.woocommerce-checkout form.checkout textarea,
+.woocommerce-checkout form.checkout select {
+	width: 100% !important;
+	height: 44px !important;
+	border: 1px solid #d7dde3 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	outline: none !important;
+	padding: 0 12px !important;
+	font-size: 14px !important;
+	color: #111 !important;
+	background: #fff !important;
+	margin: 0 !important;
+	-webkit-appearance: none !important;
+	appearance: none !important;
+	transition: border-color .15s ease !important;
+}
+
+.woocommerce-checkout form.checkout input.input-text:focus,
+.woocommerce-checkout form.checkout input[type="text"]:focus,
+.woocommerce-checkout form.checkout input[type="email"]:focus,
+.woocommerce-checkout form.checkout input[type="tel"]:focus,
+.woocommerce-checkout form.checkout select:focus,
+.woocommerce-checkout form.checkout textarea:focus {
+	border-color: #111 !important;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+.woocommerce-checkout form.checkout textarea {
+	height: 100px !important;
+	padding: 12px !important;
+	resize: vertical !important;
+}
+
+/* Select arrow */
+.woocommerce-checkout form.checkout select {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23111' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: right 12px center !important;
+	padding-right: 32px !important;
+}
+
+/* Two-column form rows (first-name / last-name) */
+.woocommerce-checkout form.checkout .form-row-first,
+.woocommerce-checkout form.checkout .form-row-last {
+	width: calc(50% - 8px) !important;
+	float: left !important;
+	clear: none !important;
+}
+.woocommerce-checkout form.checkout .form-row-last {
+	float: right !important;
+}
+.woocommerce-checkout form.checkout .form-row-wide {
+	float: none !important;
+	clear: both !important;
+	width: 100% !important;
+}
+.woocommerce-checkout form.checkout .form-row-first + .form-row-last + .form-row-wide,
+.woocommerce-checkout form.checkout .form-row-wide {
+	clear: both !important;
+}
+
+/* Kill WC validation colours/icons */
+.woocommerce-checkout form.checkout .form-row.woocommerce-validated .select2-container,
+.woocommerce-checkout form.checkout .form-row.woocommerce-validated input.input-text,
+.woocommerce-checkout form.checkout .form-row.woocommerce-validated select {
+	border-color: #d7dde3 !important;
+	box-shadow: none !important;
+}
+.woocommerce-checkout form.checkout .form-row.woocommerce-invalid input.input-text,
+.woocommerce-checkout form.checkout .form-row.woocommerce-invalid select {
+	border-color: #e74c3c !important;
+}
+.woocommerce-checkout form.checkout .form-row .woocommerce-error {
+	display: none !important; /* errors shown by WC at top */
+}
+
+/* Kill WC validate icon */
+.woocommerce-checkout form.checkout .form-row .validate-required label::after {
+	content: ' *' !important;
+	color: #111 !important;
+}
+
+/* Kill WC placeholder colours */
+.woocommerce-checkout form.checkout input::placeholder {
+	color: #b0b0b0 !important;
+	opacity: 1 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Customer details columns — flat single column within our layout
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout #customer_details {
+	display: block !important;
+	overflow: visible !important;
+}
+.woocommerce-checkout form.checkout #customer_details .col-1,
+.woocommerce-checkout form.checkout #customer_details .col-2 {
+	float: none !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	padding: 0 !important;
+}
+/* Hide col-2 (shipping address) since we handle shipping separately */
+.woocommerce-checkout form.checkout #customer_details .col-2 {
+	display: none !important;
+}
+
+/* WC section headings */
+.woocommerce-checkout form.checkout h3#ship-to-different-address,
+.woocommerce-checkout form.checkout h3#order_comments_label {
+	font-size: 13px !important;
+	color: #6b7280 !important;
+	font-weight: 400 !important;
+	margin: 18px 0 10px !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Main two-column layout
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-layout {
+	--foneona-border: #e5e7eb;
+	--foneona-text: #111827;
+	--foneona-muted: #6b7280;
+	--foneona-bg: #ffffff;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-areas: "summary" "main";
+	gap: 28px;
+}
+
+@media (min-width: 1024px) {
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-layout {
+		grid-template-columns: minmax(0, 1fr) 550px;
+		grid-template-areas: "main summary";
+		gap: 60px;
+		align-items: start;
+	}
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__main {
+	grid-area: main;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-wrap {
+	grid-area: summary;
+}
+
+/* --------------------------------------------------------------------------
+   Summary panel
+   -------------------------------------------------------------------------- */
+
+/* Mobile toggle */
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 14px 16px;
+	background: var(--foneona-bg);
+	border: 1px solid var(--foneona-border);
+	color: var(--foneona-text);
+	cursor: pointer;
+	font-size: 14px;
+	line-height: 1.2;
+	border-radius: 0;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-left {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-label {
+	color: var(--foneona-muted);
+	font-size: 14px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-icon {
+	width: 16px;
+	height: 16px;
+	border: 1px solid var(--foneona-border);
+	border-radius: 2px;
+	position: relative;
+	display: inline-block;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-icon::before {
+	content: "";
+	position: absolute;
+	inset: 3px;
+	border: 1px solid var(--foneona-border);
+	border-radius: 1px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-chevron {
+	margin-left: 6px;
+	width: 10px;
+	height: 10px;
+	border-right: 1.5px solid var(--foneona-muted);
+	border-bottom: 1.5px solid var(--foneona-muted);
+	transform: rotate(45deg);
+	transition: transform .2s ease;
+	display: inline-block;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-total {
+	font-weight: 600;
+	color: var(--foneona-text);
+	white-space: nowrap;
+}
+
+/* Summary container */
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary {
+	display: none;
+	border: 1px solid var(--foneona-border);
+	border-top: 0;
+	padding: 16px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-wrap.is-open .foneona-checkout__summary {
+	display: block;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-wrap.is-open .foneona-checkout__summary-toggle {
+	border-bottom: 0;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-wrap.is-open .foneona-checkout__summary-toggle-chevron {
+	transform: rotate(-135deg);
+}
+
+@media (min-width: 1024px) {
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle {
+		display: none !important;
+	}
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary {
+		display: block !important;
+		border: 0;
+		padding: 0;
+		position: sticky;
+		top: 20px;
+	}
+}
+
+/* Summary heading */
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-title {
+	margin: 0 0 16px;
+	font-size: 12px;
+	letter-spacing: .1em;
+	color: var(--foneona-text);
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+@media (max-width: 1023px) {
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-title {
+		display: none;
+	}
+}
+
+/* --------------------------------------------------------------------------
+   Order items in summary
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-items {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin: 0 0 18px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item {
+	display: grid;
+	grid-template-columns: 64px minmax(0, 1fr) auto;
+	gap: 14px;
+	align-items: center;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__thumb {
+	position: relative;
+	width: 64px;
+	height: 64px;
+	overflow: hidden;
+	background: #f3f4f6;
+	flex-shrink: 0;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__thumb img {
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	display: block !important;
+	border: none !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__qty {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: #111;
+	color: #fff;
+	font-size: 10px;
+	line-height: 1;
+	padding: 4px 6px;
+	font-weight: 600;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__name {
+	font-size: 13px;
+	line-height: 1.4;
+	color: var(--foneona-text);
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__price {
+	font-size: 13px;
+	color: var(--foneona-text);
+	white-space: nowrap;
+	font-weight: 500;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__price .amount {
+	font-weight: 500 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Coupon in summary
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon {
+	margin: 6px 0 18px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__title {
+	font-size: 12px;
+	color: var(--foneona-muted);
+	margin: 0 0 8px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__row {
+	display: grid;
+	grid-template-columns: 1fr 110px;
+	gap: 0;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__input {
+	width: 100% !important;
+	height: 40px !important;
+	padding: 0 12px !important;
+	border: 1px solid var(--foneona-border) !important;
+	border-right: none !important;
+	background: #fff !important;
+	font-size: 13px !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	color: #111 !important;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__input::placeholder {
+	color: #b0b0b0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__btn {
+	width: 100%;
+	height: 40px;
+	padding: 0 12px;
+	border: 1px solid var(--foneona-border);
+	background: #f3f4f6;
+	color: var(--foneona-text);
+	font-size: 11px;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	cursor: pointer;
+	font-weight: 700;
+	border-radius: 0;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__btn:hover {
+	background: #e5e7eb;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__btn[disabled] {
+	opacity: .6;
+	cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   Order totals in summary
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-totals {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-top: 14px;
+	border-top: 1px solid var(--foneona-border);
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 16px;
+	font-size: 12px;
+	color: var(--foneona-text);
+	text-transform: uppercase;
+	letter-spacing: .06em;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row .value {
+	letter-spacing: 0;
+	text-transform: none;
+	font-size: 13px;
+	white-space: nowrap;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row .value .amount {
+	font-weight: inherit !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row.is-strong {
+	font-weight: 700;
+	font-size: 13px;
+	margin-top: 6px;
+	padding-top: 10px;
+	border-top: 1px solid var(--foneona-border);
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row.is-strong .value {
+	font-size: 15px;
+	font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   Main column — form section titles & back link
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__h1 {
+	margin: 0;
+	font-size: 20px;
+	color: var(--foneona-text);
+	font-weight: 600;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__back {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: .08em;
+	color: var(--foneona-muted);
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__back::before {
+	content: "←";
+	font-size: 13px;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__back:hover {
+	color: var(--foneona-text);
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__section-title {
+	margin: 22px 0 12px;
+	font-size: 13px;
+	color: var(--foneona-muted);
+	font-weight: 400;
+}
+
+/* --------------------------------------------------------------------------
+   Shipping methods block
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods {
+	margin: 0;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__list {
+	list-style: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	display: grid !important;
+	gap: 10px !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__item {
+	display: flex !important;
+	align-items: center !important;
+	gap: 10px !important;
+	font-size: 13px !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__item label {
+	margin: 0 !important;
+	font-size: 13px !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	color: var(--foneona-text) !important;
+	font-weight: 400 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__empty {
+	color: var(--foneona-muted);
+	font-size: 13px;
+}
+
+/* --------------------------------------------------------------------------
+   Payment block — kill WC defaults, restyle
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment {
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+}
+
+/* Payment method list */
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment ul.wc_payment_methods {
+	list-style: none !important;
+	padding: 0 !important;
+	margin: 0 0 14px !important;
+	border: none !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment ul.wc_payment_methods li.wc_payment_method {
+	padding: 0 !important;
+	margin: 0 0 4px !important;
+	border: none !important;
+	background: transparent !important;
+}
+
+/* Payment radio row */
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment ul.wc_payment_methods label {
+	display: flex !important;
+	align-items: center !important;
+	gap: 10px !important;
+	font-size: 14px !important;
+	color: var(--foneona-text) !important;
+	font-weight: 400 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	cursor: pointer !important;
+	padding: 8px 0 !important;
+	margin: 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment ul.wc_payment_methods input[type="radio"] {
+	width: 16px !important;
+	height: 16px !important;
+	margin: 0 !important;
+	flex-shrink: 0 !important;
+	accent-color: #111 !important;
+}
+
+/* Payment method description */
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment div.payment_box {
+	background: #f9fafb !important;
+	border: none !important;
+	border-radius: 0 !important;
+	padding: 12px 14px !important;
+	margin: 0 0 10px !important;
+	font-size: 13px !important;
+	color: var(--foneona-muted) !important;
+}
+/* Kill WC triangle arrow on payment box */
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment div.payment_box::before,
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment div.payment_box::after {
+	display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Terms & Place order
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper {
+	margin: 14px 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper label {
+	display: flex !important;
+	align-items: flex-start !important;
+	gap: 10px !important;
+	font-size: 13px !important;
+	color: var(--foneona-text) !important;
+	font-weight: 400 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	cursor: pointer !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper input[type="checkbox"] {
+	width: 16px !important;
+	height: 16px !important;
+	margin: 2px 0 0 !important;
+	flex-shrink: 0 !important;
+	accent-color: #111 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper a {
+	color: var(--foneona-text) !important;
+	text-decoration: underline !important;
+}
+
+/* Place order button */
+.woocommerce-checkout form.checkout.woocommerce-checkout #place_order {
+	display: block !important;
+	width: 100% !important;
+	background: #662132 !important;
+	color: #fff !important;
+	border: none !important;
+	border-radius: 0 !important;
+	padding: 18px 24px !important;
+	font-size: 13px !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	font-weight: 700 !important;
+	cursor: pointer !important;
+	transition: background .15s ease !important;
+	margin-top: 14px !important;
+	line-height: 1 !important;
+	height: auto !important;
+	text-align: center !important;
+}
+.woocommerce-checkout form.checkout.woocommerce-checkout #place_order:hover {
+	background: #222 !important;
+}
+
+/* Lock icon before place order (mimick screenshot) */
+.woocommerce-checkout form.checkout.woocommerce-checkout #place_order::before {
+	content: "🔒 ";
+	font-size: 13px;
+}
+
+/* --------------------------------------------------------------------------
+   WC notices inside checkout
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout .woocommerce-NoticeGroup,
+.woocommerce-checkout .woocommerce-error,
+.woocommerce-checkout .woocommerce-message,
+.woocommerce-checkout .woocommerce-info {
+	margin: 0 0 16px !important;
+	border-radius: 0 !important;
+	border-left: 3px solid #111 !important;
+	padding: 12px 14px !important;
+	background: #f9fafb !important;
+	box-shadow: none !important;
+	list-style: none !important;
+}
+
+.woocommerce-checkout .woocommerce-error {
+	border-left-color: #e74c3c !important;
+}
+
+/* --------------------------------------------------------------------------
+   Clearfix helper
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout::after,
+.woocommerce-checkout #customer_details::after {
+	content: "" !important;
+	display: table !important;
+	clear: both !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table tbody {
+	width: 100%;
+	border: 0 !important;
+	border-collapse: collapse !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table tr {
+	display: block;
+	width: 100%;
+	border: 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table th {
+	display: none;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table td {
+	display: block;
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods {
+	list-style: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods li {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	flex-wrap: wrap;
+	padding: 10px 0 !important;
+	margin: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods li > input[type="radio"] {
+	width: 16px !important;
+	height: 16px !important;
+	margin: 2px 0 0 !important;
+	flex: 0 0 16px;
+	accent-color: #111 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods li > label {
+	flex: 1 1 calc(100% - 26px);
+	display: block;
+	padding: 0 !important;
+	margin: 0 !important;
+	font-size: 13px !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	color: var(--foneona-text) !important;
+	font-weight: 400 !important;
+	line-height: 1.5 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-method-additional-info,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-pickup-points,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-time-intervals {
+	margin-top: 10px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-pickup-points td,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-time-intervals td {
+	padding-top: 8px !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-method-additional-info {
+	flex: 0 0 100%;
+	width: 100%;
+	padding-left: 26px;
+	box-sizing: border-box;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-method-pricing-commission,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-method-description,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-chosen-address {
+	font-size: 13px;
+	color: var(--foneona-muted);
+	margin: 0;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-choose-pickup-point,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table select[name="yandex_pickup_point"],
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table select[name="yandex_time_interval"] {
+	width: 100%;
+	max-width: 100%;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .select2-container {
+	width: 100% !important;
+}
+
+/* Foneona 1.4.0 additions */
+.woocommerce-checkout form.checkout.woocommerce-checkout #payment .woocommerce-privacy-policy-text {
+	display: none !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent {
+	margin: 14px 0 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent label {
+	display: flex !important;
+	align-items: flex-start !important;
+	gap: 10px !important;
+	font-size: 13px !important;
+	color: var(--foneona-text) !important;
+	font-weight: 400 !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	cursor: pointer !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent input[type="checkbox"] {
+	width: 16px !important;
+	height: 16px !important;
+	margin: 2px 0 0 !important;
+	flex-shrink: 0 !important;
+	accent-color: #111 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent a {
+	color: var(--foneona-text) !important;
+	text-decoration: underline !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-formula {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+	justify-content: flex-end;
+	font-size: 12px;
+	color: var(--foneona-muted);
+	padding-top: 2px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-formula__part.is-total {
+	font-weight: 700;
+	color: var(--foneona-text);
+}
+/* ==========================================================================
+   v1.5.0 — Force address field visibility & multiple consent checkboxes
+   ========================================================================== */
+
+/*
+ * Override Yandex Delivery "form-field-hidden" on billing_address_1.
+ * The field must always be visible so the user can enter an address
+ * for both door delivery and DaData autocomplete.
+ */
+.woocommerce-checkout form.checkout #billing_address_1_field.form-field-hidden {
+	display: block !important;
+	visibility: visible !important;
+	height: auto !important;
+	overflow: visible !important;
+	opacity: 1 !important;
+	position: static !important;
+}
+
+/* Multiple consent checkboxes — shared style */
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent + .foneona-privacy-consent {
+	margin-top: 8px !important;
+}
+
+/* ==========================================================================
+   v1.5.2 — DaData usability + shipping methods cleanup
+   ========================================================================== */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods li.foneona-shipping-method {
+	display: grid;
+	grid-template-columns: 18px minmax(0, 1fr);
+	align-items: start;
+	column-gap: 14px;
+	row-gap: 8px;
+	padding: 14px 16px !important;
+	border: 1px solid var(--foneona-border) !important;
+	background: #fff !important;
+	margin: 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods li.foneona-shipping-method > input[type="radio"] {
+	grid-column: 1;
+	grid-row: 1;
+	margin: 3px 0 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-method__content {
+	grid-column: 2;
+	min-width: 0;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-method__content > label {
+	display: block !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+	color: var(--foneona-text) !important;
+	font-weight: 500 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-method__content > label:empty {
+	display: none !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-method-additional-info,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-pickup-points,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-time-intervals {
+	margin-top: 8px;
+	padding-left: 0;
+	width: 100%;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-method-additional-info {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-method-pricing-commission,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-method-description,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-delivery-chosen-address {
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--foneona-muted);
+	margin: 0;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-choose-pickup-point {
+	display: inline-flex;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 0 16px;
+	border: 1px solid #d9822b !important;
+	background: #fff7ed !important;
+	color: #b45309 !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: none !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-choose-pickup-point:hover {
+	background: #ffedd5 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table select[name="yandex_pickup_point"],
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table select[name="yandex_time_interval"],
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .select2-container {
+	margin-top: 8px;
+}
+
+/* ==========================================================================
+   v1.6.0 — unified discount row + points redemption block
+   ========================================================================== */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel {
+	margin-top: 2px;
+	padding: 16px;
+	border: 1px solid var(--foneona-border);
+	border-radius: 14px;
+	background: #fafafa;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel.is-active {
+	background: #f8fafc;
+	border-color: #cbd5e1;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel.is-disabled {
+	opacity: 0.9;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__eyebrow {
+	font-size: 11px;
+	line-height: 1.2;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--foneona-muted);
+	margin-bottom: 6px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__title {
+	font-size: 14px;
+	line-height: 1.45;
+	font-weight: 600;
+	color: var(--foneona-text);
+	text-transform: none;
+	letter-spacing: 0;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__balance {
+	min-width: 110px;
+	padding: 10px 12px;
+	border-radius: 12px;
+	background: #fff;
+	border: 1px solid var(--foneona-border);
+	text-align: right;
+	font-size: 14px;
+	line-height: 1.2;
+	color: var(--foneona-text);
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__balance-label {
+	display: block;
+	font-size: 11px;
+	line-height: 1.2;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--foneona-muted);
+	margin-bottom: 6px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__controls {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__label {
+	margin: 0 !important;
+	font-size: 12px !important;
+	line-height: 1.4 !important;
+	letter-spacing: 0.06em !important;
+	text-transform: uppercase !important;
+	font-weight: 700 !important;
+	color: var(--foneona-muted) !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__input-wrap {
+	display: grid;
+	grid-template-columns: 1fr 132px;
+	gap: 10px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__input {
+	height: 46px !important;
+	border-radius: 12px !important;
+	padding: 0 14px !important;
+	font-size: 15px !important;
+	font-weight: 500 !important;
+	border: 1px solid #d1d5db !important;
+	background: #fff !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__apply,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__clear {
+	height: 46px;
+	border-radius: 12px;
+	border: 1px solid #111827;
+	background: #111827;
+	color: #fff;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: opacity .15s ease, background .15s ease;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__apply:hover,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__clear:hover {
+	opacity: .92;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__apply[disabled] {
+	opacity: .5;
+	cursor: not-allowed;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__hint {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--foneona-muted);
+	text-transform: none;
+	letter-spacing: 0;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__hint strong,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__applied strong {
+	color: var(--foneona-text);
+	font-weight: 700;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__clear {
+	height: auto;
+	min-height: 0;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	color: var(--foneona-text);
+	text-decoration: underline;
+	font-size: 13px;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__applied,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__note {
+	padding: 12px 14px;
+	border-radius: 12px;
+	background: #fff;
+	font-size: 13px;
+	line-height: 1.5;
+	color: var(--foneona-text);
+	text-transform: none;
+	letter-spacing: 0;
+	border: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+@media (max-width: 640px) {
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel {
+		padding: 14px;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__header,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__hint {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__balance {
+		text-align: left;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__input-wrap {
+		grid-template-columns: 1fr;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__apply {
+		width: 100%;
+	}
+}
+
+
+.woocommerce-checkout form.checkout .form-row.foneona-dadata-inline {
+	position: relative;
+	overflow: visible !important;
+}
+
+.woocommerce-checkout form.checkout .form-row.foneona-dadata-inline:focus-within,
+.woocommerce-checkout form.checkout .form-row.foneona-dadata-inline.is-open {
+	z-index: 100000 !important;
+}
+
+/* --------------------------------------------------------------------------
+   v1.7.0 — Guest account registration offer
+   -------------------------------------------------------------------------- */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer {
+	margin: 4px 0 22px !important;
+	padding: 16px 18px !important;
+	border: 1px solid #e5e7eb !important;
+	background: #f9fafb !important;
+	color: #111827 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer__label {
+	display: flex !important;
+	align-items: flex-start !important;
+	gap: 10px !important;
+	margin: 0 !important;
+	font-size: 13px !important;
+	line-height: 1.55 !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	font-weight: 500 !important;
+	color: #111827 !important;
+	cursor: pointer !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer__label input[type="checkbox"] {
+	width: 18px !important;
+	height: 18px !important;
+	min-width: 18px !important;
+	margin: 2px 0 0 !important;
+	padding: 0 !important;
+	appearance: auto !important;
+	-webkit-appearance: checkbox !important;
+	border-radius: 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer__label a {
+	color: #111827 !important;
+	text-decoration: underline !important;
+	text-underline-offset: 2px !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer__note {
+	margin: 10px 0 0 28px !important;
+	font-size: 12px !important;
+	line-height: 1.55 !important;
+	color: #6b7280 !important;
+}
+
+@media (max-width: 640px) {
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer {
+		padding: 14px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer__note {
+		margin-left: 0 !important;
+	}
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer__note a {
+	color: #111827 !important;
+	text-decoration: underline !important;
+	text-underline-offset: 2px !important;
+}
+
+/* --------------------------------------------------------------------------
+   v1.8.0 — Amarèssence styled thank-you / order received + login form
+   -------------------------------------------------------------------------- */
+
+.foneona-thankyou-page,
+.foneona-login-card,
+.foneona-login-form-wrap,
+.woocommerce-checkout .woocommerce-form-login,
+.woocommerce-order-received .woocommerce-form-login {
+	--ama-ink: #221b18;
+	--ama-text: #342c28;
+	--ama-muted: #847872;
+	--ama-line: #eadfd8;
+	--ama-line-strong: #dbc9bf;
+	--ama-bg: #fffaf7;
+	--ama-card: #ffffff;
+	--ama-sand: #f7efe9;
+	--ama-blush: #ead8d0;
+	--ama-rose: #cba79b;
+	--ama-rose-deep: #9f7469;
+	--ama-success: #69785e;
+	--ama-error: #9c3f36;
+	box-sizing: border-box;
+	font-family: inherit;
+	color: var(--ama-ink);
+}
+
+.foneona-thankyou-page *,
+.foneona-thankyou-page *::before,
+.foneona-thankyou-page *::after,
+.foneona-login-card *,
+.foneona-login-card *::before,
+.foneona-login-card *::after,
+.foneona-login-form-wrap *,
+.foneona-login-form-wrap *::before,
+.foneona-login-form-wrap *::after {
+	box-sizing: border-box;
+}
+
+.foneona-thankyou-page {
+	width: min(100%, 1240px);
+	margin: 65px auto;
+	padding: 0 clamp(16px, 3vw, 32px);
+}
+
+.foneona-thankyou-hero {
+	position: relative;
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	gap: clamp(18px, 3vw, 34px);
+	align-items: center;
+	padding: clamp(24px, 4vw, 48px);
+	border: 1px solid var(--ama-line);
+	background:
+		radial-gradient(circle at 10% 0%, rgba(203, 167, 155, 0.22), transparent 34%),
+		linear-gradient(135deg, #fffaf7 0%, #f6eee8 100%);
+	box-shadow: 0 24px 70px rgba(47, 35, 29, 0.08);
+	overflow: hidden;
+}
+
+.foneona-thankyou-hero::after {
+	content: '';
+	position: absolute;
+	right: -90px;
+	bottom: -120px;
+	width: 260px;
+	height: 260px;
+	border-radius: 999px;
+	background: rgba(234, 216, 208, 0.46);
+	pointer-events: none;
+}
+
+.foneona-thankyou-hero--failed {
+	background:
+		radial-gradient(circle at 10% 0%, rgba(156, 63, 54, 0.15), transparent 35%),
+		linear-gradient(135deg, #fffaf7 0%, #f7ece8 100%);
+}
+
+.foneona-thankyou-hero--empty {
+	background: linear-gradient(135deg, #fffaf7 0%, #f8f3ef 100%);
+}
+
+.foneona-thankyou-hero__mark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: clamp(54px, 7vw, 76px);
+	height: clamp(54px, 7vw, 76px);
+	border-radius: 999px;
+	background: var(--ama-ink);
+	color: #fff;
+	font-size: clamp(24px, 3vw, 34px);
+	font-weight: 500;
+	line-height: 1;
+	box-shadow: 0 16px 30px rgba(34, 27, 24, 0.16);
+	z-index: 1;
+}
+
+.foneona-thankyou-hero--failed .foneona-thankyou-hero__mark {
+	background: var(--ama-error);
+}
+
+.foneona-thankyou-hero__content,
+.foneona-thankyou-hero__actions {
+	position: relative;
+	z-index: 1;
+}
+
+.foneona-thankyou-hero__eyebrow,
+.foneona-login-card__eyebrow,
+.foneona-thankyou-overview__item span,
+.foneona-thankyou-info-list span {
+	display: block;
+	margin: 0 0 8px;
+	font-size: 11px;
+	line-height: 1.2;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--ama-muted);
+}
+
+.foneona-thankyou-hero__title,
+.foneona-login-card__title {
+	margin: 0;
+	font-size: clamp(30px, 5vw, 58px);
+	line-height: 0.96;
+	font-weight: 500;
+	letter-spacing: -0.04em;
+	color: var(--ama-ink);
+}
+
+.foneona-thankyou-hero__text,
+.foneona-login-card__text {
+	max-width: 640px;
+	margin: 16px 0 0;
+	font-size: clamp(15px, 1.5vw, 18px);
+	line-height: 1.55;
+	font-weight: 400;
+	color: var(--ama-text);
+}
+
+.foneona-thankyou-hero__actions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 220px;
+}
+
+.foneona-thankyou-btn,
+.foneona-login-card__button,
+.foneona-login-form-wrap .woocommerce-form-login button.button,
+.woocommerce-checkout .woocommerce-form-login button.button,
+.woocommerce-order-received .woocommerce-form-login button.button {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	min-height: 50px !important;
+	padding: 14px 22px !important;
+	border: 1px solid var(--ama-ink) !important;
+	border-radius: 0 !important;
+	background: var(--ama-ink) !important;
+	color: #fff !important;
+	font-size: 12px !important;
+	line-height: 1.2 !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.11em !important;
+	text-transform: uppercase !important;
+	text-decoration: none !important;
+	box-shadow: none !important;
+	cursor: pointer !important;
+	transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease, opacity .18s ease !important;
+}
+
+.foneona-thankyou-btn:hover,
+.foneona-login-card__button:hover,
+.foneona-login-form-wrap .woocommerce-form-login button.button:hover,
+.woocommerce-checkout .woocommerce-form-login button.button:hover,
+.woocommerce-order-received .woocommerce-form-login button.button:hover {
+	background: var(--ama-rose-deep) !important;
+	border-color: var(--ama-rose-deep) !important;
+	color: #fff !important;
+	transform: translateY(-1px);
+}
+
+.foneona-thankyou-btn--ghost,
+.foneona-login-card__button {
+	background: transparent !important;
+	color: var(--ama-ink) !important;
+}
+
+.foneona-thankyou-btn--ghost:hover,
+.foneona-login-card__button:hover {
+	background: var(--ama-ink) !important;
+	border-color: var(--ama-ink) !important;
+	color: #fff !important;
+}
+
+.foneona-thankyou-overview {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 1px;
+	margin: 22px 0;
+	background: var(--ama-line);
+	border: 1px solid var(--ama-line);
+}
+
+.foneona-thankyou-overview__item {
+	min-width: 0;
+	padding: 18px 18px 20px;
+	background: #fff;
+}
+
+.foneona-thankyou-overview__item strong {
+	display: block;
+	font-size: 15px;
+	line-height: 1.35;
+	font-weight: 600;
+	color: var(--ama-ink);
+	word-break: break-word;
+}
+
+.foneona-thankyou-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 410px;
+	gap: 22px;
+	align-items: start;
+}
+
+.foneona-thankyou-side {
+	display: grid;
+	gap: 22px;
+}
+
+.foneona-thankyou-card {
+	padding: clamp(20px, 3vw, 32px);
+	border: 1px solid var(--ama-line);
+	background: var(--ama-card);
+	box-shadow: 0 18px 55px rgba(47, 35, 29, 0.055);
+}
+
+.foneona-thankyou-card__head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 16px;
+	margin: 0 0 18px;
+	padding: 0 0 16px;
+	border-bottom: 1px solid var(--ama-line);
+}
+
+.foneona-thankyou-card h2,
+.foneona-thankyou-card__head h2 {
+	margin: 0;
+	font-size: clamp(20px, 2.2vw, 28px);
+	line-height: 1.12;
+	font-weight: 500;
+	letter-spacing: -0.025em;
+	color: var(--ama-ink);
+}
+
+.foneona-thankyou-card__head span {
+	font-size: 12px;
+	line-height: 1.2;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: var(--ama-muted);
+	white-space: nowrap;
+}
+
+.foneona-thankyou-items {
+	display: grid;
+	gap: 16px;
+}
+
+.foneona-thankyou-item {
+	display: grid;
+	grid-template-columns: 86px minmax(0, 1fr) auto;
+	gap: 16px;
+	align-items: center;
+	padding: 0 0 16px;
+	border-bottom: 1px solid var(--ama-line);
+}
+
+.foneona-thankyou-item:last-child {
+	padding-bottom: 0;
+	border-bottom: 0;
+}
+
+.foneona-thankyou-item__thumb {
+	position: relative;
+	width: 86px;
+	height: 108px;
+	background: var(--ama-sand);
+	overflow: hidden;
+}
+
+.foneona-thankyou-item__thumb img,
+.foneona-thankyou-item__image {
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	margin: 0 !important;
+}
+
+.foneona-thankyou-item__qty {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	height: 24px;
+	padding: 0 7px;
+	border-radius: 999px;
+	background: var(--ama-ink);
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.foneona-thankyou-item__body h3 {
+	margin: 0;
+	font-size: 16px;
+	line-height: 1.35;
+	font-weight: 500;
+	color: var(--ama-ink);
+}
+
+.foneona-thankyou-item__meta,
+.foneona-thankyou-item__meta p,
+.foneona-thankyou-item__meta dl,
+.foneona-thankyou-item__meta dt,
+.foneona-thankyou-item__meta dd {
+	margin: 6px 0 0 !important;
+	font-size: 12px !important;
+	line-height: 1.45 !important;
+	font-weight: 400 !important;
+	color: var(--ama-muted) !important;
+}
+
+.foneona-thankyou-item__meta dt,
+.foneona-thankyou-item__meta dd {
+	display: inline !important;
+}
+
+.foneona-thankyou-item__total {
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.2;
+	color: var(--ama-ink);
+	white-space: nowrap;
+}
+
+.foneona-thankyou-info-list {
+	display: grid;
+	gap: 18px;
+	margin: 18px 0 0;
+}
+
+.foneona-thankyou-info-list strong {
+	display: block;
+	font-size: 15px;
+	line-height: 1.45;
+	font-weight: 500;
+	color: var(--ama-ink);
+}
+
+.foneona-thankyou-next {
+	display: grid;
+	gap: 12px;
+	margin: 18px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.foneona-thankyou-next li {
+	position: relative;
+	margin: 0;
+	padding: 0 0 0 20px;
+	font-size: 14px;
+	line-height: 1.55;
+	color: var(--ama-text);
+}
+
+.foneona-thankyou-next li::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0.68em;
+	width: 7px;
+	height: 7px;
+	border-radius: 999px;
+	background: var(--ama-rose);
+}
+
+/* Custom WooCommerce login block */
+.foneona-login-card,
+.foneona-login-form-wrap,
+.woocommerce-checkout .woocommerce-form-login,
+.woocommerce-order-received .woocommerce-form-login {
+	width: min(100%, 920px);
+	margin: 25px auto;
+	padding-left: clamp(16px, 3vw, 32px);
+	padding-right: clamp(16px, 3vw, 32px);
+}
+
+.foneona-login-card {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 22px;
+	align-items: center;
+	padding: clamp(22px, 3vw, 34px) !important;
+	border: 1px solid var(--ama-line) !important;
+	background: linear-gradient(135deg, #fffaf7 0%, #f8f0ea 100%) !important;
+	box-shadow: 0 18px 55px rgba(47, 35, 29, 0.06) !important;
+}
+
+.foneona-login-card__title {
+	font-size: clamp(24px, 3.4vw, 38px);
+}
+
+.foneona-login-card__text {
+	font-size: 15px;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login,
+.woocommerce-checkout .woocommerce-form-login,
+.woocommerce-order-received .woocommerce-form-login {
+	padding: clamp(22px, 3vw, 34px) !important;
+	border: 1px solid var(--ama-line) !important;
+	background: #fff !important;
+	box-shadow: 0 18px 55px rgba(47, 35, 29, 0.055) !important;
+	color: var(--ama-ink) !important;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login p,
+.woocommerce-checkout .woocommerce-form-login p,
+.woocommerce-order-received .woocommerce-form-login p {
+	margin: 0 0 16px !important;
+	font-size: 14px !important;
+	line-height: 1.55 !important;
+	color: var(--ama-text) !important;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login .form-row,
+.woocommerce-checkout .woocommerce-form-login .form-row,
+.woocommerce-order-received .woocommerce-form-login .form-row {
+	padding: 0 !important;
+	margin: 0 0 16px !important;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login label,
+.woocommerce-checkout .woocommerce-form-login label,
+.woocommerce-order-received .woocommerce-form-login label {
+	display: block !important;
+	margin: 0 0 7px !important;
+	font-size: 11px !important;
+	line-height: 1.2 !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.12em !important;
+	text-transform: uppercase !important;
+	color: var(--ama-muted) !important;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login input.input-text,
+.foneona-login-form-wrap .woocommerce-form-login input[type="text"],
+.foneona-login-form-wrap .woocommerce-form-login input[type="password"],
+.woocommerce-checkout .woocommerce-form-login input.input-text,
+.woocommerce-checkout .woocommerce-form-login input[type="text"],
+.woocommerce-checkout .woocommerce-form-login input[type="password"],
+.woocommerce-order-received .woocommerce-form-login input.input-text,
+.woocommerce-order-received .woocommerce-form-login input[type="text"],
+.woocommerce-order-received .woocommerce-form-login input[type="password"] {
+	width: 100% !important;
+	height: 50px !important;
+	padding: 0 14px !important;
+	border: 1px solid var(--ama-line-strong) !important;
+	border-radius: 0 !important;
+	background: #fff !important;
+	box-shadow: none !important;
+	outline: none !important;
+	font-size: 15px !important;
+	line-height: 1.2 !important;
+	color: var(--ama-ink) !important;
+	transition: border-color .18s ease, background .18s ease !important;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login input:focus,
+.woocommerce-checkout .woocommerce-form-login input:focus,
+.woocommerce-order-received .woocommerce-form-login input:focus {
+	border-color: var(--ama-ink) !important;
+	background: #fffaf7 !important;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login .woocommerce-form-login__rememberme,
+.woocommerce-checkout .woocommerce-form-login .woocommerce-form-login__rememberme,
+.woocommerce-order-received .woocommerce-form-login .woocommerce-form-login__rememberme {
+	display: inline-flex !important;
+	align-items: center !important;
+	gap: 8px !important;
+	margin: 0 16px 0 0 !important;
+	font-size: 13px !important;
+	letter-spacing: 0 !important;
+	text-transform: none !important;
+	font-weight: 500 !important;
+	color: var(--ama-text) !important;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login .woocommerce-form-login__rememberme input,
+.woocommerce-checkout .woocommerce-form-login .woocommerce-form-login__rememberme input,
+.woocommerce-order-received .woocommerce-form-login .woocommerce-form-login__rememberme input {
+	width: 16px !important;
+	height: 16px !important;
+	margin: 0 !important;
+	accent-color: var(--ama-ink);
+}
+
+.foneona-login-form-wrap .woocommerce-form-login .lost_password,
+.woocommerce-checkout .woocommerce-form-login .lost_password,
+.woocommerce-order-received .woocommerce-form-login .lost_password {
+	margin: 12px 0 0 !important;
+}
+
+.foneona-login-form-wrap .woocommerce-form-login a,
+.woocommerce-checkout .woocommerce-form-login a,
+.woocommerce-order-received .woocommerce-form-login a {
+	color: var(--ama-ink) !important;
+	text-decoration: underline !important;
+	text-underline-offset: 3px !important;
+}
+
+@media (max-width: 1180px) {
+	.foneona-thankyou-overview {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.foneona-thankyou-grid {
+		grid-template-columns: minmax(0, 1fr) 360px;
+	}
+}
+
+@media (max-width: 991px) {
+	.foneona-thankyou-hero {
+		grid-template-columns: 1fr;
+	}
+
+	.foneona-thankyou-hero__actions {
+		flex-direction: row;
+		min-width: 0;
+		flex-wrap: wrap;
+	}
+
+	.foneona-thankyou-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.foneona-thankyou-side {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (max-width: 767px) {
+	.foneona-thankyou-page {
+		margin: 25px auto;
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.foneona-thankyou-hero,
+	.foneona-thankyou-card,
+	.foneona-login-card,
+	.foneona-login-form-wrap .woocommerce-form-login,
+	.woocommerce-checkout .woocommerce-form-login,
+	.woocommerce-order-received .woocommerce-form-login {
+		box-shadow: 0 14px 38px rgba(47, 35, 29, 0.05) !important;
+	}
+
+	.foneona-thankyou-overview {
+		grid-template-columns: 1fr;
+		margin: 16px 0;
+	}
+
+	.foneona-thankyou-side {
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+
+	.foneona-thankyou-item {
+		grid-template-columns: 76px minmax(0, 1fr);
+		gap: 12px;
+	}
+
+	.foneona-thankyou-item__thumb {
+		width: 76px;
+		height: 96px;
+	}
+
+	.foneona-thankyou-item__total {
+		grid-column: 2;
+		justify-self: start;
+		white-space: normal;
+	}
+
+	.foneona-thankyou-hero__actions,
+	.foneona-login-card {
+		grid-template-columns: 1fr;
+		flex-direction: column;
+	}
+
+	.foneona-thankyou-btn,
+	.foneona-login-card__button,
+	.foneona-login-form-wrap .woocommerce-form-login button.button,
+	.woocommerce-checkout .woocommerce-form-login button.button,
+	.woocommerce-order-received .woocommerce-form-login button.button {
+		width: 100% !important;
+	}
+}
+
+@media (max-width: 420px) {
+	.foneona-thankyou-hero,
+	.foneona-thankyou-card,
+	.foneona-login-card,
+	.foneona-login-form-wrap .woocommerce-form-login,
+	.woocommerce-checkout .woocommerce-form-login,
+	.woocommerce-order-received .woocommerce-form-login {
+		padding: 20px !important;
+	}
+
+	.foneona-thankyou-card__head {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.foneona-thankyou-hero__title {
+		font-size: 30px;
+	}
+}
+
+
+/* ==========================================================================
+   v1.8.2 — compact mobile checkout layout
+   ========================================================================== */
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__section-title,
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-billing-fields > h3,
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-shipping-fields > h3,
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-additional-fields > h3 {
+	font-family: inherit !important;
+	font-style: normal !important;
+	text-transform: none !important;
+	letter-spacing: 0 !important;
+	line-height: 1.35 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-billing-fields > h3,
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-shipping-fields > h3,
+.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-additional-fields > h3 {
+	margin: 0 0 14px !important;
+	font-size: 13px !important;
+	font-weight: 400 !important;
+	color: var(--foneona-text, #111827) !important;
+}
+
+@media (max-width: 767px) {
+	.woocommerce-checkout form.checkout.woocommerce-checkout,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-layout,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__main,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-wrap {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-layout {
+		gap: 24px !important;
+		background: transparent !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-wrap {
+		margin: 0 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle {
+		min-height: 52px !important;
+		padding: 13px 14px !important;
+		border: 1px solid #d7dde3 !important;
+		border-radius: 4px !important;
+		background: #fff !important;
+		font-size: 13px !important;
+		line-height: 1.2 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-left {
+		min-width: 0 !important;
+		gap: 8px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-label {
+		font-size: 13px !important;
+		line-height: 1.2 !important;
+		white-space: nowrap !important;
+		overflow: hidden !important;
+		text-overflow: ellipsis !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-total {
+		font-size: 13px !important;
+		font-weight: 700 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-icon {
+		width: 16px !important;
+		height: 16px !important;
+		flex: 0 0 16px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-chevron {
+		width: 9px !important;
+		height: 9px !important;
+		margin-left: 4px !important;
+		flex: 0 0 9px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary {
+		padding: 14px !important;
+		border: 1px solid #d7dde3 !important;
+		border-top: 0 !important;
+		background: #fff !important;
+		border-radius: 0 0 4px 4px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-wrap.is-open .foneona-checkout__summary-toggle {
+		border-radius: 4px 4px 0 0 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-items {
+		gap: 12px !important;
+		margin: 0 0 14px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item {
+		grid-template-columns: 54px minmax(0, 1fr) auto !important;
+		column-gap: 10px !important;
+		row-gap: 4px !important;
+		align-items: start !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__thumb {
+		width: 54px !important;
+		height: 68px !important;
+		border-radius: 2px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__qty {
+		font-size: 9px !important;
+		padding: 3px 5px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__name {
+		font-size: 12px !important;
+		line-height: 1.35 !important;
+		font-weight: 500 !important;
+		text-transform: none !important;
+		letter-spacing: 0 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__price {
+		font-size: 12px !important;
+		line-height: 1.35 !important;
+		font-weight: 600 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon {
+		margin: 12px 0 14px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__title {
+		margin: 0 0 7px !important;
+		font-size: 12px !important;
+		font-weight: 600 !important;
+		color: var(--foneona-text, #111827) !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__row {
+		grid-template-columns: minmax(0, 1fr) 92px !important;
+		gap: 8px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__input {
+		height: 38px !important;
+		border: 1px solid #d7dde3 !important;
+		padding: 0 10px !important;
+		font-size: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__btn {
+		height: 38px !important;
+		padding: 0 8px !important;
+		font-size: 10px !important;
+		letter-spacing: .05em !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-totals {
+		gap: 8px !important;
+		padding-top: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row {
+		font-size: 11px !important;
+		line-height: 1.35 !important;
+		letter-spacing: .045em !important;
+		gap: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row .value {
+		font-size: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row.is-strong {
+		margin-top: 4px !important;
+		padding-top: 12px !important;
+		font-size: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-total-row.is-strong .value {
+		font-size: 13px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel {
+		margin-top: 4px !important;
+		padding: 12px !important;
+		gap: 10px !important;
+		border-radius: 10px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__title {
+		font-size: 12px !important;
+		line-height: 1.4 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__eyebrow,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__balance-label,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__label {
+		font-size: 10px !important;
+		letter-spacing: .06em !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__balance {
+		min-width: 0 !important;
+		padding: 9px 10px !important;
+		border-radius: 8px !important;
+		font-size: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__input {
+		height: 40px !important;
+		border-radius: 8px !important;
+		font-size: 13px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__apply {
+		height: 40px !important;
+		border-radius: 8px !important;
+		font-size: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__hint,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__applied,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-points-panel__note {
+		font-size: 11px !important;
+		line-height: 1.45 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__topbar {
+		align-items: flex-start !important;
+		gap: 14px !important;
+		margin: 20px 0 14px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__topbar .foneona-checkout__section-title {
+		margin: 0 !important;
+		font-size: 11px !important;
+		color: var(--foneona-muted, #6b7280) !important;
+		font-weight: 400 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__back {
+		font-size: 10px !important;
+		line-height: 1.25 !important;
+		letter-spacing: .07em !important;
+		font-weight: 700 !important;
+		white-space: nowrap !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-billing-fields > h3,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-shipping-fields > h3,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-additional-fields > h3 {
+		margin: 0 0 12px !important;
+		font-size: 13px !important;
+		font-weight: 400 !important;
+	}
+
+	.woocommerce-checkout form.checkout .form-row {
+		float: none !important;
+		clear: both !important;
+		width: 100% !important;
+		margin: 0 0 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout .form-row-first,
+	.woocommerce-checkout form.checkout .form-row-last,
+	.woocommerce-checkout form.checkout .form-row-wide {
+		float: none !important;
+		clear: both !important;
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+
+	.woocommerce-checkout form.checkout .form-row label {
+		margin: 0 0 5px !important;
+		font-size: 10px !important;
+		line-height: 1.3 !important;
+		letter-spacing: .07em !important;
+		font-weight: 700 !important;
+		color: var(--foneona-text, #111827) !important;
+	}
+
+	.woocommerce-checkout form.checkout input.input-text,
+	.woocommerce-checkout form.checkout input[type="text"],
+	.woocommerce-checkout form.checkout input[type="email"],
+	.woocommerce-checkout form.checkout input[type="tel"],
+	.woocommerce-checkout form.checkout input[type="password"],
+	.woocommerce-checkout form.checkout input[type="number"],
+	.woocommerce-checkout form.checkout select {
+		height: 42px !important;
+		min-height: 42px !important;
+		padding: 0 12px !important;
+		font-size: 13px !important;
+	}
+
+	.woocommerce-checkout form.checkout textarea {
+		height: 86px !important;
+		min-height: 86px !important;
+		padding: 10px 12px !important;
+		font-size: 13px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__main > .foneona-checkout__section-title {
+		margin: 24px 0 10px !important;
+		font-size: 11px !important;
+		line-height: 1.35 !important;
+		color: var(--foneona-muted, #6b7280) !important;
+		font-weight: 400 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods {
+		gap: 9px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods li.foneona-shipping-method {
+		grid-template-columns: 16px minmax(0, 1fr) !important;
+		column-gap: 10px !important;
+		row-gap: 7px !important;
+		padding: 11px 0 !important;
+		border: 0 !important;
+		background: transparent !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods li.foneona-shipping-method > input[type="radio"] {
+		width: 15px !important;
+		height: 15px !important;
+		margin-top: 2px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-method__content > label,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table ul.woocommerce-shipping-methods li > label {
+		font-size: 12px !important;
+		line-height: 1.45 !important;
+		font-weight: 500 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__empty {
+		font-size: 13px !important;
+		line-height: 1.55 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table .wc-yandex-choose-pickup-point {
+		min-height: 42px !important;
+		font-size: 12px !important;
+		padding: 0 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout #payment ul.wc_payment_methods {
+		margin: 0 0 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout #payment ul.wc_payment_methods li.wc_payment_method {
+		margin: 0 0 6px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout #payment ul.wc_payment_methods label {
+		padding: 7px 0 !important;
+		gap: 10px !important;
+		font-size: 13px !important;
+		line-height: 1.35 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout #payment div.payment_box {
+		padding: 11px 12px !important;
+		margin: 0 0 9px !important;
+		font-size: 12px !important;
+		line-height: 1.45 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper {
+		margin: 10px 0 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent + .foneona-privacy-consent {
+		margin-top: 7px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent label,
+	.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper label {
+		gap: 8px !important;
+		font-size: 11px !important;
+		line-height: 1.45 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-privacy-consent input[type="checkbox"],
+	.woocommerce-checkout form.checkout.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper input[type="checkbox"] {
+		width: 16px !important;
+		height: 16px !important;
+		min-width: 16px !important;
+		margin-top: 1px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer {
+		margin: 2px 0 18px !important;
+		padding: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-account-offer__label {
+		font-size: 12px !important;
+		line-height: 1.45 !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout #place_order {
+		background: #000 !important;
+		min-height: 54px !important;
+		padding: 16px 18px !important;
+		font-size: 13px !important;
+		line-height: 1.1 !important;
+		margin-top: 14px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout #place_order:hover {
+		background: #111827 !important;
+	}
+}
+
+@media (max-width: 374px) {
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout-coupon__row {
+		grid-template-columns: minmax(0, 1fr) 86px !important;
+		gap: 6px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-checkout__summary-toggle-label {
+		font-size: 12px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item {
+		grid-template-columns: 50px minmax(0, 1fr) auto !important;
+		column-gap: 8px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-order-item__thumb {
+		width: 50px !important;
+		height: 64px !important;
+	}
+}
+
+/* v1.8.5 — Checkout shipping cards */
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table tbody,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table tr,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__table td {
+	display: block !important;
+	width: 100% !important;
+	border: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-cards {
+	display: grid !important;
+	grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+	gap: 14px !important;
+	width: 100% !important;
+	margin: 0 0 26px !important;
+	padding: 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card {
+	position: relative !important;
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 14px !important;
+	min-height: 132px !important;
+	padding: 18px 18px 16px !important;
+	border: 1px solid rgba(123, 31, 53, .22) !important;
+	background: rgba(255, 255, 255, .42) !important;
+	box-shadow: 0 8px 24px rgba(31, 22, 18, .045) !important;
+	cursor: pointer !important;
+	transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease, transform .18s ease !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card:hover {
+	border-color: rgba(123, 31, 53, .5) !important;
+	box-shadow: 0 12px 30px rgba(31, 22, 18, .075) !important;
+	background: rgba(255, 255, 255, .62) !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card.is-selected {
+	border-color: #7b1f35 !important;
+	box-shadow: 0 14px 34px rgba(123, 31, 53, .14) !important;
+	background: rgba(255, 255, 255, .74) !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__input {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	margin: -1px !important;
+	padding: 0 !important;
+	border: 0 !important;
+	overflow: hidden !important;
+	clip: rect(0 0 0 0) !important;
+	clip-path: inset(50%) !important;
+	white-space: nowrap !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__main {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 8px !important;
+	min-width: 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__head {
+	display: grid !important;
+	grid-template-columns: 18px minmax(0, 1fr) auto !important;
+	align-items: center !important;
+	gap: 10px !important;
+	min-width: 0 !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__radio {
+	display: block !important;
+	width: 16px !important;
+	height: 16px !important;
+	border: 1px solid #7b1f35 !important;
+	border-radius: 50% !important;
+	background: transparent !important;
+	box-shadow: inset 0 0 0 4px transparent !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card.is-selected .foneona-shipping-card__radio {
+	background: #7b1f35 !important;
+	box-shadow: inset 0 0 0 4px #f7f2ea !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__carrier {
+	display: block !important;
+	min-width: 0 !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	letter-spacing: .04em !important;
+	text-transform: uppercase !important;
+	color: #7b1f35 !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__price {
+	display: block !important;
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	color: #1f1f1f !important;
+	white-space: nowrap !important;
+	text-align: right !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__title {
+	display: block !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 18px !important;
+	font-weight: 500 !important;
+	line-height: 1.2 !important;
+	color: #1f1f1f !important;
+	cursor: pointer !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__desc {
+	font-size: 12px !important;
+	line-height: 1.4 !important;
+	color: rgba(31, 31, 31, .68) !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 10px !important;
+	margin-top: auto !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions:empty {
+	display: none !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .button,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions button,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .wc-yandex-choose-pickup-point,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .wc-russian-post-choose-delivery-point {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 100% !important;
+	min-height: 42px !important;
+	padding: 11px 14px !important;
+	border: 1px solid #d87528 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: #9a4a13 !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	line-height: 1.1 !important;
+	letter-spacing: .02em !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	text-transform: none !important;
+	cursor: pointer !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .button:hover,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions button:hover,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .wc-yandex-choose-pickup-point:hover,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .wc-russian-post-choose-delivery-point:hover {
+	background: #d87528 !important;
+	color: #fff !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions select,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .select2-container {
+	width: 100% !important;
+	max-width: 100% !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .wc-yandex-delivery-method-additional-info,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions .wc-russian-post-method-additional-info {
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 8px !important;
+	font-size: 12px !important;
+	line-height: 1.45 !important;
+	color: rgba(31, 31, 31, .76) !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__actions p {
+	margin: 0 !important;
+}
+
+@media (max-width: 767px) {
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-cards {
+		grid-template-columns: 1fr !important;
+		gap: 10px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card {
+		min-height: 0 !important;
+		padding: 14px !important;
+	}
+
+	.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-card__title {
+		font-size: 16px !important;
+	}
+}
+
+/* v1.8.6 — Checkout delivery cards render outside the WooCommerce shipping table. */
+.woocommerce-checkout form.checkout.woocommerce-checkout #foneona-shipping-methods,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__cards-render,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-package {
+	width: 100% !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions {
+	margin-top: 14px !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-global-action,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-global-action__content {
+	width: 100% !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions .button,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions button,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions .wc-yandex-choose-pickup-point,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions .wc-russian-post-choose-delivery-point {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 100% !important;
+	min-height: 42px !important;
+	padding: 11px 18px !important;
+	border: 1px solid #d87528 !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: #7b1f35 !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	line-height: 1.2 !important;
+	text-decoration: none !important;
+	cursor: pointer !important;
+}
+
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions .button:hover,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions button:hover,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions .wc-yandex-choose-pickup-point:hover,
+.woocommerce-checkout form.checkout.woocommerce-checkout .foneona-shipping-methods__global-actions .wc-russian-post-choose-delivery-point:hover {
+	background: #d87528 !important;
+	color: #fff !important;
+}

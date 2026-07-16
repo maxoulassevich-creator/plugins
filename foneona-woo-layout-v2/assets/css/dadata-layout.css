@@ -1,0 +1,99 @@
+.foneona-dadata-inline,
+.foneona-dadata-inline .woocommerce-input-wrapper,
+.foneona-dadata-inline > span,
+.foneona-dadata__control {
+    overflow: visible !important;
+}
+
+.foneona-dadata {
+    margin: 0 0 14px;
+}
+
+.foneona-dadata__label {
+    display: block;
+    margin: 0 0 5px;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #555;
+    line-height: 1.4;
+}
+
+.foneona-dadata__control,
+.foneona-dadata-inline .woocommerce-input-wrapper,
+.foneona-dadata-inline > span {
+    position: relative;
+    z-index: 60;
+}
+
+.foneona-dadata__control.is-open,
+.foneona-dadata-inline.is-open,
+.foneona-dadata-inline:focus-within .woocommerce-input-wrapper {
+    z-index: 100001;
+}
+
+.foneona-dadata__input {
+    width: 100% !important;
+}
+
+.foneona-dadata__dropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 4px);
+    z-index: 100002;
+    background: #fff;
+    border: 1px solid #d7dde3;
+    max-height: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 10px 25px rgba(17, 17, 17, 0.08);
+    pointer-events: auto;
+}
+
+.foneona-dadata__list {
+    display: flex;
+    flex-direction: column;
+}
+
+.foneona-dadata__item {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    background: #fff;
+    border: 0;
+    border-bottom: 1px solid #eef0f2;
+    text-align: left;
+    cursor: pointer;
+}
+
+.foneona-dadata__item:last-child {
+    border-bottom: 0;
+}
+
+.foneona-dadata__item:hover,
+.foneona-dadata__item:focus,
+.foneona-dadata__item:active {
+    background: #f9fafb;
+    outline: none;
+}
+
+.foneona-dadata__item-main {
+    display: block;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #111;
+}
+
+.foneona-dadata__item-sub,
+.foneona-dadata__empty {
+    display: block;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #6b7280;
+}
+
+.foneona-dadata__empty {
+    padding: 10px 12px;
+}

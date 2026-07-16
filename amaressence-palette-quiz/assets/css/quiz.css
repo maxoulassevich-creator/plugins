@@ -1,0 +1,403 @@
+/* Amaressence Palette Quiz — layout matched to the attached index.html, with apq- prefixes for WordPress.
+   Кнопки и поля усилены через #apq-app и точечные !important: темы и WooCommerce
+   часто перекрывают их стили внутри контента.
+   ВАЖНО: глобальный сброс ниже — только через классы (низкая специфичность),
+   иначе он перебивает margin/padding самих компонентов квиза. */
+
+.apq-app,
+.apq-app *,
+.apq-app *::before,
+.apq-app *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+#apq-app {
+  --apq-bg: #F8F5F0;
+  --apq-white: #FFFFFF;
+  --apq-black: #1A1A1A;
+  --apq-mid: #6B6568;
+  --apq-light: #E2DDD8;
+  --apq-brand: #6B1A38;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--apq-black);
+  background: var(--apq-bg);
+}
+
+body.apq-quiz-page-active {
+  background: #F8F5F0 !important;
+  overflow: hidden !important;
+}
+
+/* Заголовки: сбрасываем возможные наследуемые отступы/трансформации темы. */
+#apq-app h1, #apq-app h2, #apq-app h3 {
+  margin: 0; padding: 0; border: none;
+  text-transform: none; letter-spacing: normal;
+}
+
+/* ── SCREEN SYSTEM ── */
+#apq-app .apq-screen {
+  position: fixed; inset: 0;
+  z-index: 2147483000;
+  display: flex; flex-direction: column;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: var(--apq-bg);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+#apq-app .apq-screen.active { opacity: 1; pointer-events: auto; }
+
+/* ── BUTTONS (защита от стилей темы/WooCommerce) ── */
+#apq-app .apq-btn {
+  display: inline-flex !important; align-items: center; justify-content: center;
+  border-radius: 50px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 15px !important; font-weight: 500 !important;
+  line-height: 1.2 !important;
+  min-height: 48px;
+  cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none; appearance: none;
+  border: none !important; outline: none;
+  letter-spacing: 0.2px !important; text-transform: none !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+#apq-app .apq-btn:focus-visible { outline: 2px solid var(--apq-brand); outline-offset: 3px; }
+#apq-app .apq-btn:active { transform: scale(0.97); }
+#apq-app .apq-btn:disabled { opacity: 0.3; pointer-events: none; }
+#apq-app .apq-btn-brand {
+  background: var(--apq-brand) !important;
+  color: var(--apq-white) !important;
+  padding: 16px 44px !important;
+}
+#apq-app .apq-btn-brand:hover { background: var(--apq-brand) !important; color: var(--apq-white) !important; opacity: 0.92; }
+#apq-app .apq-btn-full { width: 100%; }
+#apq-app .apq-btn-outline {
+  background: transparent !important;
+  color: var(--apq-brand) !important;
+  border: 1.5px solid var(--apq-brand) !important;
+  padding: 13px 36px !important;
+}
+#apq-app .apq-btn-outline:hover { background: rgba(107, 26, 56, 0.06) !important; }
+
+/* ── INTRO ── */
+#apq-intro {
+  justify-content: center; align-items: center;
+  text-align: center; padding: 48px 28px;
+}
+.apq-intro-logo-wrap { margin-bottom: 44px; min-height: 64px; display: flex; align-items: center; justify-content: center; }
+.apq-intro-logo-img { max-height: 64px; max-width: 260px; object-fit: contain; }
+.apq-intro-logo-fallback { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.apq-intro-logo-fallback svg { flex-shrink: 0; }
+.apq-intro-logo-fallback span {
+  font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 400;
+  color: var(--apq-brand); letter-spacing: 1px;
+}
+#apq-app .apq-intro-headline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(34px, 6vw, 56px); font-weight: 400; line-height: 1.15;
+  margin-bottom: 18px;
+}
+.apq-intro-headline em { font-style: italic; }
+.apq-intro-sub {
+  font-size: 15px; line-height: 1.65; color: var(--apq-mid);
+  max-width: 320px; margin: 0 auto 36px;
+}
+.apq-intro-pills {
+  display: flex; align-items: center; justify-content: center;
+  gap: 20px; margin-bottom: 40px; font-size: 13px; color: var(--apq-mid);
+}
+.apq-intro-pills span::before { content: '○  '; }
+.apq-reward-card {
+  background: var(--apq-white); border: 1px solid var(--apq-light);
+  border-radius: 14px; padding: 18px 22px;
+  max-width: 320px; margin: 0 auto 44px; text-align: left;
+}
+.apq-reward-card-label {
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--apq-mid); margin-bottom: 8px;
+}
+.apq-reward-card-text { font-size: 14px; line-height: 1.55; }
+
+/* ── QUIZ ── */
+#apq-quiz-screen { padding: 0; }
+.apq-quiz-header {
+  padding: 20px 24px 14px;
+  position: sticky; top: 0; background: var(--apq-bg); z-index: 10;
+}
+.apq-progress-track {
+  width: 100%; height: 2px; background: var(--apq-light);
+  border-radius: 2px; margin-bottom: 14px;
+}
+.apq-progress-fill {
+  height: 2px; background: var(--apq-brand);
+  border-radius: 2px; transition: width 0.4s ease;
+  width: 0;
+}
+.apq-quiz-counter {
+  font-size: 11px; letter-spacing: 0;
+  color: var(--apq-mid);
+}
+.apq-quiz-body {
+  padding: 28px 24px 150px; text-align: center;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.apq-quiz-body.exit { opacity: 0; transform: translateX(18px); }
+.apq-quiz-body.enter { opacity: 0; transform: translateX(-18px); transition: none; }
+
+#apq-app .apq-value-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(34px, 5.5vw, 48px); font-weight: 400;
+  line-height: 1.2; margin-bottom: 12px;
+}
+.apq-value-desc {
+  font-size: 15px; line-height: 1.65; color: var(--apq-mid);
+  margin-bottom: 36px; max-width: 380px; margin-left: auto; margin-right: auto;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── SWATCHES ──
+   Как в оригинальном дизайне: 4 колонки, растянутые на всю ширину экрана
+   (16 цветов = 4 ряда). На узких телефонах — 3 колонки. */
+.apq-swatches-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 18px 10px; justify-items: center;
+}
+@media (max-width: 330px) { .apq-swatches-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.apq-swatch-item {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none;
+  min-width: 66px;
+}
+.apq-swatch-item:focus-visible { outline: 2px solid var(--apq-brand); outline-offset: 3px; border-radius: 10px; }
+.apq-swatch-circle {
+  width: 58px; height: 58px; border-radius: 50%;
+  border: 2.5px solid transparent;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.06);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  position: relative; flex-shrink: 0;
+}
+@media (min-width: 900px) {
+  .apq-swatch-item:not(.selected):hover .apq-swatch-circle { transform: scale(1.06); }
+}
+.apq-swatch-item.selected .apq-swatch-circle {
+  border-color: var(--apq-brand);
+  transform: scale(1.1);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.09), 0 6px 18px rgba(107,26,56,0.25);
+}
+.apq-swatch-check {
+  position: absolute; bottom: -2px; right: -2px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--apq-brand); color: var(--apq-white);
+  font-size: 10px; display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.15s ease; font-weight: 600;
+}
+.apq-swatch-item.selected .apq-swatch-check { opacity: 1; }
+.apq-swatch-label {
+  font-size: 14px; color: var(--apq-mid);
+  text-align: center; line-height: 1.3; max-width: 76px;
+}
+.apq-swatch-item.selected .apq-swatch-label { color: var(--apq-brand); font-weight: 500; }
+
+/* ── QUIZ FOOTER ── */
+.apq-quiz-footer {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 2147483001;
+  padding: 16px 24px;
+  padding-bottom: max(24px, env(safe-area-inset-bottom, 24px));
+  background: linear-gradient(to top, var(--apq-bg) 65%, transparent);
+  display: flex; flex-direction: column; align-items: center;
+}
+.apq-quiz-footer .apq-btn { max-width: 380px; }
+
+/* ── RESULT ── */
+#apq-result { justify-content: flex-start; }
+.apq-result-hero { padding: 56px 28px 36px; text-align: center; }
+.apq-result-eyebrow {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--apq-mid); margin-bottom: 18px;
+}
+#apq-app .apq-result-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(32px, 5vw, 46px); font-weight: 400;
+  line-height: 1.15; margin-bottom: 10px;
+}
+.apq-result-tagline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic; font-size: 26px; color: var(--apq-mid); margin-bottom: 28px;
+}
+.apq-result-dots {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 10px; max-width: 302px; margin: 0 auto 28px;
+}
+.apq-result-dot { width: 42px; height: 42px; border-radius: 50%; box-shadow: 0 3px 10px rgba(0,0,0,0.18); flex: 0 0 42px; }
+.apq-result-desc {
+  font-size: 15px; line-height: 1.75; color: var(--apq-mid);
+  max-width: 380px; margin: 0 auto;
+}
+.apq-result-divider { height: 1px; background: var(--apq-light); margin: 0 28px; }
+
+/* ── GIFT + EMAIL SECTION ── */
+.apq-gift-section { padding: 40px 28px 64px; text-align: center; }
+.apq-gift-badge {
+  display: inline-block; background: var(--apq-brand);
+  color: var(--apq-white); border-radius: 50px;
+  padding: 8px 20px; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.3px; margin-bottom: 20px;
+}
+#apq-app .apq-gift-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 26px; font-weight: 400; margin-bottom: 10px;
+}
+.apq-gift-desc {
+  font-size: 14px; color: var(--apq-mid); line-height: 1.6;
+  max-width: 320px; margin: 0 auto 24px;
+}
+.apq-btn-claim { max-width: 360px; }
+.apq-error { color: #C03030; font-size: 13px; margin-top: 12px; }
+
+/* Поле email для гостей (защита от стилей темы для input). */
+.apq-claim-email { max-width: 360px; margin: 0 auto 20px; text-align: left; }
+.apq-claim-email-label {
+  display: block; font-size: 13px; font-weight: 500;
+  color: var(--apq-black); margin-bottom: 8px;
+}
+#apq-app .apq-claim-email-input {
+  display: block !important;
+  width: 100% !important;
+  padding: 15px 18px !important;
+  border: 1px solid var(--apq-light) !important;
+  border-radius: 12px !important;
+  background: var(--apq-white) !important;
+  color: var(--apq-black) !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 16px !important; /* ≥16px — iPhone не зумит поле при фокусе */
+  line-height: 1.4 !important;
+  outline: none;
+  box-shadow: none !important;
+  -webkit-appearance: none; appearance: none;
+  transition: border-color 0.15s;
+}
+#apq-app .apq-claim-email-input:focus { border-color: var(--apq-brand) !important; }
+#apq-app .apq-claim-email-input::placeholder { color: #A9A39D; opacity: 1; }
+.apq-claim-email-hint { font-size: 12px; color: var(--apq-mid); line-height: 1.5; margin-top: 8px; }
+
+/* Панель «аккаунт не найден». */
+.apq-no-account {
+  max-width: 360px; margin: 18px auto 0;
+  background: var(--apq-white); border: 1px solid var(--apq-light);
+  border-radius: 14px; padding: 18px 20px;
+}
+.apq-no-account-text { font-size: 13px; line-height: 1.6; color: var(--apq-black); margin-bottom: 14px; }
+
+/* Кнопка «в магазин» в режиме повторного прохождения. */
+#apq-app .apq-replay-shop { max-width: 360px; width: 100%; }
+
+/* ── SUCCESS ── */
+#apq-success, #apq-already {
+  justify-content: center; align-items: center;
+  text-align: center; padding: 48px 28px;
+}
+.apq-success-icon {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: var(--apq-brand); color: var(--apq-white);
+  font-size: 28px; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 28px; flex-shrink: 0;
+}
+#apq-app .apq-success-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 34px; margin-bottom: 12px;
+}
+.apq-success-desc {
+  font-size: 15px; color: var(--apq-mid); line-height: 1.65;
+  max-width: 320px; margin: 0 auto 32px;
+}
+.apq-success-points {
+  background: var(--apq-white); border: 1px solid var(--apq-light);
+  border-radius: 14px; padding: 20px 32px;
+  margin-bottom: 40px; display: inline-block;
+}
+.apq-success-points-num {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 42px; font-weight: 400; color: var(--apq-brand); line-height: 1;
+  margin-bottom: 4px;
+}
+.apq-success-points-label { font-size: 13px; color: var(--apq-mid); }
+
+/* Кнопка «пройти ещё раз» на экране «уже проходила». */
+#apq-app .apq-replay-link {
+  display: block; margin: 20px auto 0;
+  background: none !important; border: none !important;
+  color: var(--apq-mid) !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 13px !important;
+  text-decoration: underline !important;
+  cursor: pointer; padding: 8px;
+  -webkit-appearance: none; appearance: none;
+  box-shadow: none !important;
+}
+#apq-app .apq-replay-link:hover { color: var(--apq-brand) !important; }
+
+.apq-guard-note { padding: 24px; text-align: center; color: #6B6568; }
+
+/* ── ДЕСКТОП И НОУТБУК (≥900px): растягиваем композицию и центрируем по вертикали ──
+   Мобильная вёрстка ниже 900px остаётся исходной. */
+@media (min-width: 900px) {
+  /* Экран результата: контент по центру экрана, а не прижат к верху.
+     margin:auto безопаснее justify-content:center — при нехватке высоты
+     экран просто скроллится, ничего не обрезая. */
+  .apq-result-hero { margin-top: auto; }
+  .apq-gift-section { margin-bottom: auto; }
+
+  /* Результат: крупнее и шире. */
+  .apq-result-eyebrow { font-size: 11px; margin-bottom: 22px; }
+  .apq-result-tagline { font-size: 30px; }
+  .apq-result-dots { max-width: 520px; gap: 14px; margin-bottom: 32px; }
+  .apq-result-dot { width: 52px; height: 52px; flex: 0 0 52px; }
+  .apq-result-desc { max-width: 560px; font-size: 16px; }
+
+  /* Блок подарка: шире и крупнее. */
+  #apq-app .apq-gift-title { font-size: 32px; }
+  .apq-gift-desc { max-width: 480px; font-size: 15px; margin-bottom: 32px; }
+  .apq-claim-email { max-width: 420px; }
+  #apq-app .apq-btn-claim { max-width: 400px; }
+  .apq-no-account { max-width: 420px; }
+
+  /* Интро: подзаголовок и карточка подарка шире. */
+  .apq-intro-sub { max-width: 460px; font-size: 16px; }
+  .apq-intro-pills { font-size: 14px; }
+  .apq-reward-card { max-width: 400px; padding: 20px 26px; }
+  .apq-reward-card-text { font-size: 15px; }
+
+  /* Экран вопроса: описание шире. */
+  .apq-value-desc { max-width: 560px; font-size: 16px; -webkit-line-clamp: 3; }
+
+  /* Финальные экраны «готово» и «уже проходила». */
+  #apq-app .apq-success-title { font-size: 40px; }
+  .apq-success-desc { max-width: 480px; font-size: 16px; }
+}
+
+/* Ландшафт на телефонах: уменьшаем вертикальные отступы, чтобы всё влезало. */
+@media (max-height: 480px) and (orientation: landscape) {
+  #apq-intro, #apq-success, #apq-already { justify-content: flex-start; padding-top: 24px; }
+  .apq-intro-logo-wrap { margin-bottom: 20px; min-height: 40px; }
+  .apq-intro-pills { margin-bottom: 20px; }
+  .apq-reward-card { margin-bottom: 20px !important; }
+  .apq-quiz-body { padding-bottom: 120px; }
+}
+
+/* Бережём пользователей с отключённой анимацией. */
+@media (prefers-reduced-motion: reduce) {
+  #apq-app .apq-screen,
+  #apq-app .apq-btn,
+  .apq-quiz-body,
+  .apq-progress-fill,
+  .apq-swatch-circle { transition: none !important; }
+}
+
+/* Атрибут hidden всегда сильнее любых display у компонентов.
+   Правило в самом конце файла — оно должно побеждать display:inline-flex !important у .apq-btn
+   (например, скрытая кнопка «Перейти в магазин» на экране результата). */
+#apq-app [hidden] { display: none !important; }
