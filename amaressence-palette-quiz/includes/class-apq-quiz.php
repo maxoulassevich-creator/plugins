@@ -27,11 +27,15 @@ class APQ_Quiz {
 	/** @var APQ_Points */
 	protected $points;
 
-	public function __construct( $settings, $logger, $results, $points ) {
+	/** @var APQ_Account */
+	protected $account;
+
+	public function __construct( $settings, $logger, $results, $points, $account = null ) {
 		$this->settings = $settings;
 		$this->logger   = $logger;
 		$this->results  = $results;
 		$this->points   = $points;
+		$this->account  = $account;
 
 		add_shortcode( self::SHORTCODE, array( $this, 'render_shortcode' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_assets' ) );
@@ -91,8 +95,6 @@ class APQ_Quiz {
 			}
 		}
 
-		$register_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : wp_login_url();
-
 		wp_localize_script(
 			'apq-quiz',
 			'APQ',
@@ -100,7 +102,7 @@ class APQ_Quiz {
 				'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
 				'nonce'        => wp_create_nonce( self::NONCE ),
 				'isLoggedIn'   => $is_logged_in,
-				'registerUrl'  => $register_url ? $register_url : wp_login_url(),
+				'accountCreatedNote' => $this->settings->get( 'account_created_note' ),
 				'values'       => $quiz_data['values'],
 				'colors'       => $quiz_data['colors'],
 				'profiles'     => $quiz_data['profiles'],
@@ -200,11 +202,6 @@ class APQ_Quiz {
 						<button type="button" class="apq-btn apq-btn-brand apq-btn-full apq-btn-claim" id="apq-btn-claim" data-apq-gift><?php esc_html_e( 'Сохранить результат', 'amaressence-palette-quiz' ); ?></button>
 					<?php endif; ?>
 
-					<div class="apq-no-account" id="apq-no-account" hidden>
-						<p class="apq-no-account-text" id="apq-no-account-text"><?php echo esc_html( $this->settings->get( 'no_account_text' ) ); ?></p>
-						<button type="button" class="apq-btn apq-btn-outline" id="apq-no-account-register"><?php echo esc_html( $this->settings->get( 'no_account_button' ) ); ?></button>
-					</div>
-
 					<a class="apq-btn apq-btn-brand apq-replay-shop" id="apq-replay-shop" href="<?php echo esc_url( $this->settings->get( 'shop_button_url' ) ); ?>" hidden><?php echo esc_html( $this->settings->get( 'shop_button_text' ) ); ?></a>
 
 					<p class="apq-error" id="apq-error" hidden></p>
@@ -216,6 +213,7 @@ class APQ_Quiz {
 				<div class="apq-success-icon">✓</div>
 				<h2 class="apq-success-title"><?php echo esc_html( $this->settings->get( 'success_title' ) ); ?></h2>
 				<p class="apq-success-desc"><?php echo esc_html( $this->replace_points( $success_desc, $points ) ); ?></p>
+				<p class="apq-success-note" id="apq-success-note" hidden></p>
 				<?php if ( $show_gift ) : ?>
 					<div class="apq-success-points">
 						<div class="apq-success-points-num"><?php echo esc_html( $this->replace_points( '{points}', $points ) ); ?></div>
@@ -251,7 +249,11 @@ class APQ_Quiz {
 			wp_send_json_error( array( 'message' => __( 'Квиз временно недоступен.', 'amaressence-palette-quiz' ) ), 400 );
 		}
 
-		if ( is_user_logged_in() ) {
+		$is_logged_in = is_user_logged_in();
+		$user_id      = 0;
+		$email        = '';
+
+		if ( $is_logged_in ) {
 			$user    = wp_get_current_user();
 			$email   = $this->points->normalize_email( $user->user_email );
 			$user_id = (int) $user->ID;
@@ -269,22 +271,6 @@ class APQ_Quiz {
 			if ( $this->too_many_guest_claims() ) {
 				wp_send_json_error( array( 'message' => __( 'Слишком много попыток. Попробуй немного позже.', 'amaressence-palette-quiz' ) ), 429 );
 			}
-
-			$account = get_user_by( 'email', $email );
-
-			if ( ! $account ) {
-				$this->logger->log( 'info', 'Гость указал email без аккаунта — предложена регистрация.', array( 'email' => $email ) );
-
-				wp_send_json_error(
-					array(
-						'code'    => 'no_account',
-						'message' => $this->settings->get( 'no_account_text' ),
-					),
-					404
-				);
-			}
-
-			$user_id = (int) $account->ID;
 		}
 
 		$raw_answers = isset( $_POST['answers'] ) ? json_decode( wp_unslash( (string) $_POST['answers'] ), true ) : null;
@@ -315,6 +301,29 @@ class APQ_Quiz {
 		$calculated = APQ_Settings::calculate_result( $answers, $quiz_data );
 		$profile_id = $calculated['id'];
 
+		$account_created = false;
+
+		// Гость: если аккаунта с таким email нет — создаём его автоматически и
+		// присылаем письмо с временным паролем (шаблон как в Foneona Woo Layout).
+		if ( ! $is_logged_in ) {
+			$existing = get_user_by( 'email', $email );
+
+			if ( $existing instanceof WP_User ) {
+				$user_id = (int) $existing->ID;
+			} elseif ( $this->account instanceof APQ_Account ) {
+				$created = $this->account->create_customer_from_quiz( $email, array( 'profile_id' => $profile_id ) );
+
+				if ( empty( $created['success'] ) || empty( $created['user_id'] ) ) {
+					wp_send_json_error( array( 'message' => __( 'Не удалось создать аккаунт. Попробуй ещё раз чуть позже.', 'amaressence-palette-quiz' ) ), 500 );
+				}
+
+				$user_id         = (int) $created['user_id'];
+				$account_created = ! empty( $created['created'] );
+			} else {
+				wp_send_json_error( array( 'message' => __( 'Не удалось создать аккаунт.', 'amaressence-palette-quiz' ) ), 500 );
+			}
+		}
+
 		$result = $this->results->save_result( $user_id, $email, $session_id, $answers, $profile_id );
 
 		if ( ! $result['success'] ) {
@@ -335,10 +344,11 @@ class APQ_Quiz {
 
 		wp_send_json_success(
 			array(
-				'message'       => __( 'Результат сохранён.', 'amaressence-palette-quiz' ),
-				'points_status' => isset( $result['points_status'] ) ? $result['points_status'] : 'none',
-				'profile'       => $profile_id,
-				'result'        => $calculated,
+				'message'         => __( 'Результат сохранён.', 'amaressence-palette-quiz' ),
+				'points_status'   => isset( $result['points_status'] ) ? $result['points_status'] : 'none',
+				'profile'         => $profile_id,
+				'result'          => $calculated,
+				'account_created' => $account_created,
 			)
 		);
 	}

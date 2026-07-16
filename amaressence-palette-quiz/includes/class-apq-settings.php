@@ -29,15 +29,16 @@ class APQ_Settings {
 			'points_order_status'    => 'completed',
 			'points_description'     => 'Бонус за прохождение квиза «Палитра amarèssence»',
 
-			// Попап.
+			// Кнопка-триггер квиза (ключи popup_* сохранены для совместимости с прошлыми настройками).
 			'popup_enabled'          => 'yes',
 			'popup_trigger'          => '#apq-quiz',
-			'popup_login_title'      => 'Авторизация',
-			'popup_register_title'   => 'Регистрация',
-			'popup_subtitle'         => 'Войдите или создайте аккаунт, чтобы пройти квиз и получить баллы.',
-			'user_agreement_url'     => 'https://amaressence.ru/informacziya/#soglasie-s-obrabotkoj-pdn',
-			'loyalty_url'            => 'https://amaressence.ru/informacziya/#programma-loyalnosti',
-			'marketing_consent_text' => 'Подтверждаю согласие на получение информации о новинках и акциях. Ваш подарок — промокод на скидку 15% на 90 дней',
+
+			// Автосоздание аккаунта по email и письмо с временным паролем (шаблон как в Foneona Woo Layout).
+			'account_email_enabled'  => 'yes',
+			'account_email_subject'  => 'Ваш личный кабинет на сайте {site_name}',
+			'account_email_message'  => '<div class="foneona-email-card"><p>Здравствуйте!</p><p>Мы создали для вас личный кабинет на сайте {site_name}, чтобы закрепить за вами баллы за квиз «Палитра amarèssence».</p><p><strong>Логин:</strong> {customer_email}<br><strong>Временный пароль:</strong> {temporary_password}</p><p>{change_password_note}</p><p><a class="foneona-email-button" href="{my_account_url}">Войти в личный кабинет</a></p></div>',
+			'account_email_css'      => "body { margin: 0; padding: 24px; background: #f7f2ea; font-family: Arial, Helvetica, sans-serif; color: #1f1f1f; }\n.foneona-email-wrap { max-width: 640px; margin: 0 auto; }\n.foneona-email-card { background: #ffffff; border-radius: 18px; padding: 28px; box-shadow: 0 10px 28px rgba(0,0,0,.08); }\n.foneona-email-card p { margin: 0 0 16px; font-size: 16px; line-height: 1.55; }\n.foneona-email-button { display: inline-block; padding: 14px 22px; background: #7b1f35; color: #ffffff !important; text-decoration: none; border-radius: 0; font-weight: 700; letter-spacing: .04em; }",
+			'account_created_note'   => 'Мы создали для тебя личный кабинет и отправили письмо с паролем на твою почту.',
 
 			// Тексты квиза.
 			'intro_headline'         => 'Какая палитра<br><em>у твоей</em> amarèssence?',
@@ -62,9 +63,7 @@ class APQ_Settings {
 			// Поле email на финальном экране (для неавторизованных).
 			'claim_email_label'      => 'Куда начислить баллы?',
 			'claim_email_placeholder' => 'Эл. почта твоего аккаунта',
-			'claim_email_hint'       => 'Укажи email, на который зарегистрирован аккаунт amarèssence, — подарок будет закреплён за ним.',
-			'no_account_text'        => 'Аккаунт с таким email не найден. Создай аккаунт за минуту — и баллы сразу будут закреплены за ним.',
-			'no_account_button'      => 'Создать аккаунт',
+			'claim_email_hint'       => 'Укажи email — если аккаунта ещё нет, мы создадим его автоматически и пришлём пароль на почту.',
 
 			// Контент квиза (JSON, редактируемый в админке).
 			'quiz_values_json'       => '',
@@ -801,12 +800,11 @@ class APQ_Settings {
 			'points_description'     => sanitize_text_field( $data['points_description'] ?? $current['points_description'] ),
 			'popup_enabled'          => $this->sanitize_checkbox( $data['popup_enabled'] ?? '' ),
 			'popup_trigger'          => $this->sanitize_trigger( $data['popup_trigger'] ?? $current['popup_trigger'] ),
-			'popup_login_title'      => sanitize_text_field( $data['popup_login_title'] ?? $current['popup_login_title'] ),
-			'popup_register_title'   => sanitize_text_field( $data['popup_register_title'] ?? $current['popup_register_title'] ),
-			'popup_subtitle'         => sanitize_text_field( $data['popup_subtitle'] ?? $current['popup_subtitle'] ),
-			'user_agreement_url'     => $this->sanitize_url( $data['user_agreement_url'] ?? $current['user_agreement_url'], self::defaults()['user_agreement_url'] ),
-			'loyalty_url'            => $this->sanitize_url( $data['loyalty_url'] ?? $current['loyalty_url'], self::defaults()['loyalty_url'] ),
-			'marketing_consent_text' => sanitize_text_field( $data['marketing_consent_text'] ?? $current['marketing_consent_text'] ),
+			'account_email_enabled'  => $this->sanitize_checkbox( $data['account_email_enabled'] ?? '' ),
+			'account_email_subject'  => sanitize_text_field( $data['account_email_subject'] ?? $current['account_email_subject'] ),
+			'account_email_message'  => wp_kses_post( $data['account_email_message'] ?? $current['account_email_message'] ),
+			'account_email_css'      => self::sanitize_email_css( $data['account_email_css'] ?? $current['account_email_css'] ),
+			'account_created_note'   => sanitize_text_field( $data['account_created_note'] ?? $current['account_created_note'] ),
 			'intro_headline'         => wp_kses_post( $data['intro_headline'] ?? $current['intro_headline'] ),
 			'intro_sub'              => sanitize_text_field( $data['intro_sub'] ?? $current['intro_sub'] ),
 			'intro_time_text'        => sanitize_text_field( $data['intro_time_text'] ?? $current['intro_time_text'] ),
@@ -825,8 +823,6 @@ class APQ_Settings {
 			'claim_email_label'      => sanitize_text_field( $data['claim_email_label'] ?? $current['claim_email_label'] ),
 			'claim_email_placeholder' => sanitize_text_field( $data['claim_email_placeholder'] ?? $current['claim_email_placeholder'] ),
 			'claim_email_hint'       => sanitize_text_field( $data['claim_email_hint'] ?? $current['claim_email_hint'] ),
-			'no_account_text'        => sanitize_text_field( $data['no_account_text'] ?? $current['no_account_text'] ),
-			'no_account_button'      => sanitize_text_field( $data['no_account_button'] ?? $current['no_account_button'] ),
 			'shop_button_text'       => sanitize_text_field( $data['shop_button_text'] ?? $current['shop_button_text'] ),
 			'shop_button_url'        => $this->sanitize_url( $data['shop_button_url'] ?? $current['shop_button_url'], self::defaults()['shop_button_url'] ),
 			'logo_url'               => esc_url_raw( (string) ( $data['logo_url'] ?? $current['logo_url'] ) ),
@@ -845,6 +841,18 @@ class APQ_Settings {
 		$value = strtolower( trim( (string) $value ) );
 
 		return in_array( $value, array( '1', 'yes', 'on', 'true' ), true ) ? 'yes' : 'no';
+	}
+
+	/**
+	 * Санитайз CSS письма: убираем теги и угловые скобки, чтобы CSS нельзя было
+	 * использовать для инъекций (логика как в Foneona Woo Layout).
+	 */
+	public static function sanitize_email_css( $css ) {
+		$css = is_string( $css ) ? $css : '';
+		$css = wp_strip_all_tags( $css, true );
+		$css = str_replace( array( '<', '>' ), '', $css );
+
+		return trim( $css );
 	}
 
 	protected function sanitize_url( $value, $default ) {

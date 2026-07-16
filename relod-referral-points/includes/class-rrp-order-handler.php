@@ -125,7 +125,13 @@ class RRP_Order_Handler {
 			return;
 		}
 
-		if ( 'yes' !== $order->get_meta( '_rrp_customer_is_first_order', true ) ) {
+		$template = $this->email_manager->get_template( 'first_order_referral' );
+		$scope    = isset( $template['send_scope'] ) ? sanitize_key( $template['send_scope'] ) : 'every_order';
+
+		// По умолчанию письмо с реферальной ссылкой уходит на КАЖДЫЙ заказ
+		// (стандартное письмо WooCommerce «в обработке» отключено и заменено этим).
+		// Режим «first_order» ограничивает отправку только первым заказом покупателя.
+		if ( 'first_order' === $scope && 'yes' !== $order->get_meta( '_rrp_customer_is_first_order', true ) ) {
 			return;
 		}
 

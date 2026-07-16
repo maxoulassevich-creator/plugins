@@ -284,13 +284,8 @@ body.apq-quiz-page-active {
 #apq-app .apq-claim-email-input::placeholder { color: #A9A39D; opacity: 1; }
 .apq-claim-email-hint { font-size: 12px; color: var(--apq-mid); line-height: 1.5; margin-top: 8px; }
 
-/* Панель «аккаунт не найден». */
-.apq-no-account {
-  max-width: 360px; margin: 18px auto 0;
-  background: var(--apq-white); border: 1px solid var(--apq-light);
-  border-radius: 14px; padding: 18px 20px;
-}
-.apq-no-account-text { font-size: 13px; line-height: 1.6; color: var(--apq-black); margin-bottom: 14px; }
+/* Подпись на экране «Готово» после автосоздания аккаунта. */
+.apq-success-note { font-size: 13px; line-height: 1.6; color: var(--apq-mid); max-width: 360px; margin: 4px auto 0; }
 
 /* Кнопка «в магазин» в режиме повторного прохождения. */
 #apq-app .apq-replay-shop { max-width: 360px; width: 100%; }
@@ -363,7 +358,7 @@ body.apq-quiz-page-active {
   .apq-gift-desc { max-width: 480px; font-size: 15px; margin-bottom: 32px; }
   .apq-claim-email { max-width: 420px; }
   #apq-app .apq-btn-claim { max-width: 400px; }
-  .apq-no-account { max-width: 420px; }
+  .apq-success-note { max-width: 420px; }
 
   /* Интро: подзаголовок и карточка подарка шире. */
   .apq-intro-sub { max-width: 460px; font-size: 16px; }

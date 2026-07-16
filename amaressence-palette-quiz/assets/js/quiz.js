@@ -367,7 +367,6 @@
     });
     var shop = $('apq-replay-shop');
     if (shop) shop.hidden = !replay;
-    hideNoAccount();
   }
 
   function showResults() {
@@ -378,7 +377,7 @@
     showScreen('apq-result');
   }
 
-  // ── EMAIL / NO ACCOUNT ──
+  // ── EMAIL ──
   function getClaimEmail() {
     var input = $('apq-claim-email-input');
     return input ? String(input.value || '').trim() : '';
@@ -399,23 +398,10 @@
     err.hidden = true;
   }
 
-  function showNoAccount(message) {
-    var box = $('apq-no-account');
-    if (!box) return;
-    if (message) $('apq-no-account-text').textContent = message;
-    box.hidden = false;
-  }
-
-  function hideNoAccount() {
-    var box = $('apq-no-account');
-    if (box) box.hidden = true;
-  }
-
   function markLoggedIn() {
     state.loggedIn = true;
     var emailField = $('apq-claim-email');
     if (emailField) emailField.hidden = true;
-    hideNoAccount();
   }
 
   // ── SUBMIT ──
@@ -423,7 +409,6 @@
     if (state.submitting || !state.result || state.replay) return;
 
     hideError();
-    hideNoAccount();
 
     var claimEmail = '';
 
@@ -465,6 +450,12 @@
     }).then(function (res) {
       if (res.json && res.json.success) {
         clearDraft();
+        var okData = res.json.data || {};
+        // Аккаунт создан автоматически по email — сообщаем про письмо с паролем.
+        if (okData.account_created && cfg.accountCreatedNote) {
+          var note = $('apq-success-note');
+          if (note) { note.textContent = cfg.accountCreatedNote; note.hidden = false; }
+        }
         showScreen('apq-success');
         return;
       }
@@ -472,10 +463,6 @@
       if (data.code === 'already_completed') {
         clearDraft();
         showAlready(data.profile || '', data.answers || {});
-        return;
-      }
-      if (data.code === 'no_account') {
-        showNoAccount(data.message || '');
         return;
       }
       throw new Error(data.message || cfg.i18n.error);
@@ -505,37 +492,6 @@
 
     showScreen('apq-already');
   }
-
-  // ── ИНТЕГРАЦИЯ С ПОПАПОМ АВТОРИЗАЦИИ ──
-  // Кнопка «Создать аккаунт» под сообщением «аккаунт не найден»:
-  // если попап на странице — открываем регистрацию с предзаполненным email,
-  // иначе уводим на страницу регистрации.
-  var noAccountBtn = $('apq-no-account-register');
-  if (noAccountBtn) {
-    noAccountBtn.addEventListener('click', function () {
-      var api = window.APQPopupControl;
-      if (api && typeof api.open === 'function') {
-        api.open('register', getClaimEmail());
-      } else if (cfg.registerUrl) {
-        window.location.href = cfg.registerUrl;
-      }
-    });
-  }
-
-  // После входа/регистрации через попап: обновляем nonce, скрываем поле email
-  // и досылаем результат сами — без перезагрузки страницы (ответы не теряются).
-  document.addEventListener('apq:auth', function (e) {
-    var resultScreen = $('apq-result');
-    var onResult = resultScreen && resultScreen.classList.contains('active');
-
-    if (e.detail && e.detail.quizNonce) cfg.nonce = e.detail.quizNonce;
-    markLoggedIn();
-
-    if (onResult && state.result && !state.replay) {
-      e.preventDefault(); // попап не делает редирект — мы досылаем результат здесь.
-      submitQuiz();
-    }
-  });
 
   // ── КЭШ-БЕЗОПАСНОЕ СОСТОЯНИЕ ──
   // Страница может отдаваться из кэша: свежий nonce и признак «уже проходил»
@@ -577,7 +533,7 @@
 
   var emailInput = $('apq-claim-email-input');
   if (emailInput) {
-    emailInput.addEventListener('input', function () { hideError(); hideNoAccount(); });
+    emailInput.addEventListener('input', function () { hideError(); });
     emailInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); submitQuiz(); }
     });

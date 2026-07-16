@@ -73,7 +73,7 @@ class APQ_Admin {
 		$tabs = array(
 			'general' => __( 'Общие', 'amaressence-palette-quiz' ),
 			'points'  => __( 'Баллы', 'amaressence-palette-quiz' ),
-			'popup'   => __( 'Попап входа', 'amaressence-palette-quiz' ),
+			'account' => __( 'Кнопка и письмо', 'amaressence-palette-quiz' ),
 			'texts'   => __( 'Тексты квиза', 'amaressence-palette-quiz' ),
 			'content' => __( 'Вопросы и цвета', 'amaressence-palette-quiz' ),
 			'results' => __( 'Результаты', 'amaressence-palette-quiz' ),
@@ -185,17 +185,17 @@ class APQ_Admin {
 					);
 					$this->select_row( 'points_order_status', __( 'Статус заказа для начисления', 'amaressence-palette-quiz' ), $this->order_status_options(), $settings['points_order_status'], __( 'Используется только в режиме «после первого заказа».', 'amaressence-palette-quiz' ) );
 					$this->text_row( 'points_description', __( 'Описание операции в выписке', 'amaressence-palette-quiz' ), $settings['points_description'], __( 'Так начисление будет подписано в истории баллов личного кабинета.', 'amaressence-palette-quiz' ) );
-				} elseif ( 'popup' === $tab ) {
-					$this->render_section( __( 'Попап авторизации/регистрации', 'amaressence-palette-quiz' ), __( 'Как подключить к кнопке Elementor: в стандартном виджете «Кнопка» укажите Ссылку (Link) равной триггеру ниже, например #apq-quiz. Клик сразу ведёт на страницу квиза (прохождение свободное). Попап показывается на финальном экране квиза, если гость указал email без аккаунта и нажал «Создать аккаунт». Альтернатива — добавить кнопке CSS-класс apq-quiz-trigger.', 'amaressence-palette-quiz' ) );
-					$this->checkbox_row( 'popup_enabled', __( 'Включить попап', 'amaressence-palette-quiz' ), $settings['popup_enabled'], __( 'Разметка попапа выводится в подвале всех страниц сайта и открывается только по клику на триггер.', 'amaressence-palette-quiz' ) );
+				} elseif ( 'account' === $tab ) {
+					$this->render_section( __( 'Кнопка-триггер квиза', 'amaressence-palette-quiz' ), __( 'Как подключить к кнопке Elementor: в стандартном виджете «Кнопка» укажите Ссылку (Link) равной триггеру ниже, например #apq-quiz. Клик сразу ведёт на страницу квиза (прохождение свободное). Альтернатива — добавить кнопке CSS-класс apq-quiz-trigger. Попап авторизации больше не используется: если у гостя нет аккаунта, он создаётся автоматически по email.', 'amaressence-palette-quiz' ) );
+					$this->checkbox_row( 'popup_enabled', __( 'Включить кнопку-триггер', 'amaressence-palette-quiz' ), $settings['popup_enabled'], __( 'Небольшой скрипт в подвале сайта: клик по триггеру ведёт на страницу квиза.', 'amaressence-palette-quiz' ) );
 					$this->text_row( 'popup_trigger', __( 'Триггер (ссылка кнопки)', 'amaressence-palette-quiz' ), $settings['popup_trigger'], __( 'Например: #apq-quiz. Это значение вставьте в поле «Ссылка» кнопки Elementor на главной странице.', 'amaressence-palette-quiz' ) );
-					$this->text_row( 'popup_login_title', __( 'Название вкладки входа', 'amaressence-palette-quiz' ), $settings['popup_login_title'], '' );
-					$this->text_row( 'popup_register_title', __( 'Название вкладки регистрации', 'amaressence-palette-quiz' ), $settings['popup_register_title'], '' );
-					$this->text_row( 'popup_subtitle', __( 'Подзаголовок попапа', 'amaressence-palette-quiz' ), $settings['popup_subtitle'], '' );
-					$this->render_section( __( 'Согласия при регистрации', 'amaressence-palette-quiz' ), __( 'Тексты и ссылки чекбоксов — как в форме Amaressence Account Suite.', 'amaressence-palette-quiz' ) );
-					$this->text_row( 'marketing_consent_text', __( 'Текст маркетингового согласия', 'amaressence-palette-quiz' ), $settings['marketing_consent_text'], '' );
-					$this->text_row( 'user_agreement_url', __( 'Ссылка на пользовательское соглашение', 'amaressence-palette-quiz' ), $settings['user_agreement_url'], '' );
-					$this->text_row( 'loyalty_url', __( 'Ссылка на программу лояльности', 'amaressence-palette-quiz' ), $settings['loyalty_url'], '' );
+
+					$this->render_section( __( 'Автосоздание аккаунта и письмо с временным паролем', 'amaressence-palette-quiz' ), __( 'Если гость указал на финальном экране email, которого ещё нет в базе, аккаунт покупателя создаётся автоматически, а на почту уходит письмо с временным паролем. Оформление письма повторяет плагин «Foneona Woo Layout». Доступные плейсхолдеры: {site_name}, {customer_email}, {username}, {temporary_password}, {my_account_url}, {change_password_note}.', 'amaressence-palette-quiz' ) );
+					$this->checkbox_row( 'account_email_enabled', __( 'Отправлять письмо с временным паролем', 'amaressence-palette-quiz' ), $settings['account_email_enabled'], __( 'Если выключить — аккаунт всё равно создаётся, но письмо с паролем не отправляется.', 'amaressence-palette-quiz' ) );
+					$this->text_row( 'account_email_subject', __( 'Тема письма', 'amaressence-palette-quiz' ), $settings['account_email_subject'], '' );
+					$this->textarea_row( 'account_email_message', __( 'HTML письма', 'amaressence-palette-quiz' ), $settings['account_email_message'], __( 'HTML тела письма с плейсхолдерами.', 'amaressence-palette-quiz' ) );
+					$this->textarea_row( 'account_email_css', __( 'CSS письма', 'amaressence-palette-quiz' ), $settings['account_email_css'], __( 'CSS встраивается в письмо. Классы .foneona-email-wrap / .foneona-email-card / .foneona-email-button — как в Foneona Woo Layout.', 'amaressence-palette-quiz' ) );
+					$this->text_row( 'account_created_note', __( 'Подпись на экране «Готово» после автосоздания аккаунта', 'amaressence-palette-quiz' ), $settings['account_created_note'], __( 'Показывается гостю, для которого только что создали аккаунт по email.', 'amaressence-palette-quiz' ) );
 				} elseif ( 'texts' === $tab ) {
 					$this->render_section( __( 'Экран приветствия', 'amaressence-palette-quiz' ), __( 'Плейсхолдер {points} в любом поле будет заменён на число баллов из вкладки «Баллы».', 'amaressence-palette-quiz' ) );
 					$this->text_row( 'logo_url', __( 'URL логотипа (необязательно)', 'amaressence-palette-quiz' ), $settings['logo_url'], __( 'Если пусто — показывается фирменный SVG-значок с надписью amarèssence.', 'amaressence-palette-quiz' ) );
@@ -211,12 +211,10 @@ class APQ_Admin {
 					$this->text_row( 'gift_desc', __( 'Описание подарка', 'amaressence-palette-quiz' ), $settings['gift_desc'], '' );
 					$this->text_row( 'gift_button', __( 'Текст кнопки получения', 'amaressence-palette-quiz' ), $settings['gift_button'], '' );
 
-					$this->render_section( __( 'Поле email для гостей', 'amaressence-palette-quiz' ), __( 'Показывается на экране результата неавторизованным посетителям: гость указывает email аккаунта, на который зачислить баллы.', 'amaressence-palette-quiz' ) );
+					$this->render_section( __( 'Поле email для гостей', 'amaressence-palette-quiz' ), __( 'Показывается на экране результата неавторизованным посетителям: гость указывает email. Если аккаунта с таким email нет, он создаётся автоматически, а на почту уходит письмо с временным паролем (настройки — на вкладке «Кнопка и письмо»).', 'amaressence-palette-quiz' ) );
 					$this->text_row( 'claim_email_label', __( 'Подпись над полем', 'amaressence-palette-quiz' ), $settings['claim_email_label'], '' );
 					$this->text_row( 'claim_email_placeholder', __( 'Плейсхолдер поля', 'amaressence-palette-quiz' ), $settings['claim_email_placeholder'], '' );
 					$this->text_row( 'claim_email_hint', __( 'Подсказка под полем', 'amaressence-palette-quiz' ), $settings['claim_email_hint'], '' );
-					$this->text_row( 'no_account_text', __( 'Текст «аккаунт не найден»', 'amaressence-palette-quiz' ), $settings['no_account_text'], '' );
-					$this->text_row( 'no_account_button', __( 'Кнопка «создать аккаунт»', 'amaressence-palette-quiz' ), $settings['no_account_button'], '' );
 
 					$this->render_section( __( 'Финальный экран', 'amaressence-palette-quiz' ), '' );
 					$this->text_row( 'success_title', __( 'Заголовок успеха', 'amaressence-palette-quiz' ), $settings['success_title'], '' );
@@ -281,6 +279,18 @@ class APQ_Admin {
 			<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
 			<td>
 				<input type="text" class="regular-text" style="width:100%;max-width:640px;" id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value ); ?>">
+				<?php if ( $desc ) : ?><p class="description"><?php echo esc_html( $desc ); ?></p><?php endif; ?>
+			</td>
+		</tr>
+		<?php
+	}
+
+	protected function textarea_row( $key, $label, $value, $desc = '' ) {
+		?>
+		<tr>
+			<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
+			<td>
+				<textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" rows="8" style="width:100%;max-width:640px;font-family:monospace;"><?php echo esc_textarea( $value ); ?></textarea>
 				<?php if ( $desc ) : ?><p class="description"><?php echo esc_html( $desc ); ?></p><?php endif; ?>
 			</td>
 		</tr>
@@ -600,7 +610,7 @@ class APQ_Admin {
 		$tab       = isset( $_POST['apq_tab'] ) ? sanitize_key( wp_unslash( $_POST['apq_tab'] ) ) : 'general';
 		$tab_boxes = array(
 			'general' => array( 'plugin_enabled', 'logs_enabled', 'one_attempt_per_email' ),
-			'popup'   => array( 'popup_enabled' ),
+			'account' => array( 'popup_enabled', 'account_email_enabled' ),
 		);
 		$data = wp_unslash( $_POST ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- сан-ция в APQ_Settings::update().
 
@@ -608,7 +618,7 @@ class APQ_Admin {
 			$data = $this->prepare_content_settings_from_post( $data );
 		}
 
-		foreach ( array( 'plugin_enabled', 'logs_enabled', 'one_attempt_per_email', 'popup_enabled' ) as $box ) {
+		foreach ( array( 'plugin_enabled', 'logs_enabled', 'one_attempt_per_email', 'popup_enabled', 'account_email_enabled' ) as $box ) {
 			$on_this_tab = isset( $tab_boxes[ $tab ] ) && in_array( $box, $tab_boxes[ $tab ], true );
 
 			if ( ! $on_this_tab && ! isset( $data[ $box ] ) ) {

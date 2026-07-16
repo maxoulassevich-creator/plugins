@@ -53,9 +53,10 @@ class RRP_Email_Manager {
 	public static function get_email_template_definitions() {
 		return array(
 			'first_order_referral' => array(
-				'label'                    => __( 'Письмо после первого оплаченного заказа', 'relod-referral-points' ),
-				'description'              => __( 'Отправляется покупателю после первого заказа, когда заказ достиг выбранного статуса. В письме можно показать реферальную ссылку, данные заказа и любые дополнительные блоки.', 'relod-referral-points' ),
+				'label'                    => __( 'Письмо о заказе с реферальной ссылкой', 'relod-referral-points' ),
+				'description'              => __( 'Отправляется покупателю, когда заказ достигает выбранного статуса (по умолчанию — «оплачен/в обработке»). По умолчанию приходит на каждый заказ (можно ограничить только первым заказом). В письме показывается персональная реферальная ссылка покупателя, данные заказа и любые дополнительные блоки.', 'relod-referral-points' ),
 				'supports_order_status'    => true,
+				'supports_send_scope'      => true,
 				'supports_order_details'   => true,
 				'supports_referral_link'   => true,
 			),

@@ -433,8 +433,9 @@ HTML;
 			'first_order_referral' => array(
 				'enabled'               => 'yes',
 				'send_order_status'     => 'paid',
+				'send_scope'            => 'every_order',
 				'subject'               => 'Спасибо за ваш заказ #{order_number} — ваша реферальная ссылка',
-				'body'                  => "<div class=\"rrp-email-hero\">\n<h1>Здравствуйте, {customer_name}!</h1>\n<p>Спасибо за ваш первый заказ №{order_number} в магазине {site_name}.</p>\n<p>Ваша персональная реферальная ссылка:</p>\n<p><a class=\"rrp-email-button\" href=\"{referral_link}\">Поделиться ссылкой</a></p>\n<p class=\"rrp-email-link\">{referral_link}</p>\n</div>",
+				'body'                  => "<div class=\"rrp-email-hero\">\n<h1>Здравствуйте, {customer_name}!</h1>\n<p>Спасибо за ваш заказ №{order_number} в магазине {site_name}.</p>\n<p>Ваша персональная реферальная ссылка:</p>\n<p><a class=\"rrp-email-button\" href=\"{referral_link}\">Поделиться ссылкой</a></p>\n<p class=\"rrp-email-link\">{referral_link}</p>\n</div>",
 				'css'                   => ".rrp-email-hero{padding:24px;background:#f7f7f7;border-radius:12px}.rrp-email-hero h1{margin-top:0}.rrp-email-button{display:inline-block;padding:12px 18px;background:#2271b1;color:#ffffff!important;text-decoration:none;border-radius:8px}.rrp-email-link{word-break:break-all;color:#555}",
 				'append_order_details'  => 'yes',
 				'append_referral_block' => 'yes',
@@ -751,6 +752,7 @@ HTML;
 			$result[ $type ] = array(
 				'enabled'               => $this->sanitize_checkbox( isset( $source['enabled'] ) ? $source['enabled'] : $default_template['enabled'] ),
 				'send_order_status'     => ! empty( $default_template['send_order_status'] ) ? $this->sanitize_email_send_status( isset( $source['send_order_status'] ) ? $source['send_order_status'] : $default_template['send_order_status'] ) : '',
+				'send_scope'            => isset( $default_template['send_scope'] ) ? $this->sanitize_email_send_scope( isset( $source['send_scope'] ) ? $source['send_scope'] : $default_template['send_scope'] ) : '',
 				'subject'               => $this->sanitize_subject( isset( $source['subject'] ) ? $source['subject'] : $default_template['subject'], $default_template['subject'] ),
 				'body'                  => $this->sanitize_email_body( isset( $source['body'] ) ? $source['body'] : $default_template['body'], $default_template['body'] ),
 				'css'                   => $this->sanitize_email_css( isset( $source['css'] ) ? $source['css'] : $default_template['css'] ),
@@ -942,6 +944,18 @@ HTML;
 	 * @param string $value Raw value.
 	 * @return string
 	 */
+	/**
+	 * Sanitize email send scope (every order vs first order only).
+	 *
+	 * @param string $value Raw value.
+	 * @return string
+	 */
+	protected function sanitize_email_send_scope( $value ) {
+		$value = sanitize_key( (string) $value );
+
+		return in_array( $value, array( 'every_order', 'first_order' ), true ) ? $value : 'every_order';
+	}
+
 	protected function sanitize_email_send_status( $value ) {
 		$value = sanitize_key( str_replace( 'wc-', '', (string) $value ) );
 

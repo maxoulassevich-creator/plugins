@@ -70,7 +70,7 @@ class RRP_Referral_Tracker {
 		$this->clicks_table    = $wpdb->prefix . 'rrp_referral_clicks';
 
 		add_action( 'init', array( $this, 'capture_referral_from_request' ), 5 );
-		add_action( 'wp', array( $this, 'sync_referral_to_wc_session' ), 5 );
+		add_action( 'wp', array( $this, 'reaffirm_referral_context' ), 5 );
 		add_action( 'woocommerce_checkout_create_order', array( $this, 'attach_referral_to_order' ), 20, 2 );
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'clear_tracking_after_checkout' ), 30, 3 );
 	}
@@ -135,28 +135,81 @@ class RRP_Referral_Tracker {
 	}
 
 	/**
-	 * Sync referral context into WooCommerce session.
+	 * Re-affirm the referral context on every front-end page load.
+	 *
+	 * Раньше здесь читался ТОЛЬКО cookie, и любая неудачная проверка cookie
+	 * (истёк срок/битая подпись) вызывала clear_tracking(), который стирал сразу
+	 * все хранилища — поэтому реферальная привязка терялась при переходе на
+	 * внутренние страницы. Теперь берём контекст из любого уцелевшего источника
+	 * (user meta → WC-сессия → cookie) и «лечим» все хранилища из него: cookie
+	 * пересоздаётся, если пропал, а WC-сессия и user meta поддерживаются в
+	 * актуальном состоянии. Так переход по внутренним страницам не рвёт привязку.
 	 *
 	 * @return void
 	 */
-	public function sync_referral_to_wc_session() {
-		$context = $this->get_cookie_context();
-
-		if ( ! $context || empty( $context['referrer_profile_id'] ) ) {
+	public function reaffirm_referral_context() {
+		if ( ! $this->is_enabled() ) {
 			return;
 		}
 
-		if ( function_exists( 'WC' ) && WC()->session ) {
-			WC()->session->set( 'rrp_referrer_profile_id', (int) $context['referrer_profile_id'] );
-			WC()->session->set( 'rrp_referral_code', sanitize_text_field( $context['referral_code'] ) );
-			WC()->session->set( 'rrp_referral_expires_at', absint( $context['expires_at'] ) );
-			WC()->session->set( 'rrp_referral_click_id', absint( $context['click_id'] ) );
+		$context = $this->get_active_referral_context();
+
+		if ( ! $context || empty( $context['referrer_profile_id'] ) || empty( $context['referral_code'] ) ) {
+			return;
 		}
 
+		$profile_id = (int) $context['referrer_profile_id'];
+		$code       = sanitize_text_field( $context['referral_code'] );
+		$click_id   = ! empty( $context['click_id'] ) ? absint( $context['click_id'] ) : 0;
+		$source     = isset( $context['source'] ) ? $context['source'] : '';
+		$min_ttl    = time() + ( 12 * HOUR_IN_SECONDS );
+
+		// Cookie — основное долгоживущее хранилище для гостей. Пересоздаём его,
+		// если контекст пришёл не из cookie (значит, cookie пропал) или срок близок к концу.
+		$needs_cookie = ( 'cookie' !== $source );
+
+		if ( 'cookie' === $source && ! empty( $context['expires_at'] ) ) {
+			$expires_at = absint( $context['expires_at'] );
+
+			if ( $expires_at < $min_ttl ) {
+				$expires_at   = time() + ( absint( $this->settings->get( 'referral_cookie_days', 30 ) ) * DAY_IN_SECONDS );
+				$needs_cookie = true;
+			}
+		} else {
+			$expires_at = time() + ( absint( $this->settings->get( 'referral_cookie_days', 30 ) ) * DAY_IN_SECONDS );
+		}
+
+		if ( $needs_cookie ) {
+			$this->set_cookie_context(
+				array(
+					'referrer_profile_id' => $profile_id,
+					'referral_code'       => $code,
+					'click_id'            => $click_id,
+					'expires_at'          => $expires_at,
+				)
+			);
+		}
+
+		// WooCommerce-сессия: поддерживаем только если значения отличаются,
+		// чтобы не помечать сессию «грязной» и не писать в БД на каждой странице.
+		if ( function_exists( 'WC' ) && WC()->session ) {
+			$session_profile = absint( WC()->session->get( 'rrp_referrer_profile_id', 0 ) );
+			$session_code    = sanitize_text_field( WC()->session->get( 'rrp_referral_code', '' ) );
+
+			if ( $session_profile !== $profile_id || $session_code !== $code ) {
+				WC()->session->set( 'rrp_referrer_profile_id', $profile_id );
+				WC()->session->set( 'rrp_referral_code', $code );
+				WC()->session->set( 'rrp_referral_expires_at', $expires_at );
+				WC()->session->set( 'rrp_referral_click_id', $click_id );
+			}
+		}
+
+		// User meta (для авторизованных): update_user_meta сам пропустит запись, если значение не изменилось.
 		if ( is_user_logged_in() ) {
-			update_user_meta( get_current_user_id(), '_rrp_pending_referrer_profile_id', (int) $context['referrer_profile_id'] );
-			update_user_meta( get_current_user_id(), '_rrp_pending_referral_code', sanitize_text_field( $context['referral_code'] ) );
-			update_user_meta( get_current_user_id(), '_rrp_pending_referral_click_id', absint( $context['click_id'] ) );
+			$user_id = get_current_user_id();
+			update_user_meta( $user_id, '_rrp_pending_referrer_profile_id', $profile_id );
+			update_user_meta( $user_id, '_rrp_pending_referral_code', $code );
+			update_user_meta( $user_id, '_rrp_pending_referral_click_id', $click_id );
 		}
 	}
 
@@ -890,18 +943,22 @@ class RRP_Referral_Tracker {
 		$path     = defined( 'COOKIEPATH' ) && COOKIEPATH ? COOKIEPATH : '/';
 		$domain   = defined( 'COOKIE_DOMAIN' ) ? COOKIE_DOMAIN : '';
 
-		setcookie(
-			$name,
-			$value,
-			array(
-				'expires'  => $expire,
-				'path'     => $path,
-				'domain'   => $domain,
-				'secure'   => $secure,
-				'httponly' => $httponly,
-				'samesite' => 'Lax',
-			)
-		);
+		// Пишем cookie только если заголовки ещё не отправлены — иначе получим
+		// warning. Остальные хранилища (WC-сессия, user meta) подстрахуют привязку.
+		if ( ! headers_sent() ) {
+			setcookie(
+				$name,
+				$value,
+				array(
+					'expires'  => $expire,
+					'path'     => $path,
+					'domain'   => $domain,
+					'secure'   => $secure,
+					'httponly' => $httponly,
+					'samesite' => 'Lax',
+				)
+			);
+		}
 
 		$_COOKIE[ $name ] = $value;
 	}

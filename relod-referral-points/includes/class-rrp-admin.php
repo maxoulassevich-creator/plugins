@@ -380,6 +380,19 @@ class RRP_Admin {
 			echo '</select>';
 			echo '</div>';
 		}
+
+		if ( ! empty( $definition['supports_send_scope'] ) ) {
+			$current_scope = isset( $template['send_scope'] ) ? $template['send_scope'] : 'every_order';
+			echo '<div class="rrp-email-field">';
+			echo '<label for="rrp_email_scope_' . esc_attr( $type ) . '"><strong>' . esc_html__( 'Для каких заказов', 'relod-referral-points' ) . '</strong></label>';
+			echo '<select id="rrp_email_scope_' . esc_attr( $type ) . '" name="rrp_settings[email_templates][' . esc_attr( $type ) . '][send_scope]">';
+			foreach ( $this->get_email_send_scope_options() as $option_value => $option_label ) {
+				echo '<option value="' . esc_attr( $option_value ) . '" ' . selected( $option_value, $current_scope, false ) . '>' . esc_html( $option_label ) . '</option>';
+			}
+			echo '</select>';
+			echo '<p class="description">' . esc_html__( 'По умолчанию письмо с реферальной ссылкой приходит на каждый заказ покупателя.', 'relod-referral-points' ) . '</p>';
+			echo '</div>';
+		}
 		echo '</div>';
 
 		echo '<div class="rrp-email-field rrp-email-field-full">';
@@ -587,6 +600,18 @@ class RRP_Admin {
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Options for the email send scope selector.
+	 *
+	 * @return array
+	 */
+	protected function get_email_send_scope_options() {
+		return array(
+			'every_order' => __( 'Каждый заказ покупателя', 'relod-referral-points' ),
+			'first_order' => __( 'Только первый заказ покупателя', 'relod-referral-points' ),
+		);
 	}
 
 	/**
