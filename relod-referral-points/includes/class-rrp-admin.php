@@ -277,17 +277,6 @@ class RRP_Admin {
 				$this->render_number_row( 'points_expiration_batch_limit', __( 'Лимит операций за один запуск', 'relod-referral-points' ), $settings['points_expiration_batch_limit'], 10, 1000, __( 'Ограничивает нагрузку: сколько записей ledger обрабатывать за один запуск.', 'relod-referral-points' ) );
 				break;
 
-			case 'email':
-				$this->render_checkbox_row( 'email_enabled', __( 'Включить письмо после первого оплаченного заказа', 'relod-referral-points' ), $settings['email_enabled'] );
-				$this->render_select_row( 'email_send_order_status', __( 'Когда отправлять письмо', 'relod-referral-points' ), $this->get_email_send_status_options(), $settings['email_send_order_status'] );
-				$this->render_text_row( 'email_subject', __( 'Тема письма', 'relod-referral-points' ), $settings['email_subject'], __( 'Можно использовать переменные из подсказки ниже.', 'relod-referral-points' ) );
-				$this->render_textarea_row( 'email_body', __( 'HTML-шаблон письма', 'relod-referral-points' ), $settings['email_body'], 14, __( 'Можно использовать HTML и динамические переменные. CSS задаётся отдельным полем ниже.', 'relod-referral-points' ) );
-				$this->render_textarea_row( 'email_css', __( 'CSS письма', 'relod-referral-points' ), $settings['email_css'], 8, __( 'Введите только CSS без тега <style>. Плагин встроит CSS в HTML как inline-стили, чтобы письмо корректно отображалось в Gmail и других почтовых клиентах.', 'relod-referral-points' ) );
-				$this->render_checkbox_row( 'email_append_order_details', __( 'Автоматически добавлять таблицу заказа после шаблона', 'relod-referral-points' ), $settings['email_append_order_details'] );
-				$this->render_checkbox_row( 'email_append_referral_block', __( 'Автоматически добавлять блок реферальной ссылки после шаблона', 'relod-referral-points' ), $settings['email_append_referral_block'] );
-				$this->render_email_variables_help();
-				break;
-
 			case 'account':
 				$this->render_text_row( 'account_endpoint', __( 'Слаг раздела в личном кабинете', 'relod-referral-points' ), $settings['account_endpoint'], __( 'Например: referrals', 'relod-referral-points' ) );
 				$this->render_textarea_row( 'account_intro_text', __( 'Поясняющий текст в личном кабинете', 'relod-referral-points' ), $settings['account_intro_text'], 6, __( 'Показывается над ссылкой и историей начислений.', 'relod-referral-points' ) );
@@ -590,29 +579,6 @@ class RRP_Admin {
 	}
 
 	/**
-	 * Render dynamic variables help for email template.
-	 *
-	 * @return void
-	 */
-	protected function render_email_variables_help() {
-		$variables = $this->get_email_template_variables();
-
-		$html  = '<div class="rrp-email-help">';
-		$html .= '<p class="description">' . esc_html__( 'Динамические переменные для темы, HTML-шаблона и CSS:', 'relod-referral-points' ) . '</p>';
-		$html .= '<table class="widefat striped rrp-vars-table"><tbody>';
-
-		foreach ( $variables as $variable => $description ) {
-			$html .= '<tr><td><code>' . esc_html( $variable ) . '</code></td><td>' . esc_html( $description ) . '</td></tr>';
-		}
-
-		$html .= '</tbody></table>';
-		$html .= '<p class="description">' . esc_html__( 'Если вы вставляете {order_details_table} или {referral_link_block} прямо в шаблон, отключите автоматическое добавление соответствующего блока, чтобы он не продублировался.', 'relod-referral-points' ) . '</p>';
-		$html .= '</div>';
-
-		$this->render_custom_input_row( __( 'Подсказка по переменным', 'relod-referral-points' ), $html );
-	}
-
-	/**
 	 * Render referral links history tab.
 	 *
 	 * @return void
@@ -889,8 +855,6 @@ class RRP_Admin {
 			),
 			'email'   => array(
 				'email_enabled',
-				'email_append_order_details',
-				'email_append_referral_block',
 			),
 		);
 

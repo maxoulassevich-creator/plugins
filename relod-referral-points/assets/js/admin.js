@@ -80,6 +80,21 @@
     return /<(?:!doctype\s+html|html|head|body)\b/i.test(String(html || ''));
   }
 
+  function appendBlock(html, block) {
+    html = String(html || '');
+    block = String(block || '');
+
+    if (!block) {
+      return html;
+    }
+
+    if (/<\/body\s*>/i.test(html)) {
+      return html.replace(/<\/body\s*>/i, block + '</body>');
+    }
+
+    return html + block;
+  }
+
   function injectCssIntoDocument(html, css) {
     if (!css) {
       return html;
@@ -132,11 +147,11 @@
     body = applyPlaceholders(body, placeholders);
 
     if (appendOrder && rawBody.indexOf('{order_details_table}') === -1 && orderBlock) {
-      body += orderBlock;
+      body = appendBlock(body, orderBlock);
     }
 
     if (appendReferral && rawBody.indexOf('{referral_link_block}') === -1 && referralBlock) {
-      body += referralBlock;
+      body = appendBlock(body, referralBlock);
     }
 
     css = applyPlaceholders(css, placeholders);

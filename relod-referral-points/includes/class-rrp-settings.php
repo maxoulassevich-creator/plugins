@@ -424,6 +424,269 @@ HTML;
 	}
 
 	/**
+	 * Default full HTML body for the first-order referral email.
+	 *
+	 * Standalone, brand-matched document with fully inline styles so it renders
+	 * correctly in Gmail and other clients and never needs the WooCommerce frame.
+	 *
+	 * @return string
+	 */
+	protected static function first_order_email_body_default() {
+		return <<<'HTML'
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+  <title>Спасибо за заказ — amarèssence</title>
+  <!--[if mso]>
+  <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+  <![endif]-->
+  <style type="text/css">
+    body,
+    table,
+    td,
+    a {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table,
+    td {
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    img {
+      -ms-interpolation-mode: bicubic;
+      border: 0;
+      outline: none;
+      text-decoration: none;
+    }
+
+    @media only screen and (max-width:620px) {
+      .email-outer {
+        padding: 0 !important;
+      }
+
+      .email-card {
+        border-radius: 0 !important;
+      }
+
+      .email-pad {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+
+      .hdr-pad {
+        padding: 22px 20px !important;
+      }
+
+      .status-pad {
+        padding: 36px 20px 8px !important;
+      }
+
+      .ftr-pad {
+        padding: 24px 20px !important;
+      }
+
+      .support-pad {
+        padding: 14px 18px !important;
+      }
+
+      .cta-btn {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+      }
+    }
+  </style>
+</head>
+
+<body style="margin:0; padding:0; background-color:#e8e3d8; font-family:Arial, Helvetica, sans-serif;
+             -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;">
+
+  <!-- PREHEADER -->
+  <div
+    style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#e8e3d8;">
+    Спасибо за заказ №{order_number}! Дарите друзьям скидку по личной ссылке — и получайте баллы.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  </div>
+
+  <!-- OUTER WRAPPER -->
+  <table class="email-outer" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+    style="background-color:#e8e3d8; padding:40px 16px;">
+    <tr>
+      <td align="center" valign="top">
+
+        <!-- EMAIL CARD -->
+        <table class="email-card" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"
+          style="max-width:600px; width:100%; background-color:#f7f3ea; border-radius:4px;">
+
+
+          <!-- ════ HEADER ════ -->
+          <tr>
+            <td class="hdr-pad" style="background-color:#662132; padding:24px 40px; text-align:center;">
+              <a href="https://amaressence.ru/" target="_blank" style="display:inline-block; text-decoration:none;">
+                <img src="https://eimage.sendsay.ru/image/x_177486673298052/logo%2Dwhite2.png" alt="amarèssence"
+                  width="160" style="display:block; width:160px; max-width:160px; height:auto; border:0; outline:none;">
+              </a>
+            </td>
+          </tr>
+
+
+          <!-- ════ STATUS ICON + HEADING ════ -->
+          <tr>
+            <td class="status-pad" style="background-color:#f7f3ea; padding:40px 40px 4px; text-align:center;">
+
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center"
+                style="margin:0 auto 18px;">
+                <tr>
+                  <td align="center" valign="middle" style="width:54px; height:54px; background-color:#d0e3ff; border-radius:27px;
+                           text-align:center; vertical-align:middle; font-family:Arial, Helvetica, sans-serif;
+                           font-size:28px; line-height:54px; color:#662132; font-weight:700;">
+                    &#10003;
+                  </td>
+                </tr>
+              </table>
+
+              <h1 style="margin:0 0 10px; font-family:Georgia, 'Times New Roman', serif; font-size:26px;
+                          font-weight:400; color:#662132; letter-spacing:0.02em; line-height:1.3;">
+                Спасибо за заказ!
+              </h1>
+            </td>
+          </tr>
+
+
+          <!-- ════ GREETING ════ -->
+          <tr>
+            <td class="email-pad" style="padding:22px 40px 0;">
+              <p style="margin:0; font-family:Arial, Helvetica, sans-serif; font-size:15px;
+                         color:#3d3028; line-height:1.75;">
+                {customer_first_name}, ваш заказ №{order_number} успешно оформлен в магазине {site_name}. Мы уже
+                занимаемся им и сообщим, когда он будет в пути.
+              </p>
+            </td>
+          </tr>
+
+
+          <!-- ════ REFERRAL INTRO ════ -->
+          <tr>
+            <td class="email-pad" style="padding:26px 40px 0;">
+              <p style="margin:0 0 6px; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:700;
+                         letter-spacing:0.14em; color:#662132; text-transform:uppercase; line-height:1;">
+                Реферальная программа
+              </p>
+              <h2 style="margin:0 0 10px; font-family:Georgia, 'Times New Roman', serif; font-size:20px;
+                          font-weight:400; color:#662132; line-height:1.3;">
+                Дарите скидку — получайте баллы
+              </h2>
+              <p style="margin:0; font-family:Arial, Helvetica, sans-serif; font-size:14px;
+                         color:#3d3028; line-height:1.7;">
+                Поделитесь личной ссылкой с друзьями. Когда они оформят первый заказ, вам начислим бонусные баллы —
+                <strong style="white-space:nowrap;">1 балл = 1&nbsp;рубль</strong> скидки на следующие покупки.
+              </p>
+            </td>
+          </tr>
+
+
+          <!-- ════ REFERRAL LINK BLOCK ════ -->
+          <tr>
+            <td class="email-pad" style="padding:0 40px;">
+              {referral_link_block}
+            </td>
+          </tr>
+
+
+          <!-- ════ DIVIDER ════ -->
+          <tr>
+            <td class="email-pad" style="padding:28px 40px 0;">
+              <div style="height:1px; background-color:rgba(102,33,50,0.12); line-height:1px; font-size:1px;">&nbsp;
+              </div>
+            </td>
+          </tr>
+
+
+          <!-- ════ ORDER DETAILS ════ -->
+          <tr>
+            <td class="email-pad" style="padding:8px 40px 0;">
+              {order_details_table}
+            </td>
+          </tr>
+
+
+          <!-- ════ SUPPORT BLOCK ════ -->
+          <tr>
+            <td class="email-pad" style="padding:24px 40px 36px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                style="background-color:#ffffff; border-radius:4px; border:1px solid rgba(102,33,50,0.10);">
+                <tr>
+                  <td class="support-pad" style="padding:18px 22px;">
+                    <p style="margin:0 0 4px; font-family:Arial, Helvetica, sans-serif; font-size:13px;
+                               font-weight:600; color:#3d3028;">
+                      Есть вопросы по заказу?
+                    </p>
+                    <p style="margin:0; font-family:Arial, Helvetica, sans-serif; font-size:13px;
+                               color:#9a8880; line-height:1.65;">
+                      Ответьте на это письмо или напишите нам на
+                      <a href="mailto:info@amaressence.ru"
+                        style="color:#662132; text-decoration:none; font-weight:600;">info@amaressence.ru</a>.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+
+          <!-- ════ FOOTER ════ -->
+          <tr>
+            <td class="ftr-pad" style="background-color:#662132; padding:28px 40px;
+                                        text-align:center; border-radius:0 0 4px 4px;">
+              <a href="https://amaressence.ru/" target="_blank" style="display:inline-block; text-decoration:none;">
+                <img src="https://eimage.sendsay.ru/image/x_177486673298052/logo%2Dwhite2.png" alt="amarèssence"
+                  width="120" style="display:block; width:120px; max-width:120px; height:auto;
+                            border:0; outline:none; opacity:0.9; margin:0 auto 16px;">
+              </a>
+
+              <p style="margin:0 0 16px; font-size:0; line-height:0;">
+                <a href="https://vk.com/amaressence" target="_blank" style="font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:600;
+                         letter-spacing:0.12em; color:#f0e6ea; text-decoration:none;
+                         text-transform:uppercase; margin:0 8px;">VK</a>
+                <a href="https://t.me/amaressence" target="_blank" style="font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:600;
+                         letter-spacing:0.12em; color:#f0e6ea; text-decoration:none;
+                         text-transform:uppercase; margin:0 8px;">Telegram</a>
+              </p>
+
+              <p style="margin:0 0 6px; font-family:Arial, Helvetica, sans-serif; font-size:11px;
+                         color:#e9dbe0; line-height:1.65;">
+                Вы получили это письмо, потому что оформили заказ на сайте amarèssence.
+              </p>
+              <p style="margin:0; font-family:Arial, Helvetica, sans-serif; font-size:10px;
+                         color:#c9a9b4; line-height:1.5;">
+                © 2026 amarèssence. Все права защищены.
+              </p>
+            </td>
+          </tr>
+
+
+        </table>
+        <!-- /EMAIL CARD -->
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+
+</html>
+HTML;
+	}
+
+	/**
 	 * Get default email templates.
 	 *
 	 * @return array
@@ -434,29 +697,38 @@ HTML;
 				'enabled'               => 'yes',
 				'send_order_status'     => 'paid',
 				'subject'               => 'Спасибо за ваш заказ #{order_number} — ваша реферальная ссылка',
-				'body'                  => "<div class=\"rrp-email-hero\">\n<h1>Здравствуйте, {customer_name}!</h1>\n<p>Спасибо за ваш первый заказ №{order_number} в магазине {site_name}.</p>\n<p>Ваша персональная реферальная ссылка:</p>\n<p><a class=\"rrp-email-button\" href=\"{referral_link}\">Поделиться ссылкой</a></p>\n<p class=\"rrp-email-link\">{referral_link}</p>\n</div>",
-				'css'                   => ".rrp-email-hero{padding:24px;background:#f7f7f7;border-radius:12px}.rrp-email-hero h1{margin-top:0}.rrp-email-button{display:inline-block;padding:12px 18px;background:#2271b1;color:#ffffff!important;text-decoration:none;border-radius:8px}.rrp-email-link{word-break:break-all;color:#555}",
-				'append_order_details'  => 'yes',
-				'append_referral_block' => 'yes',
+				'body'                  => self::first_order_email_body_default(),
+				'css'                   => '',
+				'append_order_details'  => 'no',
+				'append_referral_block' => 'no',
 				'blocks'                => array(
-					'order_details_table' => '<h2 style="margin-top:24px;">{label_order_details}</h2>
-<table cellspacing="0" cellpadding="0" style="width:100%; border-collapse: collapse; margin-bottom:16px;">
-	<tr><td style="padding:8px;border:1px solid #e5e5e5;"><strong>{label_order_number}</strong></td><td style="padding:8px;border:1px solid #e5e5e5;">{order_number}</td></tr>
-	<tr><td style="padding:8px;border:1px solid #e5e5e5;"><strong>{label_order_date}</strong></td><td style="padding:8px;border:1px solid #e5e5e5;">{order_date}</td></tr>
-	<tr><td style="padding:8px;border:1px solid #e5e5e5;"><strong>{label_order_total}</strong></td><td style="padding:8px;border:1px solid #e5e5e5;">{order_total}</td></tr>
+					'order_details_table' => '<h2 style="margin:20px 0 12px; font-family:Georgia, \'Times New Roman\', serif; font-size:18px; font-weight:400; color:#662132;">{label_order_details}</h2>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; border-collapse:collapse; margin-bottom:18px; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#3d3028;">
+	<tr><td style="padding:9px 0; border-bottom:1px solid rgba(102,33,50,0.12);">{label_order_number}</td><td style="padding:9px 0; border-bottom:1px solid rgba(102,33,50,0.12); text-align:right; font-weight:700;">{order_number}</td></tr>
+	<tr><td style="padding:9px 0; border-bottom:1px solid rgba(102,33,50,0.12);">{label_order_date}</td><td style="padding:9px 0; border-bottom:1px solid rgba(102,33,50,0.12); text-align:right;">{order_date}</td></tr>
+	<tr><td style="padding:9px 0;">{label_order_total}</td><td style="padding:9px 0; text-align:right; font-weight:700; color:#662132;">{order_total}</td></tr>
 </table>
-<table cellspacing="0" cellpadding="0" style="width:100%; border-collapse: collapse;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; border-collapse:collapse; font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#3d3028;">
 	<thead>
 		<tr>
-			<th style="padding:8px;border:1px solid #e5e5e5;text-align:left;">{label_product}</th>
-			<th style="padding:8px;border:1px solid #e5e5e5;text-align:center;">{label_quantity}</th>
-			<th style="padding:8px;border:1px solid #e5e5e5;text-align:right;">{label_amount}</th>
+			<th style="padding:8px 10px; text-align:left; background-color:#efe7d9; color:#662132; font-size:11px; letter-spacing:0.06em; text-transform:uppercase;">{label_product}</th>
+			<th style="padding:8px 10px; text-align:center; background-color:#efe7d9; color:#662132; font-size:11px; letter-spacing:0.06em; text-transform:uppercase;">{label_quantity}</th>
+			<th style="padding:8px 10px; text-align:right; background-color:#efe7d9; color:#662132; font-size:11px; letter-spacing:0.06em; text-transform:uppercase;">{label_amount}</th>
 		</tr>
 	</thead>
 	<tbody>{order_items_rows}</tbody>
 </table>',
-					'order_item_row'      => '<tr><td style="padding:8px;border:1px solid #e5e5e5;">{item_name}</td><td style="padding:8px;border:1px solid #e5e5e5;text-align:center;">{item_quantity}</td><td style="padding:8px;border:1px solid #e5e5e5;text-align:right;">{item_subtotal}</td></tr>',
-					'referral_link_block' => '<h2 style="margin-top:24px;">{label_referral_link}</h2><p><a href="{referral_link}">{referral_link}</a></p>',
+					'order_item_row'      => '<tr><td style="padding:9px 10px; border-bottom:1px solid rgba(102,33,50,0.10);">{item_name}</td><td style="padding:9px 10px; border-bottom:1px solid rgba(102,33,50,0.10); text-align:center;">{item_quantity}</td><td style="padding:9px 10px; border-bottom:1px solid rgba(102,33,50,0.10); text-align:right;">{item_subtotal}</td></tr>',
+					'referral_link_block' => '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin:20px 0 0;">
+	<tr>
+		<td style="background-color:#d0e3ff; border-radius:4px; padding:24px 28px; text-align:center;">
+			<p style="margin:0 0 6px; font-family:Arial, Helvetica, sans-serif; font-size:11px; font-weight:700; letter-spacing:0.14em; color:#662132; text-transform:uppercase; line-height:1;">{label_referral_link}</p>
+			<p style="margin:0 0 18px; font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#3d3028; line-height:1.6;">Скопируйте ссылку или отправьте её другу одним нажатием.</p>
+			<a class="cta-btn" href="{referral_link}" target="_blank" style="display:inline-block; background-color:#662132; color:#f7f3ea; font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.12em; text-decoration:none; text-transform:uppercase; padding:15px 44px; border-radius:2px;">Поделиться ссылкой</a>
+			<p style="margin:16px 0 0; font-family:Arial, Helvetica, sans-serif; font-size:13px; line-height:1.5; word-break:break-all;"><a href="{referral_link}" target="_blank" style="color:#662132; text-decoration:underline;">{referral_link}</a></p>
+		</td>
+	</tr>
+</table>',
 				),
 			),
 			'points_expiring' => array(

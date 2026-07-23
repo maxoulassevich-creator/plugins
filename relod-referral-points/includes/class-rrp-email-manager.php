@@ -145,14 +145,8 @@ class RRP_Email_Manager {
 		$subject       = $this->replace_placeholders( $template['subject'], $order, $referral_link );
 		$body          = isset( $template['body'] ) ? $template['body'] : '';
 		$content       = $this->build_email_content( $order, $body, $referral_link, $template );
-		$headers       = array( 'Content-Type: text/html; charset=UTF-8' );
-
-		if ( function_exists( 'WC' ) && WC()->mailer() && ! $this->looks_like_full_email_document( $content ) ) {
-			$mailer  = WC()->mailer();
-			$message = $mailer->wrap_message( $subject, $content );
-		} else {
-			$message = $content;
-		}
+		$headers       = $this->build_email_headers();
+		$message       = $this->ensure_full_document( $content, $subject );
 
 		$sent = wp_mail( $email, $subject, $message, $headers );
 
@@ -200,14 +194,8 @@ class RRP_Email_Manager {
 		$replacements = $this->get_points_expiration_replacements( $profile, $expiring_points, $expire_date, $days_left, $context );
 		$subject = $this->replace_generic_placeholders( isset( $template['subject'] ) ? $template['subject'] : '', $replacements );
 		$content = $this->build_points_expiring_email_content( isset( $template['body'] ) ? $template['body'] : '', $template, $replacements );
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-
-		if ( function_exists( 'WC' ) && WC()->mailer() && ! $this->looks_like_full_email_document( $content ) ) {
-			$mailer  = WC()->mailer();
-			$message = $mailer->wrap_message( $subject, $content );
-		} else {
-			$message = $content;
-		}
+		$headers = $this->build_email_headers();
+		$message = $this->ensure_full_document( $content, $subject );
 
 		$sent = wp_mail( $email, $subject, $message, $headers );
 
@@ -405,18 +393,115 @@ class RRP_Email_Manager {
 		);
 
 		if ( 'yes' === $template['append_order_details'] && ! $has_order_details_placeholder ) {
-			$content .= $order_block;
+			$content = $this->append_email_block( $content, $order_block );
 		}
 
 		if ( 'yes' === $template['append_referral_block'] && ! $has_referral_block_placeholder ) {
-			$content .= $link_block;
+			$content = $this->append_email_block( $content, $link_block );
 		}
 
-		if ( trim( $css ) ) {
-			$content = $this->inline_email_css( $content, $css );
+		return $this->inline_email_css( $content, $css );
+	}
+
+	/**
+	 * Append a block to email HTML, keeping it inside <body> when the template is a full document.
+	 *
+	 * @param string $content Current email HTML.
+	 * @param string $block   Block HTML to append.
+	 * @return string
+	 */
+	protected function append_email_block( $content, $block ) {
+		$block = (string) $block;
+
+		if ( '' === trim( $block ) ) {
+			return $content;
 		}
 
-		return $content;
+		if ( preg_match( '#</body\s*>#i', $content ) ) {
+			return preg_replace( '#</body\s*>#i', $block . '</body>', $content, 1 );
+		}
+
+		return $content . $block;
+	}
+
+	/**
+	 * Build email headers with a branded From/Reply-To taken from WooCommerce settings.
+	 *
+	 * Because the plugin sends via wp_mail() (not WC_Email::send()), we set the
+	 * sender explicitly so replies reach the store instead of the default
+	 * wordpress@ address.
+	 *
+	 * @return array
+	 */
+	protected function build_email_headers() {
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+		$from_name  = (string) get_option( 'woocommerce_email_from_name', '' );
+		$from_email = (string) get_option( 'woocommerce_email_from_address', '' );
+
+		if ( '' === trim( $from_name ) ) {
+			$from_name = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
+		}
+
+		if ( '' === trim( $from_email ) || ! is_email( $from_email ) ) {
+			$from_email = get_option( 'admin_email' );
+		}
+
+		if ( is_email( $from_email ) ) {
+			$headers[] = sprintf( 'From: %s <%s>', $from_name, $from_email );
+			$headers[] = sprintf( 'Reply-To: %s <%s>', $from_name, $from_email );
+		}
+
+		/**
+		 * Filter the headers used for the plugin's custom emails.
+		 *
+		 * @param array $headers Email headers.
+		 */
+		return apply_filters( 'rrp_email_headers', $headers );
+	}
+
+	/**
+	 * Wrap an HTML fragment into a minimal standalone email document.
+	 *
+	 * Full documents are returned unchanged. Fragments are wrapped so the email
+	 * is self-contained and never depends on the WooCommerce email wrapper
+	 * (which would otherwise append the store address and re-color the footer).
+	 *
+	 * @param string $content Email HTML.
+	 * @param string $subject Email subject, used as document title.
+	 * @return string
+	 */
+	protected function ensure_full_document( $content, $subject = '' ) {
+		$content = (string) $content;
+
+		if ( $this->looks_like_full_email_document( $content ) ) {
+			return $content;
+		}
+
+		$title = esc_html( wp_strip_all_tags( (string) $subject ) );
+
+		return '<!DOCTYPE html><html lang="ru" xmlns="http://www.w3.org/1999/xhtml"><head>'
+			. '<meta charset="UTF-8">'
+			. '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+			. '<meta http-equiv="X-UA-Compatible" content="IE=edge">'
+			. '<title>' . $title . '</title></head>'
+			. '<body style="margin:0; padding:0; background-color:#e8e3d8;">'
+			. $content
+			. '</body></html>';
+	}
+
+	/**
+	 * Collect CSS from every <style> block inside the HTML.
+	 *
+	 * @param string $html HTML.
+	 * @return string
+	 */
+	protected function extract_style_blocks_css( $html ) {
+		if ( ! preg_match_all( '#<style\b[^>]*>(.*?)</style>#is', (string) $html, $matches ) ) {
+			return '';
+		}
+
+		return implode( "\n", $matches[1] );
 	}
 
 	/**
@@ -464,10 +549,12 @@ class RRP_Email_Manager {
 		$html = (string) $html;
 		$css  = trim( wp_strip_all_tags( (string) $css ) );
 
-		if ( '' === $html || '' === $css ) {
+		if ( '' === trim( $html ) ) {
 			return $html;
 		}
 
+		// Emogrifier inlines both the passed CSS and any <style> blocks already in the HTML,
+		// while keeping @media rules in a <style> block for clients that support them.
 		if ( class_exists( '\\Pelago\\Emogrifier\\CssInliner' ) ) {
 			try {
 				return \Pelago\Emogrifier\CssInliner::fromHtml( $html )->inlineCss( $css )->render();
@@ -476,7 +563,19 @@ class RRP_Email_Manager {
 			}
 		}
 
-		return $this->inline_email_css_fallback( $html, $css );
+		// The lightweight fallback reliably handles HTML fragments only; for a full
+		// document its embedded <style> rules are left in place for the mail client.
+		if ( $this->looks_like_full_email_document( $html ) ) {
+			return $html;
+		}
+
+		$combined = trim( $this->extract_style_blocks_css( $html ) . "\n" . $css );
+
+		if ( '' === $combined ) {
+			return $html;
+		}
+
+		return $this->inline_email_css_fallback( $html, $combined );
 	}
 
 	/**
