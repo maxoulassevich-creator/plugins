@@ -81,6 +81,7 @@ class RRP_Admin {
 		add_action( 'admin_post_rrp_cleanup', array( $this, 'handle_cleanup' ) );
 		add_action( 'admin_post_rrp_recalculate_balances', array( $this, 'handle_recalculate_balances' ) );
 		add_action( 'admin_post_rrp_run_points_expiration', array( $this, 'handle_run_points_expiration' ) );
+		add_action( 'admin_post_rrp_account_reset', array( $this, 'handle_account_reset' ) );
 	}
 
 	/**
@@ -788,6 +789,209 @@ class RRP_Admin {
 		echo '</div>';
 
 		echo '</div>';
+
+		$this->render_account_tools();
+	}
+
+	/**
+	 * Render the account diagnostics + reset card.
+	 *
+	 * @return void
+	 */
+	protected function render_account_tools() {
+		$identifier = isset( $_GET['rrp_lookup'] ) ? sanitize_text_field( wp_unslash( $_GET['rrp_lookup'] ) ) : '';
+
+		echo '<div class="rrp-card-admin" style="margin-top:20px;">';
+		echo '<h2>' . esc_html__( 'Диагностика и сброс аккаунта', 'relod-referral-points' ) . '</h2>';
+		echo '<p>' . esc_html__( 'Введите email или ID пользователя, чтобы увидеть реальное состояние по реферальной программе (профиль, начисления, заказы и вердикт «первый заказ»), а затем при необходимости полностью очистить данные плагина для этого аккаунта перед боевым тестом.', 'relod-referral-points' ) . '</p>';
+
+		echo '<form method="get" action="' . esc_url( admin_url( 'admin.php' ) ) . '" style="margin-bottom:8px;">';
+		echo '<input type="hidden" name="page" value="rrp-settings">';
+		echo '<input type="hidden" name="tab" value="tools">';
+		echo '<input type="text" name="rrp_lookup" value="' . esc_attr( $identifier ) . '" class="regular-text" placeholder="' . esc_attr__( 'email или ID пользователя', 'relod-referral-points' ) . '"> ';
+		submit_button( __( 'Показать состояние', 'relod-referral-points' ), 'secondary', 'submit', false );
+		echo '</form>';
+
+		if ( '' !== $identifier ) {
+			$this->render_account_report( $identifier );
+		}
+
+		echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" onsubmit="return confirm(\'' . esc_js( __( 'Удалить ВСЕ данные плагина для этого аккаунта? Заказы WooCommerce удалены не будут.', 'relod-referral-points' ) ) . '\');" style="margin-top:16px; padding-top:16px; border-top:1px solid #e5e5e5;">';
+		echo '<input type="hidden" name="action" value="rrp_account_reset">';
+		wp_nonce_field( 'rrp_account_reset' );
+		echo '<input type="text" name="identifier" value="' . esc_attr( $identifier ) . '" class="regular-text" placeholder="' . esc_attr__( 'email или ID пользователя', 'relod-referral-points' ) . '" required> ';
+		submit_button( __( 'Полная очистка данных плагина', 'relod-referral-points' ), 'delete', 'submit', false );
+		echo '<p class="description" style="margin-top:8px;">' . esc_html__( 'Удаляет профиль, реферальные строки, операции баллов, переходы и служебную мету заказов для этого аккаунта. Сами заказы WooCommerce не удаляются — при необходимости отмените или удалите их вручную, чтобы заказ снова считался «первым».', 'relod-referral-points' ) . '</p>';
+		echo '</form>';
+
+		echo '</div>';
+	}
+
+	/**
+	 * Render a read-only state report for an account.
+	 *
+	 * @param string $identifier Email or user ID.
+	 * @return void
+	 */
+	protected function render_account_report( $identifier ) {
+		global $wpdb;
+
+		$account = $this->resolve_account( $identifier );
+		$email   = $account['email'];
+		$user    = $account['user'];
+		$user_id = $account['user_id'];
+
+		if ( ! $email && ! $user_id ) {
+			echo '<div class="notice notice-warning inline"><p>' . esc_html__( 'Не удалось определить аккаунт по этому значению.', 'relod-referral-points' ) . '</p></div>';
+			return;
+		}
+
+		$profile = $email ? $this->profile_manager->get_profile_by_email( $email ) : null;
+
+		if ( ! $profile && $user_id ) {
+			$profile = $this->profile_manager->get_profile_by_user_id( $user_id );
+
+			if ( $profile && ! $email ) {
+				$email = $profile['email'];
+			}
+		}
+
+		$referrals_table = $wpdb->prefix . 'rrp_referrals';
+		$ledger_table    = $wpdb->prefix . 'rrp_points_ledger';
+		$is_first        = $email ? $this->tracker->is_first_order_by_email( $email ) : false;
+
+		$as_referrer = ( $profile ) ? $wpdb->get_results( $wpdb->prepare( "SELECT order_id, status, reason, points_awarded, referred_email, created_at FROM {$referrals_table} WHERE referrer_profile_id = %d ORDER BY id DESC LIMIT 50", $profile['id'] ), ARRAY_A ) : array();
+		$as_referred = $email ? $wpdb->get_results( $wpdb->prepare( "SELECT order_id, status, reason, points_awarded, referral_code, created_at FROM {$referrals_table} WHERE referred_email = %s ORDER BY id DESC LIMIT 50", $email ), ARRAY_A ) : array();
+		$ledger_count = $profile ? (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$ledger_table} WHERE profile_id = %d", $profile['id'] ) ) : 0;
+		$orders = $email ? wc_get_orders( array( 'billing_email' => $email, 'limit' => 20, 'orderby' => 'date', 'order' => 'DESC' ) ) : array();
+
+		echo '<div class="rrp-account-report" style="background:#fff;border:1px solid #dcdcde;border-radius:6px;padding:4px 16px 16px;margin-bottom:16px;">';
+
+		echo '<table class="widefat striped" style="margin-top:12px;"><tbody>';
+		$account_label = $user ? sprintf( '%s (%s) · ID %d', $user->display_name, $email, $user_id ) : ( $email ? sprintf( __( 'Гость · %s', 'relod-referral-points' ), $email ) : '—' );
+		$this->render_report_row( __( 'Аккаунт', 'relod-referral-points' ), esc_html( $account_label ) );
+		$this->render_report_row( __( 'Профиль плагина', 'relod-referral-points' ), $profile ? esc_html( sprintf( '#%d · код %s · баланс %s', $profile['id'], $profile['referral_code'], RRP_Utils::format_points( $profile['points_balance'] ) ) ) : '<em>' . esc_html__( 'нет профиля', 'relod-referral-points' ) . '</em>' );
+		$this->render_report_row( __( 'Операций баллов в ledger', 'relod-referral-points' ), esc_html( (string) $ledger_count ) );
+
+		if ( $is_first ) {
+			$verdict = '<span style="color:#1a7f37;font-weight:600;">' . esc_html__( 'Да — реферал по этому email возможен', 'relod-referral-points' ) . '</span>';
+		} else {
+			$verdict = '<span style="color:#b32d2e;font-weight:600;">' . esc_html__( 'Нет — реферал будет отклонён (not_first_order)', 'relod-referral-points' ) . '</span>';
+		}
+		$this->render_report_row( __( 'Вердикт «первый заказ»', 'relod-referral-points' ), $verdict );
+
+		$has_active_ref = false;
+		foreach ( $as_referred as $referred_row ) {
+			if ( in_array( $referred_row['status'], array( 'pending', 'awarded' ), true ) ) {
+				$has_active_ref = true;
+				break;
+			}
+		}
+		$active_ref = $has_active_ref
+			? '<span style="color:#b32d2e;font-weight:600;">' . esc_html__( 'Да — новый реферал будет отклонён (already_referred)', 'relod-referral-points' ) . '</span>'
+			: '<span style="color:#1a7f37;font-weight:600;">' . esc_html__( 'Нет', 'relod-referral-points' ) . '</span>';
+		$this->render_report_row( __( 'Активный реферал уже есть', 'relod-referral-points' ), $active_ref );
+		echo '</tbody></table>';
+
+		echo '<h4 style="margin:16px 0 6px;">' . esc_html__( 'Как реферер (его приглашения)', 'relod-referral-points' ) . '</h4>';
+		$this->render_referral_rows_table( $as_referrer, 'referred_email', __( 'Приглашённый', 'relod-referral-points' ) );
+
+		echo '<h4 style="margin:16px 0 6px;">' . esc_html__( 'Как приглашённый', 'relod-referral-points' ) . '</h4>';
+		$this->render_referral_rows_table( $as_referred, 'referral_code', __( 'Реф. код', 'relod-referral-points' ) );
+
+		echo '<h4 style="margin:16px 0 6px;">' . esc_html__( 'Заказы WooCommerce (последние)', 'relod-referral-points' ) . '</h4>';
+		if ( empty( $orders ) ) {
+			echo '<p>' . esc_html__( 'Заказов по этому email нет.', 'relod-referral-points' ) . '</p>';
+		} else {
+			echo '<div class="rrp-table-scroll"><table class="widefat striped"><thead><tr>';
+			echo '<th>' . esc_html__( 'Заказ', 'relod-referral-points' ) . '</th><th>' . esc_html__( 'Статус', 'relod-referral-points' ) . '</th><th>' . esc_html__( 'Сумма', 'relod-referral-points' ) . '</th><th>' . esc_html__( 'Дата', 'relod-referral-points' ) . '</th>';
+			echo '</tr></thead><tbody>';
+			foreach ( $orders as $order ) {
+				if ( ! $order instanceof WC_Order ) {
+					continue;
+				}
+				$date = $order->get_date_created();
+				echo '<tr>';
+				echo '<td><a href="' . esc_url( $order->get_edit_order_url() ) . '">#' . esc_html( $order->get_id() ) . '</a></td>';
+				echo '<td>' . esc_html( wc_get_order_status_name( $order->get_status() ) ) . '</td>';
+				echo '<td>' . wp_kses_post( $order->get_formatted_order_total() ) . '</td>';
+				echo '<td>' . esc_html( $date ? wc_format_datetime( $date ) : '—' ) . '</td>';
+				echo '</tr>';
+			}
+			echo '</tbody></table></div>';
+		}
+
+		echo '</div>';
+	}
+
+	/**
+	 * Render a two-column report row.
+	 *
+	 * @param string $label Row label.
+	 * @param string $value Row value HTML.
+	 * @return void
+	 */
+	protected function render_report_row( $label, $value ) {
+		echo '<tr><td style="width:240px;"><strong>' . esc_html( $label ) . '</strong></td><td>' . $value . '</td></tr>';
+	}
+
+	/**
+	 * Render a table of referral rows.
+	 *
+	 * @param array  $rows       Referral rows.
+	 * @param string $extone_key Extra column key.
+	 * @param string $extone_lbl Extra column label.
+	 * @return void
+	 */
+	protected function render_referral_rows_table( $rows, $extone_key, $extone_lbl ) {
+		if ( empty( $rows ) ) {
+			echo '<p>' . esc_html__( 'Записей нет.', 'relod-referral-points' ) . '</p>';
+			return;
+		}
+
+		echo '<div class="rrp-table-scroll"><table class="widefat striped"><thead><tr>';
+		echo '<th>' . esc_html__( 'Заказ', 'relod-referral-points' ) . '</th>';
+		echo '<th>' . esc_html__( 'Статус', 'relod-referral-points' ) . '</th>';
+		echo '<th>' . esc_html__( 'Причина', 'relod-referral-points' ) . '</th>';
+		echo '<th>' . esc_html__( 'Баллы', 'relod-referral-points' ) . '</th>';
+		echo '<th>' . esc_html( $extone_lbl ) . '</th>';
+		echo '<th>' . esc_html__( 'Когда', 'relod-referral-points' ) . '</th>';
+		echo '</tr></thead><tbody>';
+		foreach ( $rows as $row ) {
+			echo '<tr>';
+			echo '<td>' . ( ! empty( $row['order_id'] ) ? '#' . esc_html( $row['order_id'] ) : '—' ) . '</td>';
+			echo '<td><code>' . esc_html( $row['status'] ) . '</code></td>';
+			echo '<td>' . esc_html( $row['reason'] ) . '</td>';
+			echo '<td>' . esc_html( RRP_Utils::format_points( $row['points_awarded'] ) ) . '</td>';
+			echo '<td>' . esc_html( isset( $row[ $extone_key ] ) ? $row[ $extone_key ] : '' ) . '</td>';
+			echo '<td>' . esc_html( ! empty( $row['created_at'] ) ? mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $row['created_at'] ) : '—' ) . '</td>';
+			echo '</tr>';
+		}
+		echo '</tbody></table></div>';
+	}
+
+	/**
+	 * Resolve an account (user + email) from a free-form identifier.
+	 *
+	 * @param string $identifier Email or user ID.
+	 * @return array
+	 */
+	protected function resolve_account( $identifier ) {
+		$identifier = trim( (string) $identifier );
+		$user       = RRP_Utils::resolve_user( $identifier );
+		$email      = '';
+
+		if ( is_email( $identifier ) ) {
+			$email = $this->profile_manager->normalize_email( $identifier );
+		} elseif ( $user ) {
+			$email = $this->profile_manager->normalize_email( $user->user_email );
+		}
+
+		return array(
+			'user'    => $user,
+			'user_id' => $user ? (int) $user->ID : 0,
+			'email'   => $email,
+		);
 	}
 
 	/**
@@ -1029,6 +1233,180 @@ class RRP_Admin {
 	}
 
 	/**
+	 * Handle full account data reset (plugin data only).
+	 *
+	 * @return void
+	 */
+	public function handle_account_reset() {
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_die( esc_html__( 'Недостаточно прав.', 'relod-referral-points' ) );
+		}
+
+		check_admin_referer( 'rrp_account_reset' );
+
+		$identifier = isset( $_POST['identifier'] ) ? sanitize_text_field( wp_unslash( $_POST['identifier'] ) ) : '';
+		$result     = $this->reset_account_data( $identifier );
+
+		$url = add_query_arg(
+			array(
+				'page'       => 'rrp-settings',
+				'tab'        => 'tools',
+				'rrp_notice' => $result['success'] ? 'account_reset' : 'account_reset_error',
+				'rrp_text'   => rawurlencode( $result['message'] ),
+				'rrp_lookup' => rawurlencode( $identifier ),
+			),
+			admin_url( 'admin.php' )
+		);
+
+		wp_safe_redirect( $url );
+		exit;
+	}
+
+	/**
+	 * Delete all plugin data for an account (profiles, referrals, ledger, clicks, order meta).
+	 *
+	 * WooCommerce orders and users are never touched.
+	 *
+	 * @param string $identifier Email or user ID.
+	 * @return array
+	 */
+	protected function reset_account_data( $identifier ) {
+		global $wpdb;
+
+		$account = $this->resolve_account( $identifier );
+		$email   = $account['email'];
+		$user_id = $account['user_id'];
+
+		if ( ! $email && ! $user_id ) {
+			return array(
+				'success' => false,
+				'message' => __( 'Не удалось определить аккаунт по этому значению.', 'relod-referral-points' ),
+			);
+		}
+
+		$profiles_table  = $wpdb->prefix . 'rrp_profiles';
+		$referrals_table = $wpdb->prefix . 'rrp_referrals';
+		$ledger_table    = $wpdb->prefix . 'rrp_points_ledger';
+		$clicks_table    = $wpdb->prefix . 'rrp_referral_clicks';
+
+		$profile_ids = array();
+
+		if ( $email ) {
+			$profile_ids = array_merge( $profile_ids, $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$profiles_table} WHERE email = %s", $email ) ) );
+		}
+
+		if ( $user_id ) {
+			$profile_ids = array_merge( $profile_ids, $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$profiles_table} WHERE user_id = %d", $user_id ) ) );
+		}
+
+		$profile_ids = array_values( array_unique( array_map( 'intval', $profile_ids ) ) );
+		$deleted     = array(
+			'profiles'  => 0,
+			'referrals' => 0,
+			'ledger'    => 0,
+			'clicks'    => 0,
+			'orders'    => 0,
+		);
+
+		$in_ids = $profile_ids ? implode( ',', array_fill( 0, count( $profile_ids ), '%d' ) ) : '';
+
+		if ( $email ) {
+			$deleted['referrals'] += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$referrals_table} WHERE referred_email = %s", $email ) );
+			$deleted['ledger']   += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$ledger_table} WHERE email = %s", $email ) );
+		}
+
+		if ( $user_id ) {
+			$deleted['referrals'] += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$referrals_table} WHERE referred_user_id = %d", $user_id ) );
+			$deleted['ledger']   += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$ledger_table} WHERE user_id = %d", $user_id ) );
+			$deleted['clicks']   += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$clicks_table} WHERE user_id = %d", $user_id ) );
+		}
+
+		if ( $profile_ids ) {
+			$deleted['referrals'] += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$referrals_table} WHERE referrer_profile_id IN ({$in_ids}) OR referred_profile_id IN ({$in_ids})", array_merge( $profile_ids, $profile_ids ) ) );
+			$deleted['ledger']   += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$ledger_table} WHERE profile_id IN ({$in_ids})", $profile_ids ) );
+			$deleted['clicks']   += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$clicks_table} WHERE referrer_profile_id IN ({$in_ids})", $profile_ids ) );
+			$deleted['profiles'] += (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$profiles_table} WHERE id IN ({$in_ids})", $profile_ids ) );
+		}
+
+		if ( $user_id ) {
+			delete_user_meta( $user_id, '_rrp_profile_id' );
+			delete_user_meta( $user_id, '_rrp_pending_referrer_profile_id' );
+			delete_user_meta( $user_id, '_rrp_pending_referral_code' );
+			delete_user_meta( $user_id, '_rrp_pending_referral_click_id' );
+		}
+
+		if ( $email ) {
+			$deleted['orders'] = $this->strip_referral_order_meta( $email );
+		}
+
+		$this->logger->log(
+			'info',
+			'Полная очистка данных плагина для аккаунта.',
+			array(
+				'email'   => $email,
+				'user_id' => $user_id,
+				'deleted' => $deleted,
+			)
+		);
+
+		return array(
+			'success' => true,
+			'message' => sprintf(
+				/* translators: 1: profiles, 2: referrals, 3: ledger entries, 4: clicks, 5: orders cleaned. */
+				__( 'Очищено — профили: %1$d, рефералы: %2$d, операции баллов: %3$d, переходы: %4$d, заказов очищено от меты: %5$d.', 'relod-referral-points' ),
+				$deleted['profiles'],
+				$deleted['referrals'],
+				$deleted['ledger'],
+				$deleted['clicks'],
+				$deleted['orders']
+			),
+		);
+	}
+
+	/**
+	 * Remove all plugin meta (_rrp_*) from the orders of a given email.
+	 *
+	 * @param string $email Billing email.
+	 * @return int Number of orders whose meta was cleared.
+	 */
+	protected function strip_referral_order_meta( $email ) {
+		$orders = wc_get_orders(
+			array(
+				'billing_email' => $email,
+				'limit'         => -1,
+				'return'        => 'objects',
+				'status'        => array_keys( wc_get_order_statuses() ),
+			)
+		);
+
+		$count = 0;
+
+		foreach ( $orders as $order ) {
+			if ( ! $order instanceof WC_Order ) {
+				continue;
+			}
+
+			$changed = false;
+
+			foreach ( $order->get_meta_data() as $meta ) {
+				$key = is_object( $meta ) && isset( $meta->key ) ? $meta->key : '';
+
+				if ( '' !== $key && 0 === strpos( $key, '_rrp_' ) ) {
+					$order->delete_meta_data( $key );
+					$changed = true;
+				}
+			}
+
+			if ( $changed ) {
+				$order->save();
+				$count++;
+			}
+		}
+
+		return $count;
+	}
+
+	/**
 	 * Redirect back to plugin page with notice.
 	 *
 	 * @param string $notice Notice code.
@@ -1073,9 +1451,11 @@ class RRP_Admin {
 			'recalculated'   => $text ? $text : __( 'Балансы пересчитаны.', 'relod-referral-points' ),
 			'expiration_ran' => $text ? $text : __( 'Проверка сгорания баллов выполнена.', 'relod-referral-points' ),
 			'expiration_error' => $text ? $text : __( 'Не удалось выполнить проверку сгорания баллов.', 'relod-referral-points' ),
+			'account_reset'  => $text ? $text : __( 'Данные аккаунта очищены.', 'relod-referral-points' ),
+			'account_reset_error' => $text ? $text : __( 'Не удалось очистить данные аккаунта.', 'relod-referral-points' ),
 		);
 
-		if ( in_array( $notice, array( 'adjust_error', 'expiration_error' ), true ) ) {
+		if ( in_array( $notice, array( 'adjust_error', 'expiration_error', 'account_reset_error' ), true ) ) {
 			$class = 'notice notice-error';
 		}
 

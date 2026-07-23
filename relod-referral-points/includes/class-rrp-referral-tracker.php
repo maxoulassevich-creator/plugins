@@ -351,6 +351,13 @@ class RRP_Referral_Tracker {
 			);
 		}
 
+		if ( $billing_email && $this->has_active_referral_for_email( $billing_email, $order->get_id() ) ) {
+			return array(
+				'status' => 'rejected',
+				'reason' => 'already_referred',
+			);
+		}
+
 		if ( 'yes' === $this->settings->get( 'prevent_self_referral', 'yes' ) ) {
 			if ( $billing_email && $billing_email === $referrer_profile['email'] ) {
 				return array(
@@ -434,6 +441,38 @@ class RRP_Referral_Tracker {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Whether this referred customer already has an active (pending or awarded) referral.
+	 *
+	 * Guarantees at most one credited referral per referred customer even if several
+	 * unpaid orders are created before any of them is paid.
+	 *
+	 * @param string $email            Referred billing email.
+	 * @param int    $exclude_order_id Order to exclude (the current one).
+	 * @return bool
+	 */
+	protected function has_active_referral_for_email( $email, $exclude_order_id = 0 ) {
+		global $wpdb;
+
+		$email = $this->profile_manager->normalize_email( $email );
+
+		if ( ! $email ) {
+			return false;
+		}
+
+		$exclude_order_id = absint( $exclude_order_id );
+
+		$count = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$this->referrals_table} WHERE referred_email = %s AND status IN ('pending','awarded') AND order_id <> %d",
+				$email,
+				$exclude_order_id
+			)
+		);
+
+		return $count > 0;
 	}
 
 	/**

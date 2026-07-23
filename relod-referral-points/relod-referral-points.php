@@ -3,7 +3,7 @@
  * Plugin Name: RELOD Referral Points for WooCommerce
  * Plugin URI: https://example.com/
  * Description: Кастомный WooCommerce-плагин с реферальными ссылками, баллами, email-уведомлениями, логами и разделом в личном кабинете.
- * Version: 1.4.0
+ * Version: 1.5.0
  * Author: OpenAI
  * Author URI: https://openai.com/
  * Text Domain: relod-referral-points
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RRP_VERSION', '1.4.0' );
+define( 'RRP_VERSION', '1.5.0' );
 define( 'RRP_PLUGIN_FILE', __FILE__ );
 define( 'RRP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'RRP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
