@@ -783,7 +783,7 @@ class RRP_Admin {
 		echo '<input type="hidden" name="action" value="rrp_cleanup">';
 		wp_nonce_field( 'rrp_cleanup' );
 		submit_button( __( 'Очистить служебные данные', 'relod-referral-points' ), 'delete', 'submit', false );
-		echo '<p class="description" style="margin-top:8px;">' . esc_html__( 'Удаляются временные user meta, очищаются логи и сбрасываются служебные флаги браузерного трекинга на серверной стороне.', 'relod-referral-points' ) . '</p>';
+		echo '<p class="description" style="margin-top:8px;">' . esc_html__( 'Удаляются временные user meta, очищаются логи, сбрасываются служебные флаги браузерного трекинга и удаляются осиротевшие строки рефералов с order_id=0.', 'relod-referral-points' ) . '</p>';
 		echo '</form>';
 		echo '</div>';
 
@@ -970,6 +970,11 @@ class RRP_Admin {
 		check_admin_referer( 'rrp_cleanup' );
 
 		$wpdb->query( "DELETE FROM {$wpdb->usermeta} WHERE meta_key IN ('_rrp_pending_referrer_profile_id','_rrp_pending_referral_code','_rrp_pending_referral_click_id')" );
+
+		// Remove orphaned referral rows that were written before an order had a real ID.
+		$referrals_table = $wpdb->prefix . 'rrp_referrals';
+		$wpdb->query( "DELETE FROM {$referrals_table} WHERE order_id = 0" );
+
 		$this->logger->clear_logs();
 		$this->redirect_with_notice( 'cleanup_done', 'tools' );
 	}

@@ -72,6 +72,8 @@ class RRP_Referral_Tracker {
 		add_action( 'init', array( $this, 'capture_referral_from_request' ), 5 );
 		add_action( 'wp', array( $this, 'sync_referral_to_wc_session' ), 5 );
 		add_action( 'woocommerce_checkout_create_order', array( $this, 'attach_referral_to_order' ), 20, 2 );
+		add_action( 'woocommerce_checkout_order_processed', array( $this, 'persist_referral_after_checkout' ), 20, 3 );
+		add_action( 'woocommerce_store_api_checkout_order_processed', array( $this, 'persist_referral_after_checkout_api' ), 20, 1 );
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'clear_tracking_after_checkout' ), 30, 3 );
 	}
 
@@ -205,20 +207,92 @@ class RRP_Referral_Tracker {
 		$order->update_meta_data( '_rrp_reward_reversed', 'no' );
 		$order->update_meta_data( '_rrp_reward_points', '0' );
 
-		$referral_id = $this->upsert_referral_row( $order, $referrer_profile, $referred_profile, $result, $context['referral_code'], $click_id );
-
-		if ( $referral_id ) {
-			$order->update_meta_data( '_rrp_referral_row_id', $referral_id );
-		}
-
-		if ( $click_id ) {
-			$this->mark_click_converted( $click_id, $order->get_id() );
-		}
+		// The referral table row and the click conversion are keyed by the order ID, which
+		// does not exist yet on woocommerce_checkout_create_order — the order has not been
+		// saved, so $order->get_id() is 0. Writing here produced order_id=0 rows that
+		// collided on the unique key and could never be matched back to the real order.
+		// The row is now written in persist_referral_after_checkout(), once the order is saved.
 
 		if ( $order->get_user_id() ) {
 			delete_user_meta( $order->get_user_id(), '_rrp_pending_referrer_profile_id' );
 			delete_user_meta( $order->get_user_id(), '_rrp_pending_referral_code' );
 			delete_user_meta( $order->get_user_id(), '_rrp_pending_referral_click_id' );
+		}
+	}
+
+	/**
+	 * Persist the referral row once the order has a real ID (classic checkout).
+	 *
+	 * @param int           $order_id    Order ID.
+	 * @param array         $posted_data Posted checkout data.
+	 * @param WC_Order|null $order       Order object.
+	 * @return void
+	 */
+	public function persist_referral_after_checkout( $order_id, $posted_data = array(), $order = null ) {
+		$order = $order instanceof WC_Order ? $order : wc_get_order( $order_id );
+
+		$this->sync_referral_row_from_order( $order );
+	}
+
+	/**
+	 * Persist the referral row for the block/Store API checkout.
+	 *
+	 * @param WC_Order|int $order Order object or ID.
+	 * @return void
+	 */
+	public function persist_referral_after_checkout_api( $order ) {
+		$order = $order instanceof WC_Order ? $order : wc_get_order( $order );
+
+		$this->sync_referral_row_from_order( $order );
+	}
+
+	/**
+	 * Create or update the referral row from the meta already stored on a saved order.
+	 *
+	 * @param WC_Order|null $order Order object.
+	 * @return void
+	 */
+	protected function sync_referral_row_from_order( $order ) {
+		if ( ! $order instanceof WC_Order || ! $order->get_id() ) {
+			return;
+		}
+
+		$status = $order->get_meta( '_rrp_referral_status', true );
+
+		// Only statuses that actually reference a referrer get a ledger row.
+		if ( ! in_array( $status, array( 'pending', 'rejected', 'awarded', 'reversed' ), true ) ) {
+			return;
+		}
+
+		$referrer_profile_id = absint( $order->get_meta( '_rrp_referrer_profile_id', true ) );
+
+		if ( ! $referrer_profile_id ) {
+			return;
+		}
+
+		$referrer_profile = $this->profile_manager->get_profile( $referrer_profile_id );
+
+		if ( ! $referrer_profile ) {
+			return;
+		}
+
+		$referred_profile = $this->profile_manager->get_or_create_profile_for_order( $order );
+		$referral_code    = sanitize_text_field( $order->get_meta( '_rrp_referral_code', true ) );
+		$click_id         = absint( $order->get_meta( '_rrp_referral_click_id', true ) );
+		$result           = array(
+			'status' => $status,
+			'reason' => (string) $order->get_meta( '_rrp_referral_reason', true ),
+		);
+
+		$referral_id = $this->upsert_referral_row( $order, $referrer_profile, $referred_profile, $result, $referral_code, $click_id );
+
+		if ( $referral_id && absint( $order->get_meta( '_rrp_referral_row_id', true ) ) !== $referral_id ) {
+			$order->update_meta_data( '_rrp_referral_row_id', $referral_id );
+			$order->save();
+		}
+
+		if ( $click_id ) {
+			$this->mark_click_converted( $click_id, $order->get_id() );
 		}
 	}
 
@@ -321,12 +395,29 @@ class RRP_Referral_Tracker {
 			return false;
 		}
 
+		$paid_statuses = function_exists( 'wc_get_is_paid_statuses' ) ? wc_get_is_paid_statuses() : array( 'processing', 'completed' );
+		$countable     = array_values( array_unique( array_merge( $paid_statuses, array( 'refunded' ) ) ) );
+
+		/**
+		 * Filter which order statuses count as a genuine previous purchase when deciding
+		 * whether an order is the customer's first one. By default only paid and refunded
+		 * orders count, so abandoned, cancelled or failed attempts do not block a referral.
+		 *
+		 * @param array  $countable Countable order statuses (without the wc- prefix).
+		 * @param string $email     Billing email.
+		 */
+		$countable = apply_filters( 'rrp_first_order_countable_statuses', $countable, $email );
+
+		if ( empty( $countable ) ) {
+			return true;
+		}
+
 		$orders = wc_get_orders(
 			array(
 				'billing_email' => $email,
 				'limit'         => 10,
 				'return'        => 'ids',
-				'status'        => array_keys( wc_get_order_statuses() ),
+				'status'        => $countable,
 			)
 		);
 
