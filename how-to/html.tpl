@@ -1,4 +1,14 @@
-<div id="{{uc_id}}" class="ue-howto-widget">
+<div id="{{uc_id}}" class="ue-howto-widget"
+  {% if show_instructions == "true" and enable_pagination == "true" %}
+    data-howto-pagination="1"
+    data-howto-perpage="{{pagination_items_per_page}}"
+    data-howto-mode="{{pagination_mode}}"
+    data-howto-scrolltop="{{pagination_scroll_to_top}}"
+    data-howto-prev="{{pagination_prev_text}}"
+    data-howto-next="{{pagination_next_text}}"
+    data-howto-loadmore="{{pagination_load_more_text}}"
+  {% endif %}
+>
   
     <div class="ue-howto-content">
         {% if show_image == "true" %}

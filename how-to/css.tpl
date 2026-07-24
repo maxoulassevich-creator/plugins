@@ -226,3 +226,57 @@
 #{{uc_id}} a.ue-step-link:hover .ue-step-clickable {
   opacity: 0.85;
 }
+
+{% if enable_pagination == "true" %}
+/* Pagination (defaults — overridable from the Style > Pagination section) */
+#{{uc_id}} .ue-howto-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+#{{uc_id}} .ue-howto-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  padding: 8px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: #ffffff;
+  color: inherit;
+  font: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease, opacity .2s ease;
+}
+#{{uc_id}} .ue-howto-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+#{{uc_id}} .ue-howto-btn.ue-howto-active {
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
+}
+#{{uc_id}} .ue-howto-btn[disabled] {
+  opacity: .45;
+  cursor: default;
+  pointer-events: none;
+}
+#{{uc_id}} .ue-howto-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 4px;
+  opacity: .6;
+  user-select: none;
+}
+#{{uc_id}} .ue-howto-pagination--load_more {
+  justify-content: center;
+}
+/* Hide the dangling timeline connector under the last visible step of a page */
+#{{uc_id}} .ue-step.ue-howto-hide-line .ue-progress-line {
+  display: none !important;
+}
+{% endif %}
