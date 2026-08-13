@@ -86,7 +86,7 @@
 */
 
 /* ============================================================================
-   How-To widget — client-side pagination
+   How-To widget - client-side pagination
    ----------------------------------------------------------------------------
    Splits the rendered instruction steps / posts into pages that switch
    without reloading the page. Two modes:
@@ -167,7 +167,7 @@
     var items = getItems(instructions);
     var perPage = toInt(root.getAttribute("data-howto-perpage"), items.length || 1);
 
-    // Nothing to paginate — leave every step visible.
+    // Nothing to paginate - leave every step visible.
     if (items.length <= perPage) {
       root.setAttribute("data-howto-initialized", "1");
       return;
@@ -246,7 +246,7 @@
         if (p === "...") {
           var gap = document.createElement("span");
           gap.className = "ue-howto-ellipsis";
-          gap.textContent = "…";
+          gap.textContent = "\u2026";
           nav.appendChild(gap);
           return;
         }
@@ -268,16 +268,72 @@
     render();
   }
 
+  function isPaginated(el) {
+    return el.nodeType === 1 &&
+      el.classList && el.classList.contains("ue-howto-widget") &&
+      el.getAttribute("data-howto-pagination") === "1";
+  }
+
+  // Initialise the node itself (when Elementor hands us the widget scope)
+  // plus any paginated widget nested inside it.
+  function initWithin(node) {
+    if (!node || node.nodeType !== 1) return;
+    if (isPaginated(node)) init(node);
+    if (!node.querySelectorAll) return;
+    var found = node.querySelectorAll(SELECTOR);
+    for (var i = 0; i < found.length; i++) init(found[i]);
+  }
+
   function boot() {
-    var widgets = document.querySelectorAll(SELECTOR);
-    for (var i = 0; i < widgets.length; i++) init(widgets[i]);
+    initWithin(document.body || document.documentElement);
+  }
+
+  // Elementor renders widgets through its own lifecycle (popups, lazy tabs,
+  // the editor preview), so hook that too instead of relying on load events
+  // alone. The event is fired through jQuery, hence the jQuery listener.
+  var elementorHooked = false;
+  function hookElementor() {
+    if (elementorHooked) return;
+    if (!window.elementorFrontend || !window.elementorFrontend.hooks) return;
+    elementorHooked = true;
+    window.elementorFrontend.hooks.addAction("frontend/element_ready/global", function ($scope) {
+      initWithin($scope && $scope[0] ? $scope[0] : null);
+    });
+  }
+
+  // Last-resort net: catches markup injected by AJAX tab/filter scripts and
+  // by optimisation plugins that rebuild the DOM after load. init() is
+  // idempotent, so re-running it costs nothing.
+  function watch() {
+    if (!window.MutationObserver || !document.body) return;
+    var timer = null;
+    new MutationObserver(function () {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(boot, 100);
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+
+  function ready() {
+    boot();
+    watch();
+    hookElementor();
   }
 
   // Run immediately for widgets already parsed (this script is emitted right
-  // after the widget markup) to minimise any flash, then again on DOM ready
-  // to catch the rest. init() is idempotent, so running twice is harmless.
+  // after the widget markup) to minimise any flash, then again at every later
+  // milestone so the widget still initialises when the script is deferred,
+  // delayed or concatenated by a caching / optimisation plugin.
   boot();
+  hookElementor();
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
+    document.addEventListener("DOMContentLoaded", ready);
+  } else {
+    ready();
+  }
+  window.addEventListener("load", boot);
+
+  if (window.jQuery) {
+    window.jQuery(window).on("elementor/frontend/init", hookElementor);
   }
 })();

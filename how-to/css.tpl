@@ -228,7 +228,7 @@
 }
 
 {% if enable_pagination == "true" %}
-/* Pagination (defaults — overridable from the Style > Pagination section) */
+/* Pagination (defaults - overridable from the Style > Pagination section) */
 #{{uc_id}} .ue-howto-pagination {
   display: flex;
   flex-wrap: wrap;
